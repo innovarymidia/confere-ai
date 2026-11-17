@@ -101,7 +101,7 @@ export function AnalyticsBento({
             <path
               d="M 10 70 L 60 68 L 110 20 L 160 65 L 210 15 L 260 72 L 310 35 L 380 72"
               fill="none"
-              stroke="#6366F1"
+              stroke="#07152D"
               strokeWidth="3"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -128,7 +128,7 @@ export function AnalyticsBento({
 
         <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-500">
           <span>Conferência automática por anúncio</span>
-          <span className="text-indigo-600 font-bold">Conferência Concluída</span>
+          <span className="text-orange-600 font-bold">Conferência Concluída</span>
         </div>
       </div>
 
@@ -168,21 +168,21 @@ export function AnalyticsBento({
           </div>
 
           {/* Bloco 2: Comissões */}
-          <div className="p-4 rounded-2xl bg-indigo-50/80 border border-indigo-200/80 flex items-center justify-between">
+          <div className="p-4 rounded-2xl bg-orange-50/80 border border-orange-200/80 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold">
+              <div className="w-8 h-8 rounded-xl bg-orange-500 text-white flex items-center justify-center font-bold">
                 <Percent className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-extrabold text-indigo-950 block">
+                <span className="text-xs font-extrabold text-orange-950 block">
                   Comissão Cobrada Acima da Tabela
                 </span>
-                <span className="text-[10px] text-indigo-700 font-medium">
+                <span className="text-[10px] text-orange-700 font-medium">
                   {comissaoPct}% das divergências
                 </span>
               </div>
             </div>
-            <span className="text-base font-black text-indigo-900">
+            <span className="text-base font-black text-orange-900">
               {formatBRL(comissaoRecoverable)}
             </span>
           </div>
@@ -222,7 +222,7 @@ export function AnalyticsBento({
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
             AGILIDADE DE REEMBOLSO
           </span>
-          <Clock className="w-4 h-4 text-indigo-600" />
+          <Clock className="w-4 h-4 text-orange-600" />
         </div>
 
         <div className="my-3">
@@ -269,17 +269,17 @@ export function AnalyticsBento({
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
             RECUPERAÇÃO RÁPIDA NO SUPORTE
           </span>
-          <ShieldCheck className="w-4 h-4 text-indigo-600" />
+          <ShieldCheck className="w-4 h-4 text-orange-600" />
         </div>
 
         <div className="my-3">
-          <span className="text-3xl font-black text-indigo-600 block">Zero Atrito</span>
+          <span className="text-3xl font-black text-slate-900 block">Zero Atrito</span>
           <span className="text-xs text-slate-500 font-medium mt-0.5 block">
             Basta clicar em "Copiar Contestação" e colar na conversa com o atendente do marketplace para receber o estorno na hora.
           </span>
         </div>
 
-        <div className="p-3 bg-indigo-50 rounded-xl border border-indigo-100 text-xs text-indigo-700 font-semibold flex items-center justify-between">
+        <div className="p-3 bg-orange-50 rounded-xl border border-orange-100 text-xs text-orange-700 font-semibold flex items-center justify-between">
           <span>Sem burocracia</span>
           <ArrowUpRight className="w-4 h-4" />
         </div>

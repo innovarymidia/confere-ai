@@ -60,3 +60,22 @@ export function MarketplaceBadgeLogo({
   }
   return <ShopeeLogo variant={variant} className={className} {...props} />;
 }
+
+/**
+ * Logo Oficial da ConfereAI utilizando a imagem oficial enviada.
+ */
+export function ConfereAiLogo({
+  className,
+  alt = "ConfereAI",
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  return (
+    <img
+      src="/logos/confereai.png"
+      alt={alt}
+      loading="eager"
+      className={cn("object-contain shrink-0 select-none", className)}
+      {...props}
+    />
+  );
+}

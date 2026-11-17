@@ -16,6 +16,7 @@ import { MarketplaceProductHero } from "../components/ui/marketplace-product-her
 import { CueCollapsingCardsAccordion } from "../components/ui/cue-collapsing-cards-accordion";
 import { PricingPlanTilt } from "../components/ui/pricing-plan-tilt";
 import { CheckoutModal } from "../components/ui/checkout-modal";
+import { ConfereAiLogo } from "../components/ui/marketplace-logos";
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FD] text-slate-800">
+    <div className="min-h-screen bg-white text-slate-800">
       {/* 1. Liquid Glass Navbar (Inspirado no @gughigug/liquid-glass-navbar) */}
       <LiquidGlassNavbar onAuditClick={scrollToDropzone} />
 
@@ -86,7 +87,7 @@ export function LandingPage() {
         {/* 3. Os 3 Vazamentos Silenciosos de Lucro */}
         <section id="vazamentos" className="pt-6">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] font-black uppercase tracking-widest text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+            <span className="text-[11px] font-black uppercase tracking-widest text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/80">
               Auditoria Cirúrgica
             </span>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
@@ -114,10 +115,10 @@ export function LandingPage() {
             </div>
 
             <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-700 flex items-center justify-center font-bold mb-4 border border-indigo-200/60">
-                <Percent className="w-5 h-5 text-indigo-600" />
+              <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold mb-4 border border-slate-800">
+                <Percent className="w-5 h-5 text-orange-400" />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-100/80 px-2.5 py-0.5 rounded-full">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-900 bg-slate-100 px-2.5 py-0.5 rounded-full">
                 Vazamento 02
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
@@ -177,7 +178,7 @@ export function LandingPage() {
           <button
             type="button"
             onClick={scrollToDropzone}
-            className="mt-6 py-3.5 sm:py-4 px-6 sm:px-8 w-full sm:w-auto rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 cursor-pointer"
+            className="mt-6 py-3.5 sm:py-4 px-6 sm:px-8 w-full sm:w-auto rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-glow-orange transition transform hover:-translate-y-0.5 cursor-pointer"
           >
             Auditar Minha Planilha Agora (Grátis)
           </button>
@@ -198,6 +199,7 @@ export function LandingPage() {
 
       {/* Rodapé Corporativo B2B */}
       <footer className="border-t border-slate-200 py-8 px-4 text-center text-xs text-slate-500">
+        <ConfereAiLogo className="h-7 w-auto mx-auto mb-3" />
         <p className="font-bold text-slate-700">
           ConfereAI | Auditoria Financeira Independente para Vendedores de E-commerce
         </p>

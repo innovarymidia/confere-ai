@@ -16,7 +16,7 @@ import {
 import { supabase } from "../lib/supabaseClient";
 import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
 import { AnalyticsBento } from "../components/ui/analytics-bento";
-import { MercadoLivreLogo, ShopeeLogo } from "../components/ui/marketplace-logos";
+import { MercadoLivreLogo, ShopeeLogo, ConfereAiLogo } from "../components/ui/marketplace-logos";
 import { CheckoutModal } from "../components/ui/checkout-modal";
 
 interface AuditSummary {
@@ -276,9 +276,9 @@ export function AuditResultPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F8F9FD]">
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
           <p className="text-sm font-extrabold text-slate-800">
             Calculando divergências financeiras...
           </p>
@@ -289,11 +289,11 @@ export function AuditResultPage() {
 
   if (!audit) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FD] p-6 text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6 text-center">
         <p className="text-slate-800 font-bold mb-4">Auditoria não encontrada.</p>
         <Link
           to="/"
-          className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+          className="px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
         >
           Fazer Nova Auditoria
         </Link>
@@ -306,7 +306,7 @@ export function AuditResultPage() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#F8F9FD] text-slate-800 pb-20">
+    <div className="min-h-screen bg-white text-slate-800 pb-20">
       <LiquidGlassNavbar variant="result" platform={audit.platform} isPro={isPro} />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-24 md:pb-10 space-y-6">
@@ -603,7 +603,7 @@ export function AuditResultPage() {
                 <button
                   type="button"
                   onClick={() => setIsCheckoutOpen(true)}
-                  className="mt-6 py-3.5 sm:py-4 px-5 sm:px-8 w-full sm:w-auto rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+                  className="mt-6 py-3.5 sm:py-4 px-5 sm:px-8 w-full sm:w-auto rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-glow-orange transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Desbloquear Relatório Completo ({audit.total_divergent_orders} Pedidos)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -653,7 +653,7 @@ export function AuditResultPage() {
           <button
             type="button"
             onClick={() => setIsCheckoutOpen(true)}
-            className="py-2.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer shrink-0"
+            className="py-2.5 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-glow-orange transition flex items-center gap-1.5 cursor-pointer shrink-0"
           >
             <span>Liberar Relatório Completo</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -663,6 +663,7 @@ export function AuditResultPage() {
 
       {/* Rodapé Corporativo B2B */}
       <footer className="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <ConfereAiLogo className="h-7 w-auto mx-auto mb-2 opacity-90" />
         ConfereAI | Auditoria Financeira de Repasses para E-commerce
       </footer>
     </div>

@@ -142,7 +142,7 @@ export function HistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FD] text-slate-800 pb-20">
+    <div className="min-h-screen bg-white text-slate-800 pb-20">
       <LiquidGlassNavbar variant="result" isPro={isPro} />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 space-y-6">
@@ -170,13 +170,13 @@ export function HistoryPage() {
               </span>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-indigo-50 border border-indigo-100 text-xs flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-indigo-600 shrink-0" />
+            <div className="px-4 py-2 rounded-2xl bg-orange-50 border border-orange-100 text-xs flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-orange-600 shrink-0" />
               <div>
-                <span className="text-indigo-600 block text-[10px] uppercase font-bold">
+                <span className="text-orange-600 block text-[10px] uppercase font-bold">
                   Status
                 </span>
-                <span className="font-extrabold text-indigo-950">
+                <span className="font-extrabold text-slate-900">
                   {isPro ? "Assinante Pro Ativo" : "Plano Gratuito"}
                 </span>
               </div>

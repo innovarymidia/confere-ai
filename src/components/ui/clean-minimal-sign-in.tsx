@@ -1,9 +1,10 @@
 "use client";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Zap, Eye, EyeOff, ArrowRight, ShieldCheck, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, ArrowRight, ShieldCheck, Lock, Mail } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
+import { ConfereAiLogo } from "./marketplace-logos";
 
 interface CleanMinimalSignInProps {
   onSuccess?: () => void;
@@ -89,13 +90,8 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
     >
       {/* Logo ConfereAI */}
       <div className="flex flex-col items-center text-center mb-6">
-        <Link to="/" className="flex items-center gap-2 group mb-3">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-600 text-white flex items-center justify-center font-black text-xl shadow-glow-violet group-hover:scale-105 transition-transform">
-            <Zap className="w-6 h-6 fill-white" />
-          </div>
-          <span className="font-black text-2xl tracking-tight text-slate-900">
-            Confere<span className="text-indigo-600">AI</span>
-          </span>
+        <Link to="/" className="flex items-center justify-center group mb-3" aria-label="ConfereAI Home">
+          <ConfereAiLogo className="h-11 sm:h-12 w-auto rounded-xl shadow-xs group-hover:scale-[1.02] transition-transform" />
         </Link>
         <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
           Acessar Minhas Conferências
@@ -134,7 +130,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="seu@email.com.br"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600 bg-slate-50/50"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500 bg-slate-50/50"
               />
             </div>
           </div>
@@ -147,7 +143,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
               <button
                 type="button"
                 onClick={handleSendMagicLink}
-                className="text-[11px] font-bold text-indigo-600 hover:underline cursor-pointer"
+                className="text-[11px] font-bold text-orange-600 hover:underline cursor-pointer"
               >
                 Esqueci / Entrar com Link
               </button>
@@ -160,7 +156,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600 bg-slate-50/50"
+                className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500 bg-slate-50/50"
               />
               <button
                 type="button"
@@ -181,7 +177,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm uppercase tracking-wider shadow-md transition flex items-center justify-center gap-2 cursor-pointer mt-2"
+            className="w-full py-3.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-sm uppercase tracking-wider shadow-glow-orange transition flex items-center justify-center gap-2 cursor-pointer mt-2"
           >
             {loading ? (
               "Verificando..."
@@ -197,7 +193,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
             <button
               type="button"
               onClick={handleSendMagicLink}
-              className="text-xs font-bold text-slate-500 hover:text-indigo-600 transition cursor-pointer"
+              className="text-xs font-bold text-slate-500 hover:text-orange-600 transition cursor-pointer"
             >
               Não tem senha? Entrar com Link Mágico no E-mail
             </button>

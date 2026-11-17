@@ -36,11 +36,11 @@ export interface PricingPlanTiltProps {
   className?: string;
 }
 
-// Cores do ConfereAI: Indigo elétrico (#4f46e5) e Violeta (#7c3aed)
-const PRIMARY_COLOR = "#4f46e5";
-const ACCENT_COLOR = "#7c3aed";
-const GRADIENT = `linear-gradient(125deg, ${PRIMARY_COLOR}, ${ACCENT_COLOR})`;
-const BADGE_GRADIENT = `linear-gradient(120deg, ${PRIMARY_COLOR}, #6366f1)`;
+// Cores do ConfereAI harmonizadas com a logo: Azul Marinho (#07152d) e Laranja Vibrante (#f97316)
+const PRIMARY_COLOR = "#07152d";
+const ACCENT_COLOR = "#f97316";
+const GRADIENT = `linear-gradient(135deg, ${PRIMARY_COLOR} 0%, #0c234a 60%, ${ACCENT_COLOR} 100%)`;
+const BADGE_GRADIENT = `linear-gradient(120deg, #ea580c, #f97316)`;
 
 /** Dígitos rolam para cima ou para baixo quando o número muda */
 function Roll({ value, dir }: { value: number; dir: 1 | -1 }) {
@@ -142,9 +142,9 @@ function PlanCard({
         className={cn(
           "relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-6 text-slate-900 shadow-soft transition-colors cursor-pointer",
           selected
-            ? "border-transparent ring-2 ring-indigo-600"
+            ? "border-transparent ring-2 ring-orange-500 shadow-glow-orange"
             : plan.popular
-            ? "border-indigo-300/80 shadow-soft-lg"
+            ? "border-orange-300/80 shadow-soft-lg"
             : "border-slate-200/90"
         )}
       >
@@ -244,8 +244,8 @@ function PlanCard({
           className={cn(
             "relative mt-6 inline-flex min-h-12 w-full items-center justify-center gap-1.5 overflow-hidden rounded-2xl text-xs font-extrabold uppercase tracking-wider transition-all outline-none cursor-pointer",
             selected
-              ? "text-white shadow-glow-violet"
-              : "border border-slate-200 bg-slate-50 text-slate-800 hover:bg-slate-100 hover:border-indigo-300"
+              ? "text-white shadow-glow-orange"
+              : "border border-slate-200 bg-slate-50 text-slate-800 hover:bg-slate-100 hover:border-orange-300"
           )}
         >
           {selected && (

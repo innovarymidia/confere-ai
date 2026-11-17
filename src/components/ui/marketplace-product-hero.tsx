@@ -79,7 +79,7 @@ export function MarketplaceProductHero({
             ========================================================================= */}
         <div className="lg:col-span-6 space-y-6 text-left">
           {/* Badge Superior */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-indigo-100 shadow-xs">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
               Tabelas Oficiais 2026 • Conferência Pedido a Pedido
@@ -88,7 +88,7 @@ export function MarketplaceProductHero({
 
           <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15]">
             Descubra em 10s quanto o marketplace{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500">
               cobrou a mais
             </span>{" "}
             das suas vendas.
@@ -137,11 +137,11 @@ export function MarketplaceProductHero({
                   className={cn(
                     "p-2.5 rounded-2xl border text-left transition-all cursor-pointer",
                     selectedAngle === ang.id
-                      ? "bg-white border-indigo-600 shadow-soft ring-1 ring-indigo-500/30"
+                      ? "bg-white border-orange-500 shadow-soft ring-1 ring-orange-500/30"
                       : "bg-white/60 hover:bg-white border-slate-200/80 text-slate-600"
                   )}
                 >
-                  <div className="flex items-center gap-1.5 text-indigo-600 mb-1">
+                  <div className="flex items-center gap-1.5 text-orange-600 mb-1">
                     {ang.icon}
                     <span className="text-[11px] font-black">{ang.highlight}</span>
                   </div>
@@ -160,7 +160,7 @@ export function MarketplaceProductHero({
         <div className="lg:col-span-6">
           <div className="relative bg-white rounded-3xl sm:rounded-[32px] p-5 sm:p-8 border border-slate-200/90 shadow-soft-lg">
             {/* Halo de iluminação de fundo */}
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
 
             {/* Cabeçalho: Escolha da Plataforma com Logos Oficiais */}
             <div className="relative z-10 flex items-center justify-between mb-4">
@@ -228,14 +228,14 @@ export function MarketplaceProductHero({
               className={cn(
                 "relative z-10 flex flex-col items-center justify-center w-full min-h-[210px] h-auto py-6 sm:h-52 border-2 border-dashed rounded-2xl cursor-pointer transition p-4 sm:p-6 text-center",
                 isDragging
-                  ? "border-indigo-600 bg-indigo-50/70"
-                  : "border-slate-300 bg-slate-50/60 hover:bg-slate-100/70 hover:border-indigo-300"
+                  ? "border-orange-500 bg-orange-50/70"
+                  : "border-slate-300 bg-slate-50/60 hover:bg-slate-100/70 hover:border-orange-300"
               )}
             >
               {loadingStep ? (
                 <div className="space-y-3.5 w-full max-w-sm mx-auto">
                   <div className="relative flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-glow-violet animate-pulse">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500 text-white flex items-center justify-center font-bold shadow-glow-orange animate-pulse">
                       <Zap className="w-6 h-6 fill-white" />
                     </div>
                     <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
@@ -246,14 +246,14 @@ export function MarketplaceProductHero({
 
                   <div>
                     <p className="text-sm font-black text-slate-900 tracking-tight">{loadingStep}</p>
-                    <p className="text-[11px] text-indigo-600 font-bold mt-0.5">
+                    <p className="text-[11px] text-orange-600 font-bold mt-0.5">
                       Conferência automática e privada no seu navegador
                     </p>
                   </div>
 
                   {/* Barra de progresso animada */}
                   <div className="w-full bg-slate-200/80 rounded-full h-2 overflow-hidden border border-slate-200">
-                    <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 h-full rounded-full animate-pulse w-full" />
+                    <div className="bg-gradient-to-r from-[#07152d] via-orange-500 to-[#07152d] h-full rounded-full animate-pulse w-full" />
                   </div>
 
                   {/* Micro-contadores de status da conferência */}
@@ -264,7 +264,7 @@ export function MarketplaceProductHero({
                     </div>
                     <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
                       <span className="text-[9px] uppercase font-bold text-slate-400 block">Tabela</span>
-                      <span className="text-xs font-black text-indigo-600">Regras 2026</span>
+                      <span className="text-xs font-black text-orange-600">Regras 2026</span>
                     </div>
                     <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
                       <span className="text-[9px] uppercase font-bold text-slate-400 block">Segurança</span>
@@ -275,7 +275,7 @@ export function MarketplaceProductHero({
               ) : (
                 <>
                   <div className="flex items-center gap-2.5 mb-3">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold border border-indigo-100 shadow-xs">
+                    <div className="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center font-bold border border-orange-100 shadow-xs">
                       <UploadCloud className="w-6 h-6" />
                     </div>
                     {platform === "mercadolivre" ? (
@@ -325,7 +325,7 @@ export function MarketplaceProductHero({
                 type="button"
                 disabled={Boolean(loadingStep)}
                 onClick={onRunSample}
-                className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs border border-indigo-200/80 transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                className="w-full sm:w-auto py-2.5 px-4 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-700 font-bold text-xs border border-orange-200/80 transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
               >
                 <span>Testar com dados de exemplo</span>
                 <ArrowRight className="w-3.5 h-3.5" />

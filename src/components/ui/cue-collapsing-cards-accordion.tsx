@@ -122,7 +122,7 @@ export function CueCollapsingCardsAccordion({
               className={cn(
                 "relative rounded-2xl md:rounded-3xl border transition-all duration-300 cursor-pointer overflow-hidden",
                 isActive
-                  ? "flex-[4] p-5 sm:p-6 bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20 flex flex-col justify-between"
+                  ? "flex-[4] p-5 sm:p-6 bg-white border-orange-300 shadow-soft-lg ring-1 ring-orange-500/20 flex flex-col justify-between"
                   : "flex-none h-14 md:h-auto md:flex-1 bg-white/80 hover:bg-white border-slate-200/90 shadow-2xs hover:shadow-soft"
               )}
             >
@@ -181,7 +181,7 @@ export function CueCollapsingCardsAccordion({
                     <span className="text-slate-500 font-semibold text-[11px] sm:text-xs">
                       <strong>{card.ordersCount} pedidos</strong> estornados • {card.timeframe}
                     </span>
-                    <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1 shrink-0">
+                    <span className="text-orange-600 font-extrabold text-[11px] flex items-center gap-1 shrink-0">
                       Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
@@ -210,7 +210,7 @@ export function CueCollapsingCardsAccordion({
                       <span className="font-black text-xs text-emerald-600">
                         {card.recoveredAmount}
                       </span>
-                      <span className="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                      <span className="text-[10px] font-extrabold text-orange-700 bg-orange-50 px-2 py-0.5 rounded-full border border-orange-100">
                         Ver
                       </span>
                     </div>
