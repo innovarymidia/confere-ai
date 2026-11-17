@@ -3,7 +3,6 @@ import * as React from "react";
 import {
   AnimatePresence,
   motion,
-  useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -35,12 +34,6 @@ export interface PricingPlanTiltProps {
   onSelect?: (planId: string, billing: "monthly" | "yearly") => void;
   className?: string;
 }
-
-// Cores do ConfereAI harmonizadas com a logo: Azul Marinho (#07152d) e Laranja Vibrante (#f97316)
-const PRIMARY_COLOR = "#07152d";
-const ACCENT_COLOR = "#f97316";
-const GRADIENT = `linear-gradient(135deg, ${PRIMARY_COLOR} 0%, #0c234a 60%, ${ACCENT_COLOR} 100%)`;
-const BADGE_GRADIENT = `linear-gradient(120deg, #ea580c, #f97316)`;
 
 /** Dígitos rolam para cima ou para baixo quando o número muda */
 function Roll({ value, dir }: { value: number; dir: 1 | -1 }) {
@@ -107,9 +100,6 @@ function PlanCard({
     damping: 14,
   });
   const lift = useSpring(0, { stiffness: 200, damping: 16 });
-  const gx = useTransform(mx, (v) => `${v * 100}%`);
-  const gy = useTransform(my, (v) => `${v * 100}%`);
-  const glare = useMotionTemplate`radial-gradient(180px circle at ${gx} ${gy}, rgba(255,255,255,0.45), transparent 60%)`;
   const price = billing === "yearly" ? plan.yearly : plan.monthly;
 
   return (
@@ -140,80 +130,44 @@ function PlanCard({
           transformStyle: "preserve-3d",
         }}
         className={cn(
-          "relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-6 text-slate-900 shadow-soft transition-colors cursor-pointer",
+          "relative flex h-full flex-col overflow-hidden rounded-[6px] border bg-white p-6 text-[#171717] shadow-subtle transition-colors cursor-pointer",
           selected
-            ? "border-transparent ring-2 ring-orange-500 shadow-glow-orange"
+            ? "border-[#171717] ring-1 ring-[#171717]"
             : plan.popular
-            ? "border-orange-300/80 shadow-soft-lg"
-            : "border-slate-200/90"
+              ? "border-[#171717]/40 shadow-subtle"
+              : "border-[#ebebeb]"
         )}
       >
-        {/* Luz de corrida no plano popular e anel constante no selecionado */}
-        {(plan.popular || selected) && (
+        {plan.popular && (
           <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 overflow-hidden rounded-3xl"
+            className="absolute top-3 right-4 z-10 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.071em] px-2 py-0.5 rounded-[4px] bg-[#171717] text-white shadow-subtle"
           >
-            <motion.span
-              className="absolute left-1/2 top-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2"
-              style={{
-                background: `conic-gradient(from 0deg, transparent 0 60%, ${ACCENT_COLOR}, ${PRIMARY_COLOR}, transparent)`,
-                opacity: selected ? 0.95 : 0.5,
-              }}
-              animate={reduce ? undefined : { rotate: 360 }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-            />
-            <span className="absolute inset-[2px] rounded-[22px] bg-white" />
+            <Sparkles className="size-3 text-white/80" aria-hidden /> Mais Escolhido
           </span>
         )}
 
-        {!reduce && (
-          <motion.span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 rounded-3xl mix-blend-soft-light"
-            style={{ background: glare }}
-          />
-        )}
-
-        {plan.popular && (
-          <motion.span
-            style={{ transform: "translateZ(50px)", background: GRADIENT }}
-            animate={reduce ? undefined : { y: [0, -3, 0] }}
-            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-0 right-4 z-10 inline-flex items-center gap-1.5 rounded-b-xl px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-md"
-          >
-            <Sparkles className="size-3.5 fill-white/20" aria-hidden /> Mais Escolhido
-          </motion.span>
-        )}
-
-        <div className="relative z-10" style={{ transform: "translateZ(30px)" }}>
-          <h3 className="text-lg font-extrabold text-slate-900 tracking-tight">
+        <div className="relative z-10">
+          <h3 className="text-base font-medium text-[#171717] tracking-tight">
             {plan.name}
           </h3>
-          <p className="mt-1 text-xs text-slate-500 font-medium">{plan.tagline}</p>
-          <p
-            className="mt-5 flex items-baseline gap-1"
-            style={{ transform: "translateZ(24px)" }}
-          >
-            <span className="text-lg font-bold text-slate-400">{currency}</span>
-            <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900">
+          <p className="mt-1 text-xs text-[#666666] font-normal">{plan.tagline}</p>
+          <p className="mt-4 flex items-baseline gap-1">
+            <span className="font-mono text-xs text-[#666666]">{currency}</span>
+            <span className="font-mono text-3xl sm:text-4xl font-normal tracking-tight text-[#171717]">
               <Roll value={price} dir={dir} />
             </span>
-            <span className="ml-1 text-xs font-semibold text-slate-500">/ mês</span>
+            <span className="ml-1 font-mono text-xs text-[#666666]">/ mês</span>
           </p>
-          <p className="mt-1.5 h-4 text-[11px] font-bold text-slate-400">
+          <p className="mt-1 h-4 font-mono text-[11px] text-[#8f8f8f]">
             {billing === "yearly" && plan.monthly > 0
               ? `Cobrado ${currency}${plan.yearly * 12} ao ano (20% OFF)`
               : billing === "monthly" && plan.monthly > 0
-              ? "Cobrança mensal no Pix/Cartão"
-              : "Sem custo de assinatura"}
+                ? "Cobrança mensal no Pix ou Cartão"
+                : "Sem custo de assinatura"}
           </p>
         </div>
 
-        <ul
-          className="relative z-10 mt-6 flex-1 space-y-2.5 text-xs text-slate-600 font-medium"
-          style={{ transform: "translateZ(14px)" }}
-        >
+        <ul className="relative z-10 mt-6 flex-1 space-y-2.5 text-xs text-[#4d4d4d] font-normal">
           {plan.features.map((f, i) => (
             <motion.li
               key={f}
@@ -223,11 +177,8 @@ function PlanCard({
               viewport={{ once: true }}
               transition={{ delay: 0.15 + i * 0.05 }}
             >
-              <span
-                className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full text-white shadow-xs"
-                style={{ background: GRADIENT }}
-              >
-                <Check className="size-2.5 stroke-[3.5]" aria-hidden />
+              <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#fafafa] border border-[#ebebeb] text-[#171717]">
+                <Check className="size-2.5 stroke-[2.5]" aria-hidden />
               </span>
               <span className="leading-tight">{f}</span>
             </motion.li>
@@ -238,41 +189,31 @@ function PlanCard({
           type="button"
           onClick={onPick}
           aria-pressed={selected}
-          whileTap={reduce ? undefined : { scale: 0.95 }}
-          whileHover={reduce ? undefined : { y: -2 }}
-          style={{ transform: "translateZ(36px)" }}
+          whileTap={reduce ? undefined : { scale: 0.98 }}
           className={cn(
-            "relative mt-6 inline-flex min-h-12 w-full items-center justify-center gap-1.5 overflow-hidden rounded-2xl text-xs font-extrabold uppercase tracking-wider transition-all outline-none cursor-pointer",
+            "relative mt-6 inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-[6px] text-xs font-medium uppercase tracking-wider transition-all outline-none cursor-pointer",
             selected
-              ? "text-white shadow-glow-orange"
-              : "border border-slate-200 bg-slate-50 text-slate-800 hover:bg-slate-100 hover:border-orange-300"
+              ? "bg-[#171717] hover:bg-[#000000] text-white shadow-subtle"
+              : "border border-[#ebebeb] bg-white text-[#171717] hover:bg-[#fafafa] hover:border-[#171717]"
           )}
         >
-          {selected && (
-            <motion.span
-              layoutId="plan-cta"
-              className="absolute inset-0"
-              style={{ background: GRADIENT }}
-              transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            />
-          )}
           <span className="relative z-10 inline-flex items-center gap-1.5">
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
                 key={selected ? "s" : "n"}
                 className="inline-flex items-center gap-1.5"
-                initial={{ opacity: 0, y: 8 }}
+                initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
+                exit={{ opacity: 0, y: -4 }}
                 transition={{ duration: 0.15 }}
               >
                 {selected && (
                   <svg
                     viewBox="0 0 24 24"
-                    className="size-4"
+                    className="size-3.5"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="3"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     aria-hidden
@@ -281,27 +222,16 @@ function PlanCard({
                       d="M5 12.5l4.5 4.5L19 7.5"
                       initial={{ pathLength: 0 }}
                       animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.1, duration: 0.3 }}
+                      transition={{ delay: 0.05, duration: 0.2 }}
                     />
                   </svg>
                 )}
-                {plan.cta ?? "Escolher Plano"}
+                {selected ? "Plano Selecionado" : plan.cta ?? "Escolher Plano"}
               </motion.span>
             </AnimatePresence>
           </span>
         </motion.button>
       </motion.div>
-
-      {selected && !reduce && (
-        <motion.span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 rounded-3xl blur-2xl"
-          style={{ background: GRADIENT }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.25, 0.45, 0.25] }}
-          transition={{ duration: 2.4, repeat: Infinity }}
-        />
-      )}
     </motion.li>
   );
 }
@@ -336,7 +266,7 @@ const DEFAULT_CONFERE_PLANS: Plan[] = [
       "Acompanhe cada valor devolvido ao caixa",
       "Liberação imediata no Pix",
     ],
-    cta: "Assinar Pro Seller",
+    cta: "Liberar Tudo (R$ 67)",
   },
   {
     id: "escala",
@@ -391,10 +321,13 @@ export function PricingPlanTilt({
   return (
     <section aria-label={title} className={cn("relative w-full max-w-5xl mx-auto", className)}>
       <div className="relative text-center max-w-2xl mx-auto">
-        <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+        <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+          Investimento Transparente
+        </span>
+        <h2 className="text-2xl sm:text-4xl font-normal text-[#171717] tracking-[-0.05em] mt-2">
           {title}
         </h2>
-        <p className="mt-2 text-sm text-slate-600 font-medium">{subtitle}</p>
+        <p className="mt-2 text-sm text-[#4d4d4d] font-normal leading-relaxed">{subtitle}</p>
 
         {/* Toggle Mensal / Anual */}
         <div className="mt-6 inline-flex items-center gap-3">
@@ -402,7 +335,7 @@ export function PricingPlanTilt({
             role="radiogroup"
             aria-labelledby={`${uid}-b`}
             onKeyDown={key}
-            className="relative inline-grid grid-cols-2 rounded-full border border-slate-200 bg-white p-1 shadow-xs"
+            className="relative inline-grid grid-cols-2 rounded-full border border-[#ebebeb] bg-white p-1 shadow-subtle-2"
           >
             <span id={`${uid}-b`} className="sr-only">
               Período de cobrança
@@ -416,17 +349,16 @@ export function PricingPlanTilt({
                 tabIndex={billing === o.id ? 0 : -1}
                 onClick={() => choose(o.id)}
                 className={cn(
-                  "relative min-h-10 min-w-24 rounded-full px-4 text-xs font-bold uppercase tracking-wider outline-none transition-colors cursor-pointer",
+                  "relative min-h-9 min-w-24 rounded-full px-4 font-mono text-[11px] uppercase tracking-[0.071em] outline-none transition-colors cursor-pointer",
                   billing === o.id
                     ? "text-white"
-                    : "text-slate-500 hover:text-slate-900"
+                    : "text-[#666666] hover:text-[#171717]"
                 )}
               >
                 {billing === o.id && (
                   <motion.span
                     layoutId="bill-pill"
-                    className="absolute inset-0 rounded-full"
-                    style={{ background: GRADIENT }}
+                    className="absolute inset-0 rounded-full bg-[#171717]"
                     transition={
                       reduce
                         ? { duration: 0 }
@@ -439,21 +371,11 @@ export function PricingPlanTilt({
             ))}
           </div>
 
-          <motion.span
-            animate={
-              reduce
-                ? undefined
-                : billing === "yearly"
-                ? { scale: [1, 1.15, 1], rotate: [0, -4, 0] }
-                : { scale: 1 }
-            }
-            key={billing}
-            transition={{ duration: 0.5 }}
-            className="rounded-full px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-xs"
-            style={{ background: BADGE_GRADIENT }}
+          <span
+            className="rounded-full px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.071em] text-[#297a3a] bg-[#297a3a]/10 border border-[#297a3a]/20"
           >
             Economize 20%
-          </motion.span>
+          </span>
         </div>
       </div>
 

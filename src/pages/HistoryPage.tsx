@@ -142,41 +142,41 @@ export function HistoryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-800 pb-20">
+    <div className="min-h-screen bg-[#fafafa] text-[#171717] pb-20">
       <LiquidGlassNavbar variant="result" isPro={isPro} />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 space-y-6">
         {/* Cabecalho de Boas-Vindas e Dados da Conta */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="bg-white rounded-[6px] p-6 sm:p-8 border border-[#ebebeb] shadow-subtle flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">
+            <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] block mb-1">
               Minha Conta de Vendedor
             </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#171717] tracking-tight">
               Minhas Conferências
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+            <p className="text-xs sm:text-sm text-[#4d4d4d] mt-1 font-normal leading-relaxed">
               Consulte suas conferências de vendas e veja quanto dinheiro você tem para receber de volta.
             </p>
           </div>
 
-          <div className="flex items-center gap-3 self-start md:self-auto flex-wrap">
-            <div className="px-4 py-2 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">
+          <div className="flex items-center gap-2.5 self-start md:self-auto flex-wrap">
+            <div className="px-3 py-1.5 rounded-[4px] bg-[#fafafa] border border-[#ebebeb] text-xs font-mono">
+              <span className="text-[#8f8f8f] block text-[10px] uppercase">
                 Conta Cadastrada
               </span>
-              <span className="font-extrabold text-slate-800">
+              <span className="text-[#171717]">
                 {userEmail || "Acesso Local Demo"}
               </span>
             </div>
 
-            <div className="px-4 py-2 rounded-2xl bg-orange-50 border border-orange-100 text-xs flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-orange-600 shrink-0" />
+            <div className="px-3 py-1.5 rounded-[4px] bg-[#fafafa] border border-[#ebebeb] text-xs font-mono flex items-center gap-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#171717] shrink-0" />
               <div>
-                <span className="text-orange-600 block text-[10px] uppercase font-bold">
+                <span className="text-[#8f8f8f] block text-[10px] uppercase">
                   Status
                 </span>
-                <span className="font-extrabold text-slate-900">
+                <span className="text-[#171717]">
                   {isPro ? "Assinante Pro Ativo" : "Plano Gratuito"}
                 </span>
               </div>
@@ -186,7 +186,7 @@ export function HistoryPage() {
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="p-2.5 rounded-2xl border border-slate-200 text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                className="p-2 rounded-[4px] border border-[#ebebeb] text-[#666666] hover:text-[#171717] hover:border-[#171717] transition cursor-pointer"
                 title="Sair da Conta"
               >
                 <LogOut className="w-4 h-4" />
@@ -197,28 +197,28 @@ export function HistoryPage() {
 
         {/* Listagem das Auditorias */}
         {loading ? (
-          <div className="bg-white rounded-3xl p-12 border border-slate-200/90 shadow-soft flex flex-col items-center justify-center text-center">
-            <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-3" />
-            <p className="text-sm font-extrabold text-slate-800">
-              Carregando relatorios...
+          <div className="bg-white rounded-[6px] p-12 border border-[#ebebeb] shadow-subtle flex flex-col items-center justify-center text-center">
+            <div className="w-8 h-8 border-2 border-[#171717] border-t-transparent rounded-full animate-spin mb-3" />
+            <p className="font-mono text-xs uppercase tracking-[0.071em] text-[#666666]">
+              Carregando relatórios...
             </p>
           </div>
         ) : audits.length === 0 ? (
-          <div className="bg-white rounded-3xl p-10 sm:p-14 border border-slate-200/90 shadow-soft text-center space-y-4">
-            <div className="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold mx-auto border border-indigo-100 shadow-xs">
-              <FileSpreadsheet className="w-7 h-7" />
+          <div className="bg-white rounded-[6px] p-10 sm:p-14 border border-[#ebebeb] shadow-subtle text-center space-y-4">
+            <div className="w-12 h-12 rounded-[6px] bg-[#fafafa] text-[#171717] flex items-center justify-center mx-auto border border-[#ebebeb]">
+              <FileSpreadsheet className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+              <h2 className="text-lg sm:text-xl font-normal text-[#171717] tracking-tight">
                 Nenhuma auditoria realizada ainda
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1 font-medium">
+              <p className="text-xs sm:text-sm text-[#4d4d4d] max-w-md mx-auto mt-1 font-normal leading-relaxed">
                 Envie seu primeiro extrato de repasses do Mercado Livre ou Shopee para descobrir valores cobrados a maior.
               </p>
             </div>
             <Link
               to="/"
-              className="inline-flex items-center gap-2 py-3.5 px-6 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition"
+              className="inline-flex items-center gap-2 py-3 px-6 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-xs uppercase tracking-wider shadow-subtle transition"
             >
               <UploadCloud className="w-4 h-4" />
               <span>Auditar Minha Primeira Planilha</span>
@@ -226,31 +226,27 @@ export function HistoryPage() {
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="flex items-center justify-between px-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <div className="flex items-center justify-between px-1">
+              <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
                 {audits.length} {audits.length === 1 ? "Auditoria Registrada" : "Auditorias Registradas"}
               </span>
               <Link
                 to="/"
-                className="text-xs font-extrabold text-indigo-600 hover:underline flex items-center gap-1"
+                className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#171717] hover:underline flex items-center gap-1"
               >
                 <span>+ Fazer Nova Auditoria</span>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-3.5">
+            <div className="grid grid-cols-1 gap-3">
               {audits.map((item) => (
                 <div
                   key={item.id}
-                  className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-soft hover:border-indigo-200 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="bg-white rounded-[6px] p-5 sm:p-6 border border-[#ebebeb] shadow-subtle hover:border-[#171717] transition flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center p-1.5 shrink-0 border ${
-                        item.platform === "mercadolivre"
-                          ? "bg-amber-50 border-amber-200/80"
-                          : "bg-orange-50 border-orange-200/80"
-                      }`}
+                      className="w-10 h-10 rounded-[4px] flex items-center justify-center p-1 shrink-0 border border-[#ebebeb] bg-[#fafafa]"
                     >
                       {item.platform === "mercadolivre" ? (
                         <MercadoLivreLogo className="w-full h-full" />
@@ -261,52 +257,52 @@ export function HistoryPage() {
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-850 flex items-center gap-1.5">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.071em] px-2 py-0.5 rounded-[4px] bg-[#fafafa] border border-[#ebebeb] text-[#171717] flex items-center gap-1.5">
                           {item.platform === "mercadolivre" ? (
                             <>
-                              <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
+                              <MercadoLivreLogo className="w-3.5 h-3.5 rounded-[2px]" />
                               <span>Mercado Livre</span>
                             </>
                           ) : (
                             <>
-                              <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
+                              <ShopeeLogo className="w-3.5 h-3.5 rounded-[2px]" />
                               <span>Shopee</span>
                             </>
                           )}
                         </span>
-                        <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
+                        <span className="font-mono text-xs text-[#8f8f8f] flex items-center gap-1">
                           <Calendar className="w-3.5 h-3.5" />
                           {formatDate(item.created_at)}
                         </span>
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-xs text-slate-600 font-medium">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 font-mono text-xs text-[#4d4d4d]">
                         <span>
-                          <strong>{item.total_orders_analyzed}</strong> pedidos analisados
+                          <strong className="text-[#171717]">{item.total_orders_analyzed}</strong> pedidos analisados
                         </span>
-                        <span className="w-1 h-1 rounded-full bg-slate-300 hidden sm:inline-block" />
-                        <span className="text-rose-600 font-bold">
+                        <span className="text-[#8f8f8f]">•</span>
+                        <span className="text-[#297a3a]">
                           <strong>{item.total_divergent_orders}</strong> com cobrança a maior
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
+                  <div className="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-[#ebebeb]">
                     <div className="text-left md:text-right">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666] block">
                         Valor a Recuperar
                       </span>
-                      <span className="text-xl sm:text-2xl font-black text-emerald-600">
+                      <span className="font-mono text-xl sm:text-2xl font-normal text-[#297a3a]">
                         +{formatBRL(item.total_recoverable)}
                       </span>
                     </div>
 
                     <Link
                       to={`/resultado/${item.id}`}
-                      className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-xs shrink-0"
+                      className="py-2 px-3.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-subtle shrink-0"
                     >
-                      <span>Ver Dinheiro a Recuperar</span>
+                      <span>Ver Relatório</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>

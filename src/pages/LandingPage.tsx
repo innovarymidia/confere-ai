@@ -67,12 +67,12 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-800">
-      {/* 1. Liquid Glass Navbar (Inspirado no @gughigug/liquid-glass-navbar) */}
+    <div className="min-h-screen bg-[#fafafa] text-[#171717]">
+      {/* 1. Liquid Glass Navbar */}
       <LiquidGlassNavbar onAuditClick={scrollToDropzone} />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 space-y-16 sm:space-y-24">
-        {/* 2. Sneaker-Inspired Product Hero (Inspirado no @kedhareswer/sneaker-product-hero) */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 space-y-20 sm:space-y-28">
+        {/* 2. Marketplace Product Hero */}
         <div ref={dropzoneRef}>
           <MarketplaceProductHero
             platform={platform}
@@ -85,71 +85,77 @@ export function LandingPage() {
         </div>
 
         {/* 3. Os 3 Vazamentos Silenciosos de Lucro */}
-        <section id="vazamentos" className="pt-6">
+        <section id="vazamentos" className="pt-4">
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-[11px] font-black uppercase tracking-widest text-orange-700 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/80">
-              Auditoria Cirúrgica
+            <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+              Auditoria de Precisão
             </span>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+            <h2 className="text-2xl sm:text-4xl font-normal text-[#171717] tracking-[-0.05em] mt-2">
               Onde o lojista perde de 2% a 7% do lucro sem ver?
             </h2>
-            <p className="text-sm text-slate-600 mt-2 font-medium">
+            <p className="text-sm text-[#4d4d4d] mt-2 font-normal leading-relaxed">
               Os sistemas de gestão mostram quanto você faturou, mas nenhum confere se o marketplace descontou a comissão e o frete corretos na hora de pagar.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft">
-              <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold mb-4 border border-amber-200/60">
-                <Package className="w-5 h-5 text-amber-600" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="bg-white rounded-[6px] p-6 border border-[#ebebeb] shadow-subtle flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-[6px] bg-[#fafafa] border border-[#ebebeb] text-[#171717] flex items-center justify-center mb-4">
+                  <Package className="w-4 h-4 text-[#171717]" />
+                </div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+                  Vazamento 01
+                </span>
+                <h3 className="text-base font-medium text-[#171717] mt-2 tracking-tight">
+                  Erro de Peso e Medida no Frete
+                </h3>
+                <p className="text-xs text-[#4d4d4d] mt-2 leading-relaxed font-normal">
+                  Nos centros de triagem e envio, produtos pequenos são pesados com pressa e registrados com peso muito acima do real, cobrando frete de 3 kg num produto de 300g. O ConfereAI cruza com o frete padrão do seu anúncio e identifica quando você pagou a mais.
+                </p>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 bg-amber-100/80 px-2.5 py-0.5 rounded-full">
-                Vazamento 01
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Erro de Peso e Medida no Frete
-              </h3>
-              <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Nos centros de triagem e envio, produtos pequenos são pesados com pressa e registrados com peso muito acima do real, cobrando frete de 3 kg num produto de 300g. O ConfereAI cruza com o frete padrão do seu anúncio e identifica quando você pagou a mais.
-              </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft">
-              <div className="w-10 h-10 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-bold mb-4 border border-slate-800">
-                <Percent className="w-5 h-5 text-orange-400" />
+            <div className="bg-white rounded-[6px] p-6 border border-[#ebebeb] shadow-subtle flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-[6px] bg-[#fafafa] border border-[#ebebeb] text-[#171717] flex items-center justify-center mb-4">
+                  <Percent className="w-4 h-4 text-[#171717]" />
+                </div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+                  Vazamento 02
+                </span>
+                <h3 className="text-base font-medium text-[#171717] mt-2 tracking-tight">
+                  Comissão e Tarifas Fora da Tabela 2026
+                </h3>
+                <p className="text-xs text-[#4d4d4d] mt-2 leading-relaxed font-normal">
+                  Com as mudanças de tabelas na Shopee e no Mercado Livre, pequenas variações no preço de venda fazem a plataforma cobrar comissão acima da alíquota correta ou aplicar tarifa fixa duplicada sem você notar.
+                </p>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-slate-900 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                Vazamento 02
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Comissão e Tarifas Fora da Tabela 2026
-              </h3>
-              <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Com as mudanças de tabelas na Shopee e no Mercado Livre, pequenas variações no preço de venda fazem a plataforma cobrar comissão acima da alíquota correta ou aplicar tarifa fixa duplicada sem você notar.
-              </p>
             </div>
 
-            <div className="bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft">
-              <div className="w-10 h-10 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center font-bold mb-4 border border-rose-200/60">
-                <RotateCcw className="w-5 h-5 text-rose-600" />
+            <div className="bg-white rounded-[6px] p-6 border border-[#ebebeb] shadow-subtle flex flex-col justify-between">
+              <div>
+                <div className="w-9 h-9 rounded-[6px] bg-[#fafafa] border border-[#ebebeb] text-[#171717] flex items-center justify-center mb-4">
+                  <RotateCcw className="w-4 h-4 text-[#171717]" />
+                </div>
+                <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+                  Vazamento 03
+                </span>
+                <h3 className="text-base font-medium text-[#171717] mt-2 tracking-tight">
+                  Devoluções que Deixaram Prejuízo
+                </h3>
+                <p className="text-xs text-[#4d4d4d] mt-2 leading-relaxed font-normal">
+                  Vendas devolvidas por arrependimento do comprador que terminaram com saldo negativo no seu extrato devido à cobrança indevida de frete reverso ou falta de estorno integral da comissão pelo marketplace.
+                </p>
               </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-rose-700 bg-rose-100/80 px-2.5 py-0.5 rounded-full">
-                Vazamento 03
-              </span>
-              <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Devoluções que Deixaram Prejuízo
-              </h3>
-              <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Vendas devolvidas por arrependimento do comprador que terminaram com saldo negativo no seu extrato devido à cobrança indevida de frete reverso ou falta de estorno integral da comissão pelo marketplace.
-              </p>
             </div>
           </div>
         </section>
 
-        {/* 4. Cue Collapsing Cards Accordion (Inspirado no @aloksivastava1025/cue-collapsing-cards-accordion) */}
+        {/* 4. Cue Collapsing Cards Accordion */}
         <CueCollapsingCardsAccordion />
 
-        {/* 5. Tabela de Preços Dinâmica 3D Tilt (PricingPlanTilt) */}
+        {/* 5. Tabela de Preços Dinâmica */}
         <section id="planos">
           <PricingPlanTilt
             title="Escolha o Plano Ideal para a Sua Operação"
@@ -167,18 +173,21 @@ export function LandingPage() {
         </section>
 
         {/* 6. CTA Final de Conversão */}
-        <section className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-soft text-center mb-16">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <section className="bg-white rounded-[6px] p-8 sm:p-12 border border-[#ebebeb] shadow-subtle text-center mb-16">
+          <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+            Diagnóstico Imediato
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-normal text-[#171717] tracking-[-0.05em] mt-2">
             Pronto para recuperar o que é seu por direito?
           </h2>
-          <p className="text-sm text-slate-600 max-w-xl mx-auto mt-2 leading-relaxed font-medium">
+          <p className="text-sm text-[#4d4d4d] max-w-xl mx-auto mt-2 leading-relaxed font-normal">
             O diagnóstico gratuito roda em 10 segundos no seu navegador. Veja o número exato das cobranças a maior e comprove na sua conta antes de pagar qualquer valor.
           </p>
 
           <button
             type="button"
             onClick={scrollToDropzone}
-            className="mt-6 py-3.5 sm:py-4 px-6 sm:px-8 w-full sm:w-auto rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-glow-orange transition transform hover:-translate-y-0.5 cursor-pointer"
+            className="mt-6 py-3 px-8 w-full sm:w-auto rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-sm transition-all cursor-pointer shadow-subtle"
           >
             Auditar Minha Planilha Agora (Grátis)
           </button>
@@ -198,12 +207,12 @@ export function LandingPage() {
       />
 
       {/* Rodapé Corporativo B2B */}
-      <footer className="border-t border-slate-200 py-8 px-4 text-center text-xs text-slate-500">
+      <footer className="border-t border-[#ebebeb] py-10 px-4 text-center text-xs text-[#666666] bg-[#fafafa]">
         <ConfereAiLogo className="h-7 w-auto mx-auto mb-3" />
-        <p className="font-bold text-slate-700">
-          ConfereAI | Auditoria Financeira Independente para Vendedores de E-commerce
+        <p className="font-medium text-[#171717]">
+          ConfereAI: Auditoria Financeira Independente para Vendedores de E-commerce
         </p>
-        <p className="mt-1">
+        <p className="font-mono text-[11px] text-[#8f8f8f] mt-1.5">
           Não possuímos vínculo societário direto com Mercado Livre ou Shopee.
         </p>
       </footer>

@@ -141,44 +141,44 @@ export function CheckoutModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 sm:p-7 max-h-[92vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-white rounded-[6px] shadow-subtle border border-[#ebebeb] p-6 sm:p-7 max-h-[92vh] overflow-y-auto">
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1.5 rounded-full hover:bg-slate-100 transition cursor-pointer"
+          className="absolute top-4 right-4 text-[#666666] hover:text-[#171717] p-1 rounded-[4px] border border-[#ebebeb] hover:border-[#171717] transition cursor-pointer"
           aria-label="Fechar"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {!pixData ? (
           <>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-orange-50 text-orange-700 border border-orange-100 flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-orange-600" />
+              <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#171717]" />
                 Auditoria Oficial ConfereAI
               </span>
             </div>
 
-            <h3 className="text-xl font-black text-slate-900 tracking-tight">
+            <h3 className="text-xl font-normal text-[#171717] tracking-[-0.05em] mt-1">
               {totalOrders
                 ? `Liberar Lista Completa (${totalOrders} Pedidos)`
                 : "Ativar Assinatura ConfereAI"}
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-[#4d4d4d] mt-1 font-normal leading-relaxed">
               Escolha o plano ideal e gere o Pix para liberação imediata da sua conta.
             </p>
 
             {/* Alternador Mensal ou Anual */}
-            <div className="flex items-center justify-between p-1 bg-slate-100 rounded-2xl mt-4 mb-3">
+            <div className="flex items-center justify-between p-1 bg-[#fafafa] border border-[#ebebeb] rounded-full mt-4 mb-3">
               <button
                 type="button"
                 onClick={() => setSelectedBilling("monthly")}
-                className={`flex-1 py-1.5 text-xs font-extrabold rounded-xl transition cursor-pointer text-center ${
+                className={`flex-1 py-1 text-[11px] font-mono uppercase tracking-[0.071em] rounded-full transition cursor-pointer text-center ${
                   selectedBilling === "monthly"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-500 hover:text-slate-800"
+                    ? "bg-[#171717] text-white"
+                    : "text-[#666666] hover:text-[#171717]"
                 }`}
               >
                 Cobrança Mensal
@@ -186,14 +186,14 @@ export function CheckoutModal({
               <button
                 type="button"
                 onClick={() => setSelectedBilling("yearly")}
-                className={`flex-1 py-1.5 text-xs font-extrabold rounded-xl transition cursor-pointer flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-1 text-[11px] font-mono uppercase tracking-[0.071em] rounded-full transition cursor-pointer flex items-center justify-center gap-1.5 ${
                   selectedBilling === "yearly"
-                    ? "bg-white text-slate-900 shadow-xs"
-                    : "text-slate-500 hover:text-slate-800"
+                    ? "bg-[#171717] text-white"
+                    : "text-[#666666] hover:text-[#171717]"
                 }`}
               >
                 <span>Plano Anual</span>
-                <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded-full border border-emerald-200">
+                <span className="text-[10px] text-[#297a3a] bg-[#297a3a]/10 px-1.5 py-0.2 rounded-full border border-[#297a3a]/20">
                   20% OFF
                 </span>
               </button>
@@ -203,64 +203,64 @@ export function CheckoutModal({
             <div className="grid grid-cols-2 gap-2.5 mb-4">
               <div
                 onClick={() => setSelectedPlanId("pro")}
-                className={`p-3 rounded-2xl border-2 transition cursor-pointer text-left relative ${
+                className={`p-3.5 rounded-[6px] border transition cursor-pointer text-left relative ${
                   selectedPlanId === "pro"
-                    ? "border-orange-500 bg-orange-50/40 shadow-xs ring-1 ring-orange-500/30"
-                    : "border-slate-200 bg-slate-50/60 hover:bg-slate-100"
+                    ? "border-[#171717] bg-white ring-1 ring-[#171717] shadow-subtle"
+                    : "border-[#ebebeb] bg-[#fafafa] hover:border-[#171717]/40"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase text-orange-600 block">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666] block">
                     Mais Escolhido
                   </span>
                   {selectedPlanId === "pro" && (
-                    <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                    <Sparkles className="w-3 h-3 text-[#171717]" />
                   )}
                 </div>
-                <h4 className="text-sm font-extrabold text-slate-900 mt-0.5">Pro Seller</h4>
+                <h4 className="text-sm font-medium text-[#171717] mt-0.5">Pro Seller</h4>
                 <div className="mt-1 flex items-baseline gap-0.5">
-                  <span className="text-base font-black text-slate-900">
+                  <span className="font-mono text-base font-normal text-[#171717]">
                     R$ {currentPlanMonthlyEquivalent}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-bold">/mês</span>
+                  <span className="font-mono text-[10px] text-[#666666]">/mês</span>
                 </div>
-                <span className="text-[10px] text-slate-500 block mt-1">
+                <span className="font-mono text-[10px] text-[#8f8f8f] block mt-1">
                   {selectedBilling === "yearly" ? "R$ 648 cobrado ao ano" : "Cobrança mensal"}
                 </span>
               </div>
 
               <div
                 onClick={() => setSelectedPlanId("escala")}
-                className={`p-3 rounded-2xl border-2 transition cursor-pointer text-left relative ${
+                className={`p-3.5 rounded-[6px] border transition cursor-pointer text-left relative ${
                   selectedPlanId === "escala"
-                    ? "border-orange-500 bg-orange-50/40 shadow-xs ring-1 ring-orange-500/30"
-                    : "border-slate-200 bg-slate-50/60 hover:bg-slate-100"
+                    ? "border-[#171717] bg-white ring-1 ring-[#171717] shadow-subtle"
+                    : "border-[#ebebeb] bg-[#fafafa] hover:border-[#171717]/40"
                 }`}
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-black uppercase text-orange-600 block">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666] block">
                     Até 5 Lojas
                   </span>
                   {selectedPlanId === "escala" && (
-                    <Sparkles className="w-3.5 h-3.5 text-orange-600" />
+                    <Sparkles className="w-3 h-3 text-[#171717]" />
                   )}
                 </div>
-                <h4 className="text-sm font-extrabold text-slate-900 mt-0.5">Operação Escala</h4>
+                <h4 className="text-sm font-medium text-[#171717] mt-0.5">Operação Escala</h4>
                 <div className="mt-1 flex items-baseline gap-0.5">
-                  <span className="text-base font-black text-slate-900">
+                  <span className="font-mono text-base font-normal text-[#171717]">
                     R$ {selectedBilling === "yearly" ? 118 : 147}
                   </span>
-                  <span className="text-[10px] text-slate-500 font-bold">/mês</span>
+                  <span className="font-mono text-[10px] text-[#666666]">/mês</span>
                 </div>
-                <span className="text-[10px] text-slate-500 block mt-1">
+                <span className="font-mono text-[10px] text-[#8f8f8f] block mt-1">
                   {selectedBilling === "yearly" ? "R$ 1.416 cobrado ao ano" : "Cobrança mensal"}
                 </span>
               </div>
             </div>
 
-            <form onSubmit={handleGeneratePix} className="space-y-3.5">
+            <form onSubmit={handleGeneratePix} className="space-y-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] mb-1">
                   Nome Completo
                 </label>
                 <input
@@ -269,12 +269,12 @@ export function CheckoutModal({
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Ex: Carlos Eduardo Silva"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500"
+                  className="w-full px-3 py-2 rounded-[6px] border border-[#ebebeb] bg-[#fafafa] text-sm text-[#171717] focus:bg-white focus:border-[#171717] focus:outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] mb-1">
                   Melhor E-mail (seu acesso)
                 </label>
                 <input
@@ -283,13 +283,13 @@ export function CheckoutModal({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="voce@sualoja.com.br"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500"
+                  className="w-full px-3 py-2 rounded-[6px] border border-[#ebebeb] bg-[#fafafa] text-sm text-[#171717] focus:bg-white focus:border-[#171717] focus:outline-none transition-all"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] mb-1">
                     WhatsApp
                   </label>
                   <input
@@ -298,11 +298,11 @@ export function CheckoutModal({
                     value={whatsapp}
                     onChange={(e) => setWhatsapp(e.target.value)}
                     placeholder="(11) 99999-9999"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500"
+                    className="w-full px-3 py-2 rounded-[6px] border border-[#ebebeb] bg-[#fafafa] text-sm text-[#171717] focus:bg-white focus:border-[#171717] focus:outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                  <label className="block font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] mb-1">
                     CPF ou CNPJ
                   </label>
                   <input
@@ -311,13 +311,13 @@ export function CheckoutModal({
                     value={cpfCnpj}
                     onChange={(e) => setCpfCnpj(e.target.value)}
                     placeholder="000.000.000-00"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-orange-500"
+                    className="w-full px-3 py-2 rounded-[6px] border border-[#ebebeb] bg-[#fafafa] text-sm text-[#171717] focus:bg-white focus:border-[#171717] focus:outline-none transition-all"
                   />
                 </div>
               </div>
 
               {checkoutError && (
-                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
+                <div className="p-3 rounded-[6px] bg-red-50 border border-red-200 text-xs font-normal text-red-700">
                   {checkoutError}
                 </div>
               )}
@@ -325,7 +325,7 @@ export function CheckoutModal({
               <button
                 type="submit"
                 disabled={checkoutLoading}
-                className="w-full py-3.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-sm shadow-glow-orange transition cursor-pointer flex items-center justify-center gap-2 mt-2"
+                className="w-full py-3 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-sm transition-all cursor-pointer flex items-center justify-center gap-2 mt-2 shadow-subtle"
               >
                 {checkoutLoading ? (
                   "Gerando Pix..."
@@ -343,18 +343,18 @@ export function CheckoutModal({
           </>
         ) : (
           <div className="text-center py-2">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full animate-pulse">
+            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#666666] bg-[#fafafa] border border-[#ebebeb] px-3 py-1 rounded-full">
               ● Aguardando pagamento Pix...
             </span>
-            <h3 className="text-lg font-extrabold text-slate-900 mt-3">
+            <h3 className="text-lg font-normal text-[#171717] tracking-tight mt-3">
               Escaneie o QR Code no seu banco
             </h3>
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-[#4d4d4d] mt-1 font-normal">
               Assim que você pagar, o acesso é liberado em segundos.
             </p>
 
             <div className="my-4 flex justify-center">
-              <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
+              <div className="p-3 rounded-[6px] bg-white border border-[#ebebeb] shadow-subtle-2">
                 <img
                   src={
                     pixData.qrCodeBase64.startsWith("data:")
@@ -374,11 +374,11 @@ export function CheckoutModal({
                 setPixCopied(true);
                 setTimeout(() => setPixCopied(false), 3000);
               }}
-              className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer shadow-subtle"
             >
               {pixCopied ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-400" />
+                  <Check className="w-4 h-4 text-[#297a3a]" />
                   <span>Código Copiado!</span>
                 </>
               ) : (

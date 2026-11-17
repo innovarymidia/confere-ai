@@ -276,10 +276,10 @@ export function AuditResultPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="min-h-screen flex items-center justify-center bg-[#fafafa]">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-extrabold text-slate-800">
+          <div className="w-8 h-8 border-2 border-[#171717] border-t-transparent rounded-full animate-spin" />
+          <p className="font-mono text-xs uppercase tracking-[0.071em] text-[#666666]">
             Calculando divergências financeiras...
           </p>
         </div>
@@ -289,11 +289,11 @@ export function AuditResultPage() {
 
   if (!audit) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6 text-center">
-        <p className="text-slate-800 font-bold mb-4">Auditoria não encontrada.</p>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#fafafa] p-6 text-center">
+        <p className="font-medium text-[#171717] mb-4">Auditoria não encontrada.</p>
         <Link
           to="/"
-          className="px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+          className="px-5 py-2.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-xs uppercase tracking-wider shadow-subtle"
         >
           Fazer Nova Auditoria
         </Link>
@@ -306,22 +306,22 @@ export function AuditResultPage() {
     : [];
 
   return (
-    <div className="min-h-screen bg-white text-slate-800 pb-20">
+    <div className="min-h-screen bg-[#fafafa] text-[#171717] pb-20">
       <LiquidGlassNavbar variant="result" platform={audit.platform} isPro={isPro} />
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-24 md:pb-10 space-y-6">
         {/* Banner de Desbloqueio ao Vivo pós-Pix */}
         {justUnlockedBanner && (
-          <div className="p-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-between shadow-soft">
+          <div className="p-3.5 rounded-[6px] bg-[#171717] text-white font-normal text-xs flex items-center justify-between shadow-subtle">
             <span className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#297a3a] shrink-0" />
               <span>
                 Pagamento confirmado! Todos os {audit.total_divergent_orders} pedidos e textos prontos para pedir o estorno no suporte foram liberados.
               </span>
             </span>
             <button
               onClick={() => setJustUnlockedBanner(false)}
-              className="text-xs underline ml-4 cursor-pointer font-extrabold"
+              className="font-mono text-[11px] underline ml-4 cursor-pointer text-white/80 hover:text-white"
             >
               Fechar
             </button>
@@ -334,44 +334,44 @@ export function AuditResultPage() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
                 Relatório de Valores a Recuperar
               </span>
-              <span className="text-xs font-bold text-slate-300">/</span>
-              <div className="flex items-center gap-1.5 font-extrabold text-slate-800 text-xs">
+              <span className="font-mono text-xs text-[#8f8f8f]">/</span>
+              <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.071em] text-[#171717]">
                 {audit.platform === "mercadolivre" ? (
                   <>
-                    <MercadoLivreLogo className="w-4 h-4 rounded-xs" />
+                    <MercadoLivreLogo className="w-3.5 h-3.5 rounded-[2px]" />
                     <span>Mercado Livre</span>
                   </>
                 ) : (
                   <>
-                    <ShopeeLogo className="w-4 h-4 rounded-xs" />
+                    <ShopeeLogo className="w-3.5 h-3.5 rounded-[2px]" />
                     <span>Shopee</span>
                   </>
                 )}
               </div>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            <h1 className="text-2xl sm:text-3xl font-normal text-[#171717] tracking-[-0.05em] mt-1">
               Valores Cobrados a Mais nas Suas Vendas
             </h1>
-            <p className="text-sm text-slate-600 mt-1">
-              Conferimos <strong>{audit.total_orders_analyzed} vendas</strong> da sua loja e encontramos{" "}
-              <strong className="text-rose-600">{audit.total_divergent_orders} pedidos</strong> onde o marketplace cobrou mais do que deveria.
+            <p className="text-sm text-[#4d4d4d] mt-1 font-normal leading-relaxed">
+              Conferimos <strong className="text-[#171717]">{audit.total_orders_analyzed} vendas</strong> da sua loja e encontramos{" "}
+              <strong className="text-[#171717]">{audit.total_divergent_orders} pedidos</strong> onde o marketplace cobrou mais do que deveria.
             </p>
           </div>
 
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs uppercase tracking-wider transition shrink-0"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] bg-white border border-[#ebebeb] text-[#171717] hover:bg-[#fafafa] font-mono text-[11px] uppercase tracking-[0.071em] transition shadow-subtle-2 shrink-0"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Outra Planilha</span>
           </Link>
         </div>
 
         {/* =========================================================================
-            BENTO GRID ANALYTICS (Inspirado no @romanvasnev/analytics-bento)
+            BENTO GRID ANALYTICS
             ========================================================================= */}
         <AnalyticsBento
           totalRecoverable={audit.total_recoverable}
@@ -386,15 +386,15 @@ export function AuditResultPage() {
         {/* =========================================================================
             TABELA DE PEDIDOS DIVERGENTES (Amostra Gratuita + Paywall)
             ========================================================================= */}
-        <section className="bg-white rounded-3xl border border-slate-200/80 shadow-soft overflow-hidden">
-          <div className="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <section className="bg-white rounded-[6px] border border-[#ebebeb] shadow-subtle overflow-hidden">
+          <div className="px-5 py-4 border-b border-[#ebebeb] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <h2 className="text-lg font-extrabold text-slate-900">
+              <h2 className="text-base font-medium text-[#171717] tracking-tight">
                 {isPro
                   ? `Lista Completa dos ${items.length} Pedidos com Cobrança a Mais`
                   : `Exemplo de Comprovação (2 de ${audit.total_divergent_orders} pedidos encontrados)`}
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-[#4d4d4d] mt-0.5 font-normal">
                 {isPro
                   ? "Copie os textos de contestação e envie no chat de suporte do marketplace para receber o estorno."
                   : "Abra esses 2 pedidos no painel do marketplace para conferir você mesmo a cobrança a maior antes de liberar os demais."}
@@ -407,7 +407,7 @@ export function AuditResultPage() {
                 <button
                   type="button"
                   onClick={handleExportSpreadsheet}
-                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-xs cursor-pointer"
+                  className="px-3 py-1.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-[11px] uppercase tracking-[0.071em] transition flex items-center gap-1.5 shadow-subtle cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Baixar Planilha (.xlsx)</span>
@@ -415,7 +415,7 @@ export function AuditResultPage() {
               )}
 
               {/* Filtros em Pílulas */}
-              <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200 overflow-x-auto max-w-full">
+              <div className="flex items-center gap-1 p-0.5 bg-[#fafafa] rounded-full border border-[#ebebeb] overflow-x-auto max-w-full">
                 {(
                   [
                     { id: "all", label: "Todos" },
@@ -428,10 +428,10 @@ export function AuditResultPage() {
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveFilter(tab.id)}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer shrink-0 ${
+                    className={`px-3 py-0.5 rounded-full font-mono text-[11px] uppercase tracking-[0.071em] transition cursor-pointer shrink-0 ${
                       activeFilter === tab.id
-                        ? "bg-slate-900 text-white shadow-xs"
-                        : "text-slate-500 hover:text-slate-800"
+                        ? "bg-[#171717] text-white shadow-subtle-2"
+                        : "text-[#666666] hover:text-[#171717]"
                     }`}
                   >
                     {tab.label}
@@ -442,64 +442,64 @@ export function AuditResultPage() {
           </div>
 
           {/* Linhas da Tabela */}
-          <div className="divide-y divide-slate-100">
+          <div className="divide-y divide-[#ebebeb]">
             {filteredItems.map((item) => {
               const badge = ERROR_BADGE[item.error_type];
 
               return (
                 <div
                   key={item.id}
-                  className="p-4 sm:p-5 hover:bg-slate-50/70 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="p-4 sm:p-5 hover:bg-[#fafafa] transition flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                   {/* Identificação do Pedido */}
                   <div className="flex items-start gap-3">
-                    <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-7 h-7 rounded-[4px] bg-[#fafafa] border border-[#ebebeb] text-[#171717] font-mono text-xs flex items-center justify-center shrink-0 mt-0.5">
                       #{item.row_rank}
                     </span>
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono text-sm font-extrabold text-slate-900">
+                        <span className="font-mono text-sm font-medium text-[#171717]">
                           #{item.order_id}
                         </span>
                         <span
-                          className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badge.badgeClass}`}
+                          className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.071em] px-2 py-0.5 rounded-[4px] border border-[#ebebeb] bg-[#fafafa] text-[#171717]"
                         >
                           {badge.icon}
                           {badge.label}
                         </span>
                       </div>
-                      <span className="text-xs text-slate-500 font-medium block mt-0.5">
-                        SKU: <strong className="text-slate-700">{item.sku}</strong>
+                      <span className="font-mono text-xs text-[#666666] block mt-0.5">
+                        SKU: <strong className="text-[#171717]">{item.sku}</strong>
                       </span>
                     </div>
                   </div>
 
                   {/* Comparativo de Tarifas */}
-                  <div className="flex items-center justify-between sm:justify-start sm:gap-6 text-xs w-full md:w-auto py-2.5 md:py-0 border-y md:border-y-0 border-slate-100">
+                  <div className="flex items-center justify-between sm:justify-start sm:gap-6 text-xs w-full md:w-auto py-2.5 md:py-0 border-y md:border-y-0 border-[#ebebeb]">
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666] block">
                         Esperado
                       </span>
-                      <span className="font-semibold text-slate-600">
+                      <span className="font-mono text-xs text-[#4d4d4d]">
                         {formatBRL(item.expected_amount)}
                       </span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666] block">
                         Cobrado
                       </span>
-                      <span className="font-semibold text-slate-600">
+                      <span className="font-mono text-xs text-[#4d4d4d]">
                         {formatBRL(item.charged_amount)}
                       </span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] uppercase font-bold text-emerald-600 block">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#297a3a] block">
                         A Recuperar
                       </span>
-                      <span className="text-base font-black text-emerald-600">
+                      <span className="font-mono text-base font-medium text-[#297a3a]">
                         +{formatBRL(item.recoverable_amount)}
                       </span>
                     </div>
@@ -510,11 +510,11 @@ export function AuditResultPage() {
                     <button
                       type="button"
                       onClick={() => handleCopyDispute(item)}
-                      className="w-full md:w-auto justify-center px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      className="w-full md:w-auto justify-center px-3 py-1.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-xs transition flex items-center gap-1.5 cursor-pointer shadow-subtle"
                     >
                       {copiedRowId === item.id ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <Check className="w-3.5 h-3.5 text-[#297a3a]" />
                           <span>Texto Copiado!</span>
                         </>
                       ) : (
@@ -526,13 +526,13 @@ export function AuditResultPage() {
                     </button>
 
                     {isPro && (
-                      <div className="flex items-center gap-3 pl-2 text-xs font-semibold text-slate-600 border-l border-slate-200">
+                      <div className="flex items-center gap-3 pl-2 font-mono text-[11px] text-[#666666] border-l border-[#ebebeb]">
                         <label className="inline-flex items-center gap-1 cursor-pointer">
                           <input
                             type="checkbox"
                             checked={item.is_contested}
                             onChange={() => handleToggleStatus(item, "is_contested")}
-                            className="rounded text-indigo-600"
+                            className="rounded-[2px] text-[#171717]"
                           />
                           <span>Aberto</span>
                         </label>
@@ -541,7 +541,7 @@ export function AuditResultPage() {
                             type="checkbox"
                             checked={item.is_refunded}
                             onChange={() => handleToggleStatus(item, "is_refunded")}
-                            className="rounded text-emerald-600"
+                            className="rounded-[2px] text-[#297a3a]"
                           />
                           <span>Reembolsado</span>
                         </label>
@@ -557,29 +557,29 @@ export function AuditResultPage() {
               SEÇÃO BORRADA + PAYWALL (Trava RLS Anti-Burla)
               ========================================================================= */}
           {!isPro && blurredAmounts.length > 0 && (
-            <div className="relative border-t border-slate-100">
+            <div className="relative border-t border-[#ebebeb]">
               {/* Linhas borradas usando apenas os valores R$ do array blurred_preview_amounts */}
-              <div className="divide-y divide-slate-100 select-none pointer-events-none filter blur-xs opacity-50">
+              <div className="divide-y divide-[#ebebeb] select-none pointer-events-none filter blur-xs opacity-40">
                 {blurredAmounts.slice(0, 7).map((amount, idx) => (
                   <div
                     key={idx}
-                    className="p-5 flex items-center justify-between text-xs"
+                    className="p-4 sm:p-5 flex items-center justify-between text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-400 font-bold flex items-center justify-center">
+                      <span className="w-7 h-7 rounded-[4px] bg-[#fafafa] border border-[#ebebeb] text-[#8f8f8f] font-mono text-xs flex items-center justify-center">
                         #{idx + 3}
                       </span>
                       <div>
-                        <div className="font-mono text-sm font-bold text-slate-800">
+                        <div className="font-mono text-sm font-medium text-[#171717]">
                           #2000094827{idx}
                         </div>
-                        <div className="text-slate-400">SKU-OCULTO-{idx + 3}</div>
+                        <div className="font-mono text-[11px] text-[#8f8f8f]">SKU-OCULTO-{idx + 3}</div>
                       </div>
                     </div>
-                    <div className="text-base font-black text-emerald-600">
+                    <div className="font-mono text-base font-medium text-[#297a3a]">
                       +{formatBRL(amount)}
                     </div>
-                    <div className="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-600 font-bold text-xs">
+                    <div className="px-3 py-1.5 rounded-[6px] bg-[#fafafa] border border-[#ebebeb] text-[#8f8f8f] font-mono text-xs">
                       Copiar Contestação
                     </div>
                   </div>
@@ -588,27 +588,27 @@ export function AuditResultPage() {
 
               {/* Card de Conversão sobre o Blur */}
               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-white/70 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 mb-2">
-                  <Lock className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.071em] px-3 py-0.5 rounded-full bg-[#fafafa] text-[#171717] border border-[#ebebeb] mb-2">
+                  <Lock className="w-3.5 h-3.5 text-[#171717]" />
                   +{blurredAmounts.length} pedidos da sua lista aguardando liberação do estorno
                 </span>
 
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight max-w-lg">
+                <h3 className="text-2xl sm:text-3xl font-normal text-[#171717] tracking-[-0.05em] max-w-lg">
                   Receba esses {formatBRL(audit.total_recoverable)} de volta no seu caixa
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 max-w-md mt-2 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#4d4d4d] max-w-md mt-2 leading-relaxed font-normal">
                   Desbloqueie o número de todos os {audit.total_divergent_orders} pedidos, os produtos afetados e o texto pronto de contestação para pedir o estorno imediato no suporte.
                 </p>
 
                 <button
                   type="button"
                   onClick={() => setIsCheckoutOpen(true)}
-                  className="mt-6 py-3.5 sm:py-4 px-5 sm:px-8 w-full sm:w-auto rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-glow-orange transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+                  className="mt-6 py-3 px-8 w-full sm:w-auto rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-sm transition-all shadow-subtle flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Desbloquear Relatório Completo ({audit.total_divergent_orders} Pedidos)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-xs text-slate-400 mt-2.5">
+                <p className="font-mono text-[11px] text-[#8f8f8f] mt-2">
                   Liberação automática em segundos via Pix, cancele quando quiser com 1 clique
                 </p>
               </div>
@@ -639,13 +639,13 @@ export function AuditResultPage() {
       {!isPro && !isCheckoutOpen && audit && (
         <aside
           aria-label="Acao de desbloqueio mobile"
-          className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 p-3.5 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3"
+          className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-[#ebebeb] p-3 shadow-subtle-2 flex items-center justify-between gap-3"
         >
           <div className="flex flex-col">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <span className="font-mono text-[10px] uppercase tracking-[0.071em] text-[#666666]">
               Total a Recuperar
             </span>
-            <span className="text-lg font-black text-emerald-600 leading-tight">
+            <span className="font-mono font-medium text-base text-[#297a3a] leading-tight">
               +{formatBRL(audit.total_recoverable)}
             </span>
           </div>
@@ -653,7 +653,7 @@ export function AuditResultPage() {
           <button
             type="button"
             onClick={() => setIsCheckoutOpen(true)}
-            className="py-2.5 px-5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs uppercase tracking-wider shadow-glow-orange transition flex items-center gap-1.5 cursor-pointer shrink-0"
+            className="py-2 px-4 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-mono text-xs uppercase tracking-wider transition shadow-subtle flex items-center gap-1.5 cursor-pointer shrink-0"
           >
             <span>Liberar Relatório Completo</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -662,9 +662,9 @@ export function AuditResultPage() {
       )}
 
       {/* Rodapé Corporativo B2B */}
-      <footer className="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+      <footer className="mt-12 border-t border-[#ebebeb] py-8 text-center font-mono text-[11px] text-[#8f8f8f] bg-[#fafafa]">
         <ConfereAiLogo className="h-7 w-auto mx-auto mb-2 opacity-90" />
-        ConfereAI | Auditoria Financeira de Repasses para E-commerce
+        ConfereAI: Auditoria Financeira de Repasses para E-commerce
       </footer>
     </div>
   );

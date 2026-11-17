@@ -1,47 +1,73 @@
 @import "tailwindcss";
 
+@theme {
+  /* Cores Vercel / DESIGN.md */
+  --color-paper-white: #fafafa;
+  --color-pure-white: #ffffff;
+  --color-hairline: #ebebeb;
+  --color-ash: #c9c9c9;
+  --color-smoke: #a8a8a8;
+  --color-graphite: #8f8f8f;
+  --color-slate: #7d7d7d;
+  --color-stone: #666666;
+  --color-charcoal: #4d4d4d;
+  --color-obsidian: #171717;
+  --color-carbon: #000000;
+  --color-terminal-green: #297a3a;
+  --color-confere-navy: #07152d;
+  --color-confere-orange: #f97316;
+
+  /* Tipografia */
+  --font-sans: 'Geist', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Raios de Borda do DESIGN.md (6px para cards e botões, full para pills) */
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-full: 9999px;
+}
+
 @layer base {
   :root {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans);
+    --font-geist-sans: var(--font-sans);
+    --font-geist-mono: var(--font-mono);
   }
 
   body {
-    background-color: #FFFFFF;
-    color: #0F172A;
+    background-color: #fafafa;
+    color: #171717;
     overflow-x: hidden;
   }
 }
 
+/* Bordas hairline e elevações do DESIGN.md */
+.shadow-subtle {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 0 0 1px #ebebeb;
+}
+
+.shadow-subtle-2 {
+  box-shadow: 0 0 0 1px #ebebeb;
+}
+
+.border-hairline {
+  border: 1px solid #ebebeb;
+}
+
 .shadow-soft {
-  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.05), 0 2px 8px -2px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 0 0 1px #ebebeb, 0 4px 12px -2px rgba(0, 0, 0, 0.03);
 }
 
 .shadow-soft-lg {
-  box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 0 0 1px #ebebeb, 0 12px 24px -4px rgba(0, 0, 0, 0.05);
 }
 
 .shadow-glow-orange {
-  box-shadow: 0 10px 25px -4px rgba(249, 115, 22, 0.32);
-}
-
-.shadow-glow-navy {
-  box-shadow: 0 10px 25px -4px rgba(7, 21, 45, 0.35);
-}
-
-.shadow-glow-violet {
-  box-shadow: 0 10px 25px -4px rgba(249, 115, 22, 0.32);
-}
-
-.shadow-glow-blue {
-  box-shadow: 0 10px 25px -4px rgba(7, 21, 45, 0.3);
+  box-shadow: 0 4px 14px -2px rgba(249, 115, 22, 0.35);
 }
 
 .bg-glass {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-.bg-radial-card {
-  background: radial-gradient(circle at 10% 20%, rgba(255, 247, 237, 0.6) 0%, rgba(255, 255, 255, 1) 80%);
+  background: rgba(250, 250, 250, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
