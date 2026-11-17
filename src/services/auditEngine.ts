@@ -478,3 +478,56 @@ export async function runMarketplaceAuditAndSave(
     totalRecoverable: summary.totalRecoverable,
   };
 }
+
+
+/**
+ * Gera um arquivo CSV realista em memória para demonstração instantânea ou gravação de anúncio
+ */
+export function buildSampleCsvFile(platform: MarketplacePlatform): File {
+  if (platform === "mercadolivre") {
+    const rows = [
+      "Relatório de Liberações Financeiras - Mercado Livre",
+      "Período: Últimos 30 dias",
+      "",
+      "N.º de venda;SKU;Estado;Receita por produtos (BRL);Tarifa de venda e impostos (BRL);Tarifas de envio (BRL);Total (BRL)",
+      "200000918401;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-19,90;83,21",
+      "200000918402;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-19,90;83,21",
+      "200000918403;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-20,50;82,61",
+      "200000918404;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-54,90;48,21",
+      "200000918405;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-48,90;54,21",
+      "200000918406;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-23,45;135,31",
+      "200000918407;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-23,45;135,31",
+      "200000918408;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-62,80;95,96",
+      "200000918409;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-45,36;-23,45;120,19",
+      "200000918410;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-18,90;58,41",
+      "200000918411;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-18,90;58,41",
+      "200000918412;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-41,20;36,11",
+      "200000918413;GARRAFA-TERMICA-1L;Entregue;89,90;-21,58;-18,90;49,42",
+      "200000918414;KIT-ORGANIZADOR-3P;Devolvido;0,00;0,00;-24,90;-24,90",
+      "200000918415;SUPORTE-ARTICULADO-PRO;Cancelado;0,00;-15,00;-19,90;-34,90",
+    ];
+    return new File([rows.join("\n")], "exemplo-repasses-mercadolivre-2026.csv", {
+      type: "text/csv;charset=utf-8;",
+    });
+  }
+
+  const shopeeRows = [
+    "Relatório de Renda do Vendedor - Shopee Brasil",
+    "",
+    "ID do pedido;Número de referência SKU;Status do pedido;Preço original;Taxa de comissão;Taxa de envio paga pelo vendedor;Valor total liberado",
+    "261108A9X101;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-14,00;80,51",
+    "261108A9X102;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-14,00;80,51",
+    "261108A9X103;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-39,50;55,01",
+    "261108A9X104;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-44,00;50,51",
+    "261108A9X105;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-18,50;110,41",
+    "261108A9X106;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-18,50;110,41",
+    "261108A9X107;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-52,90;76,01",
+    "261108A9X108;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-34,48;-18,50;96,92",
+    "261108A9X109;LUMINARIA-LED-MESA;Devolvido / Reembolsado;0,00;-15,00;-14,00;-29,00",
+    "261108A9X110;MOCHILA-IMPERMEAVEL-30L;Devolvido / Reembolsado;0,00;-15,00;-18,50;-33,50",
+  ];
+
+  return new File([shopeeRows.join("\n")], "exemplo-renda-shopee-2026.csv", {
+    type: "text/csv;charset=utf-8;",
+  });
+}

@@ -6,8 +6,8 @@ import {
   analyzeOrdersForDivergences,
   parseMarketplaceFile,
   type NormalizedOrderRow,
+  buildSampleCsvFile,
 } from "./auditEngine";
-import { buildSampleCsvFile } from "../pages/LandingPage";
 
 describe("auditEngine: parseBRL", () => {
   it("converts Brazilian currency strings to numbers", () => {

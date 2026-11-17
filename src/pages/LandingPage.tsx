@@ -1,25 +1,44 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  Sparkles,
+  UploadCloud,
+  ChevronRight,
+  ShieldCheck,
+  TrendingUp,
+  FileSpreadsheet,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowRight,
+  Zap,
+} from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import {
   runMarketplaceAuditAndSave,
+  buildSampleCsvFile,
   type MarketplacePlatform,
 } from "../services/auditEngine";
+import { AppHeader } from "../components/AppHeader";
+import { BottomNav } from "../components/BottomNav";
+import { DonutProgress } from "../components/DonutProgress";
+import { ZenithCard } from "../components/ZenithCard";
+import { CrystalStreak } from "../components/CrystalStreak";
+import { MissionRoadmap } from "../components/MissionRoadmap";
 
 const PLATFORM_GUIDES: Record<
   MarketplacePlatform,
   {
     label: string;
-    accentBg: string;
-    accentText: string;
+    badge: string;
+    accentClass: string;
     steps: string[];
     sampleFileName: string;
   }
 > = {
   mercadolivre: {
     label: "Mercado Livre",
-    accentBg: "bg-yellow-400 hover:bg-yellow-300 border-yellow-500",
-    accentText: "text-slate-900",
+    badge: "Tarifas 2026 Ativas",
+    accentClass: "bg-amber-400 text-slate-900 border-amber-500",
     steps: [
       "Acesse seu painel do Mercado Livre em Relatórios > Faturamento.",
       "Clique em Detalhes de liberações (ou Relatório de Vendas) e baixe em CSV ou XLSX.",
@@ -28,8 +47,8 @@ const PLATFORM_GUIDES: Record<
   },
   shopee: {
     label: "Shopee",
-    accentBg: "bg-orange-500 hover:bg-orange-600 border-orange-600",
-    accentText: "text-white",
+    badge: "Programa Frete 2026",
+    accentClass: "bg-orange-500 text-white border-orange-600",
     steps: [
       "Acesse a Central do Vendedor Shopee em Finanças > Minha Renda.",
       "Selecione o período dos últimos 30 ou 60 dias e clique em Exportar Relatório.",
@@ -37,58 +56,6 @@ const PLATFORM_GUIDES: Record<
     sampleFileName: "exemplo-renda-shopee-2026.csv",
   },
 };
-
-/**
- * Gera um arquivo CSV realista em memória para demonstração instantânea ou gravação de anúncio
- */
-export function buildSampleCsvFile(platform: MarketplacePlatform): File {
-  if (platform === "mercadolivre") {
-    const rows = [
-      "Relatório de Liberações Financeiras - Mercado Livre",
-      "Período: Últimos 30 dias",
-      "",
-      "N.º de venda;SKU;Estado;Receita por produtos (BRL);Tarifa de venda e impostos (BRL);Tarifas de envio (BRL);Total (BRL)",
-      "200000918401;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-19,90;83,21",
-      "200000918402;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-19,90;83,21",
-      "200000918403;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-20,50;82,61",
-      "200000918404;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-54,90;48,21",
-      "200000918405;KIT-ORGANIZADOR-3P;Entregue;119,90;-16,79;-48,90;54,21",
-      "200000918406;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-23,45;135,31",
-      "200000918407;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-23,45;135,31",
-      "200000918408;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-30,24;-62,80;95,96",
-      "200000918409;SUPORTE-ARTICULADO-PRO;Entregue;189,00;-45,36;-23,45;120,19",
-      "200000918410;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-18,90;58,41",
-      "200000918411;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-18,90;58,41",
-      "200000918412;GARRAFA-TERMICA-1L;Entregue;89,90;-12,59;-41,20;36,11",
-      "200000918413;GARRAFA-TERMICA-1L;Entregue;89,90;-21,58;-18,90;49,42",
-      "200000918414;KIT-ORGANIZADOR-3P;Devolvido;0,00;0,00;-24,90;-24,90",
-      "200000918415;SUPORTE-ARTICULADO-PRO;Cancelado;0,00;-15,00;-19,90;-34,90",
-    ];
-    return new File([rows.join("\n")], PLATFORM_GUIDES.mercadolivre.sampleFileName, {
-      type: "text/csv;charset=utf-8;",
-    });
-  }
-
-  const shopeeRows = [
-    "Relatório de Renda do Vendedor - Shopee Brasil",
-    "",
-    "ID do pedido;Número de referência SKU;Status do pedido;Preço original;Taxa de comissão;Taxa de envio paga pelo vendedor;Valor total liberado",
-    "261108A9X101;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-14,00;80,51",
-    "261108A9X102;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-14,00;80,51",
-    "261108A9X103;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-39,50;55,01",
-    "261108A9X104;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-44,00;50,51",
-    "261108A9X105;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-18,50;110,41",
-    "261108A9X106;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-18,50;110,41",
-    "261108A9X107;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-20,99;-52,90;76,01",
-    "261108A9X108;MOCHILA-IMPERMEAVEL-30L;Concluído;149,90;-34,48;-18,50;96,92",
-    "261108A9X109;LUMINARIA-LED-MESA;Devolvido / Reembolsado;0,00;-15,00;-14,00;-29,00",
-    "261108A9X110;MOCHILA-IMPERMEAVEL-30L;Devolvido / Reembolsado;0,00;-15,00;-18,50;-33,50",
-  ];
-
-  return new File([shopeeRows.join("\n")], PLATFORM_GUIDES.shopee.sampleFileName, {
-    type: "text/csv;charset=utf-8;",
-  });
-}
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -101,15 +68,15 @@ export function LandingPage() {
 
   const processFile = async (file: File) => {
     setErrorMsg(null);
-    setLoadingStep("Lendo linhas e identificando colunas da planilha...");
+    setLoadingStep("Lendo linhas e mapeando colunas financeiras...");
 
     try {
       const timer1 = setTimeout(() => {
-        setLoadingStep("Agrupando custos de envio e cubagem por SKU...");
+        setLoadingStep("Cruzando cubagem histórica e frete SKU por SKU...");
       }, 450);
       const timer2 = setTimeout(() => {
-        setLoadingStep("Calculando divergências de tarifas e devoluções...");
-      }, 950);
+        setLoadingStep("Detectando tarifas fora da tabela e devoluções...");
+      }, 900);
 
       const result = await runMarketplaceAuditAndSave(file, platform, supabase);
 
@@ -121,7 +88,7 @@ export function LandingPage() {
       setErrorMsg(
         err instanceof Error
           ? err.message
-          : "Não foi possível ler esta planilha. Verifique o formato CSV ou XLSX."
+          : "Não foi possível processar a planilha. Verifique o formato CSV ou XLSX."
       );
     }
   };
@@ -154,102 +121,279 @@ export function LandingPage() {
   const currentGuide = PLATFORM_GUIDES[platform];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-emerald-500 selection:text-white">
-      {/* Barra Superior Minimalista */}
-      <header className="border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xs sticky top-0 z-30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-black text-slate-950 text-base">
-              R$
-            </div>
-            <span className="font-extrabold tracking-tight text-white text-lg">
-              AuditaSeller
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={scrollToDropzone}
-            className="text-xs sm:text-sm font-bold px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition cursor-pointer"
+    <div className="min-h-screen bg-[#F4F5FB] text-slate-800 pb-28">
+      {/* Top Header Neumorphic Bar */}
+      <AppHeader
+        title="CONFERE AI"
+        badge="BLINDAGEM 2026"
+        onOpenSettings={scrollToDropzone}
+      />
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+        {/* =========================================================================
+            SEÇÃO 1: GRID PRINCIPAL (Inspirado nos cards superiores da imagem)
+            ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Card Esquerda: Perfil / Identidade & Navegação Rápida (Col 4) */}
+          <div
+            id="profile-section"
+            className="lg:col-span-4 bg-white rounded-[28px] p-6 border border-indigo-100/70 shadow-soft flex flex-col justify-between"
           >
-            Auditar Planilha Grátis
-          </button>
+            <div>
+              {/* Avatar com Halo Etereo */}
+              <div className="flex flex-col items-center text-center">
+                <div className="relative mb-3">
+                  <div className="w-24 h-24 rounded-full ring-8 ring-indigo-50/90 ring-offset-2 overflow-hidden bg-gradient-to-tr from-indigo-100 via-slate-100 to-indigo-50 flex items-center justify-center shadow-soft">
+                    <img
+                      src="/zenith-ref.jpg"
+                      alt="Guardião Confere AI"
+                      className="w-full h-full object-cover object-top filter contrast-105"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                    <Zap className="w-10 h-10 text-indigo-600" />
+                  </div>
+                  <span className="absolute bottom-0 right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white shadow-sm flex items-center justify-center text-[10px] text-white font-bold">
+                    ✓
+                  </span>
+                </div>
+
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">
+                  ZENITH CONFERE
+                </h2>
+                <p className="text-[10px] uppercase tracking-widest font-extrabold text-slate-400 mt-0.5">
+                  PRECISÃO • CUBAGEM • LUCRO.
+                </p>
+
+                {/* Badge Nível */}
+                <span className="mt-2.5 inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-white bg-indigo-600 px-3.5 py-1 rounded-full shadow-glow-violet">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  LEVEL 56 • PRO SELLER
+                </span>
+              </div>
+
+              {/* Stats Row de 3 Métricas */}
+              <div className="grid grid-cols-3 gap-2 py-4 my-4 border-y border-indigo-50 text-center">
+                <div>
+                  <span className="text-lg font-black text-slate-900 block leading-tight">
+                    1.420
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400">
+                    Pedidos
+                  </span>
+                </div>
+                <div>
+                  <span className="text-lg font-black text-indigo-600 block leading-tight">
+                    38
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400">
+                    Divergências
+                  </span>
+                </div>
+                <div>
+                  <span className="text-lg font-black text-emerald-600 block leading-tight">
+                    R$ 1.148
+                  </span>
+                  <span className="text-[9px] uppercase tracking-wider font-bold text-slate-400">
+                    A Recuperar
+                  </span>
+                </div>
+              </div>
+
+              {/* Lista de Ações / Atalhos Rápidos */}
+              <div className="space-y-1.5 text-xs font-bold text-slate-700">
+                <button
+                  type="button"
+                  onClick={scrollToDropzone}
+                  className="w-full flex items-center justify-between p-3 rounded-2xl bg-indigo-50/70 text-indigo-700 hover:bg-indigo-100/70 transition cursor-pointer"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <Zap className="w-4 h-4 text-indigo-600" />
+                    <span>Auditar Planilha Agora</span>
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-indigo-400" />
+                </button>
+
+                <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition text-slate-600 cursor-pointer">
+                  <span className="flex items-center gap-2.5">
+                    <FileSpreadsheet className="w-4 h-4 text-slate-400" />
+                    <span>Regras Mercado Livre 2026</span>
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-slate-300" />
+                </div>
+
+                <div className="flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition text-slate-600 cursor-pointer">
+                  <span className="flex items-center gap-2.5">
+                    <TrendingUp className="w-4 h-4 text-slate-400" />
+                    <span>Tabela Shopee Frete Grátis</span>
+                  </span>
+                  <ChevronRight className="w-4 h-4 text-slate-300" />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-indigo-50 flex items-center justify-between text-[11px] text-slate-400">
+              <span>Status: Online</span>
+              <span className="text-emerald-600 font-bold">100% Protegido</span>
+            </div>
+          </div>
+
+          {/* Card Centro: O Banner Hero Épico ("The Grind Looks Lonely...") (Col 5) */}
+          <div className="lg:col-span-5 rounded-[28px] p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between shadow-soft-lg bg-gradient-to-b from-white via-indigo-50/40 to-white border border-indigo-100/70">
+            {/* Background com Silhueta Futurista */}
+            <div className="absolute inset-0 z-0 opacity-15 pointer-events-none">
+              <img
+                src="/zenith-ref.jpg"
+                alt="Zenith Background"
+                className="w-full h-full object-cover object-center filter grayscale contrast-125"
+              />
+            </div>
+
+            <div className="relative z-10">
+              <span className="text-2xl font-serif text-indigo-400 select-none">“</span>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-snug">
+                THE GRIND LOOKS LONELY BEFORE IT LOOKS{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600">
+                  LEGENDARY.
+                </span>
+              </h1>
+              <p className="text-[11px] font-black uppercase tracking-widest text-slate-400 mt-1">
+                — AUDITORIA CIRÚRGICA DE REPASSES.
+              </p>
+
+              <p className="text-xs text-slate-600 mt-3 leading-relaxed">
+                O marketplace altera cubagem e tarifas no silêncio. Nosso auditor cruza SKU por
+                SKU e aponta exatamente onde você tem dinheiro para recuperar.
+              </p>
+            </div>
+
+            <div className="relative z-10 mt-6 space-y-4">
+              {/* Botão Principal Estilizado do Hero */}
+              <button
+                type="button"
+                onClick={scrollToDropzone}
+                className="w-full py-4 px-6 rounded-full bg-white hover:bg-indigo-50 text-indigo-700 border-2 border-indigo-200/80 shadow-soft font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-between transition transform hover:-translate-y-0.5 cursor-pointer"
+              >
+                <span>ENTRAR NO MODO AUDITORIA</span>
+                <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-glow-violet">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </button>
+
+              {/* Sparkline de Eficácia Semanal */}
+              <div className="p-3.5 rounded-2xl bg-white/90 border border-indigo-100/70 shadow-soft">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                    PRECISÃO DE AUDITORIA
+                  </span>
+                  <span className="text-xs font-black text-indigo-600">87% ACURÁCIA</span>
+                </div>
+                {/* SVG Sparkline Curvo */}
+                <svg className="w-full h-9 stroke-indigo-500 fill-none" viewBox="0 0 300 40">
+                  <path
+                    d="M 10 32 Q 50 10 90 25 T 170 12 T 230 28 T 290 8"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="170" cy="12" r="3.5" className="fill-indigo-600" />
+                  <circle cx="290" cy="8" r="4.5" className="fill-violet-600 animate-pulse" />
+                </svg>
+                <div className="flex justify-between text-[9px] font-bold text-slate-400 px-1 mt-1">
+                  <span>SEG</span>
+                  <span>TER</span>
+                  <span>QUA</span>
+                  <span className="text-indigo-600 font-extrabold">QUI</span>
+                  <span>SEX</span>
+                  <span>SÁB</span>
+                  <span>DOM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card Direita: Overall Progress & Cristal (Col 3) */}
+          <div id="analytics-section" className="lg:col-span-3 space-y-6">
+            <DonutProgress percentage={78} label="DETECTADO" />
+            <CrystalStreak
+              days={24}
+              label="DIAS SEGUIDOS"
+              sublabel="Auditoria semanal sem falhas"
+            />
+          </div>
         </div>
-      </header>
 
-      {/* HERO SECTION + DROPZONE INTEGRADO */}
-      <main>
-        <section className="pt-12 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <span className="inline-block text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-5">
-              Regras Atualizadas • Mercado Livre & Shopee
+        {/* =========================================================================
+            SEÇÃO 2: CARD CENTRAL DE UPLOAD / DROPZONE (O Coração da Conversão)
+            ========================================================================= */}
+        <section
+          ref={dropzoneRef}
+          className="bg-white rounded-[32px] p-6 sm:p-10 border border-indigo-100/90 shadow-soft-lg relative overflow-hidden"
+        >
+          <div className="max-w-3xl mx-auto text-center mb-8">
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider px-3.5 py-1 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200/60 mb-3">
+              <Sparkles className="w-3.5 h-3.5" />
+              Processamento 100% Client-Side • Custo Zero de Infra
             </span>
-
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-              Descubra em 10 segundos quanto o marketplace{" "}
-              <span className="text-emerald-400">cobrou a mais</span> nas suas últimas vendas.
-            </h1>
-
-            <p className="mt-5 text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              Suba sua planilha de repasses financeiros. Nosso auditor cruza{" "}
-              <strong className="text-white">SKU por SKU</strong> e aponta exatamente onde você
-              tem dinheiro parado para pedir reembolso — sem conectar sua conta e sem cartão de
-              crédito.
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Arraste sua planilha e descubra seu dinheiro retido
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-2 max-w-xl mx-auto">
+              Cruza centavo por centavo em 10 segundos. Não pede senha da sua loja, não conecta
+              token e não exige cartão de crédito.
             </p>
           </div>
 
-          {/* CARD CENTRAL DE UPLOAD (AUDIT DROPZONE) */}
-          <div
-            ref={dropzoneRef}
-            className="max-w-2xl mx-auto mt-10 bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-200 p-6 sm:p-8"
-          >
-            {/* Seletor de Plataforma */}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                1. Escolha o marketplace da planilha:
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 mb-6">
+          {/* Seletor Neumorphic de Plataforma */}
+          <div className="max-w-xl mx-auto mb-6">
+            <div className="grid grid-cols-2 gap-3 p-1.5 bg-slate-50 rounded-2xl border border-indigo-100/60">
               <button
                 type="button"
                 disabled={Boolean(loadingStep)}
                 onClick={() => setPlatform("mercadolivre")}
-                className={`py-3.5 px-4 rounded-xl font-extrabold text-sm sm:text-base border-2 transition cursor-pointer ${
+                className={`py-3 px-4 rounded-xl font-black text-xs sm:text-sm tracking-wide transition cursor-pointer flex items-center justify-center gap-2 ${
                   platform === "mercadolivre"
-                    ? "bg-yellow-400 text-slate-950 border-yellow-500 shadow-sm"
-                    : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                    ? "bg-amber-400 text-slate-950 shadow-soft border border-amber-500"
+                    : "text-slate-500 hover:text-slate-800"
                 }`}
               >
-                Mercado Livre
+                <span>Mercado Livre</span>
+                {platform === "mercadolivre" && (
+                  <span className="w-2 h-2 rounded-full bg-slate-950" />
+                )}
               </button>
 
               <button
                 type="button"
                 disabled={Boolean(loadingStep)}
                 onClick={() => setPlatform("shopee")}
-                className={`py-3.5 px-4 rounded-xl font-extrabold text-sm sm:text-base border-2 transition cursor-pointer ${
+                className={`py-3 px-4 rounded-xl font-black text-xs sm:text-sm tracking-wide transition cursor-pointer flex items-center justify-center gap-2 ${
                   platform === "shopee"
-                    ? "bg-orange-500 text-white border-orange-600 shadow-sm"
-                    : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
+                    ? "bg-orange-500 text-white shadow-soft border border-orange-600"
+                    : "text-slate-500 hover:text-slate-800"
                 }`}
               >
-                Shopee
+                <span>Shopee</span>
+                {platform === "shopee" && (
+                  <span className="w-2 h-2 rounded-full bg-white" />
+                )}
               </button>
             </div>
 
-            {/* Mini-guia de onde baixar o arquivo */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-3.5 mb-5 text-xs text-slate-600 space-y-1">
-              <p className="font-bold text-slate-800">
-                Onde baixar o arquivo no {currentGuide.label}:
-              </p>
-              {currentGuide.steps.map((step, i) => (
-                <p key={i}>
-                  {i + 1}. {step}
-                </p>
-              ))}
+            {/* Dica de onde baixar */}
+            <div className="mt-3 p-3 bg-indigo-50/60 rounded-xl border border-indigo-100/60 text-[11px] text-slate-600 flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold text-slate-800">
+                  Como exportar no {currentGuide.label}:{" "}
+                </span>
+                {currentGuide.steps.join(" ")}
+              </div>
             </div>
+          </div>
 
-            {/* Área Drag & Drop */}
+          {/* Área Drag & Drop com Estética Soft Neumorphic */}
+          <div className="max-w-xl mx-auto">
             <label
               onDragOver={(e) => {
                 e.preventDefault();
@@ -257,28 +401,30 @@ export function LandingPage() {
               }}
               onDragLeave={() => setIsDragging(false)}
               onDrop={handleDrop}
-              className={`flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-xl cursor-pointer transition px-4 text-center ${
+              className={`flex flex-col items-center justify-center w-full h-52 border-2 border-dashed rounded-[24px] cursor-pointer transition p-6 text-center ${
                 isDragging
-                  ? "border-emerald-500 bg-emerald-50"
-                  : "border-slate-300 bg-slate-50/60 hover:bg-slate-100/80 hover:border-slate-400"
+                  ? "border-indigo-600 bg-indigo-50/70"
+                  : "border-indigo-200/90 bg-indigo-50/20 hover:bg-indigo-50/40 hover:border-indigo-300"
               }`}
             >
               {loadingStep ? (
                 <div className="space-y-3">
-                  <div className="w-8 h-8 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                  <p className="text-sm font-bold text-slate-800">{loadingStep}</p>
-                  <p className="text-xs text-slate-500">Processamento local seguro...</p>
+                  <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
+                  <p className="text-sm font-black text-slate-800">{loadingStep}</p>
+                  <p className="text-xs text-indigo-600 font-bold">
+                    Processando com SheetJS client-side...
+                  </p>
                 </div>
               ) : (
                 <>
-                  <div className="w-11 h-11 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-xl mb-3">
-                    ↑
+                  <div className="w-13 h-13 rounded-2xl bg-white text-indigo-600 shadow-soft border border-indigo-100 flex items-center justify-center font-black text-xl mb-3">
+                    <UploadCloud className="w-6 h-6 stroke-[2.2]" />
                   </div>
-                  <span className="text-base font-extrabold text-slate-800">
+                  <span className="text-base font-black text-slate-800">
                     Arraste sua planilha CSV ou XLSX aqui
                   </span>
-                  <span className="text-xs text-slate-500 mt-1">
-                    ou clique para selecionar o arquivo do computador
+                  <span className="text-xs text-slate-400 mt-1">
+                    ou clique para procurar no seu dispositivo
                   </span>
                 </>
               )}
@@ -293,121 +439,55 @@ export function LandingPage() {
             </label>
 
             {errorMsg && (
-              <div className="mt-4 p-3 rounded-lg bg-red-50 border border-red-200 text-xs font-medium text-red-700">
-                {errorMsg}
+              <div className="mt-4 p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 shrink-0 text-rose-600" />
+                <span>{errorMsg}</span>
               </div>
             )}
 
-            {/* Botão de Teste Instantâneo com Planilha Real de Exemplo */}
-            <div className="mt-5 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-              <span className="text-xs text-slate-500">
-                Não baixou sua planilha agora?
-              </span>
+            {/* Botão de Teste com Planilha Real de Exemplo */}
+            <div className="mt-5 p-4 rounded-2xl bg-slate-50 border border-slate-200/70 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-left">
+                <span className="text-xs font-bold text-slate-700 block">
+                  Sem a planilha agora?
+                </span>
+                <span className="text-[10px] text-slate-400">
+                  Gera 15 pedidos reais com erros de cubagem e devolução
+                </span>
+              </div>
+
               <button
                 type="button"
                 disabled={Boolean(loadingStep)}
                 onClick={handleRunSampleAudit}
-                className="text-xs font-bold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition cursor-pointer"
+                className="py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider shadow-glow-violet transition flex items-center gap-2 cursor-pointer shrink-0"
               >
-                Testar com planilha de exemplo ({currentGuide.label}) →
+                <span>Testar Planilha ({currentGuide.label})</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
-
-          {/* Selos de Confiança */}
-          <div className="max-w-2xl mx-auto mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-slate-400">
-            <span>✓ Não pede senha nem token da loja</span>
-            <span>✓ Diagnóstico gratuito na hora</span>
-            <span>✓ Gera o texto pronto para abrir chamado</span>
-          </div>
         </section>
 
-        {/* SEÇÃO: OS 3 VAZAMENTOS QUE O SISTEMA DETECTA */}
-        <section className="py-16 px-4 sm:px-6 bg-slate-900 border-t border-slate-800">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-                Por que quem vende todo dia perde entre 2% e 7% do lucro sem ver?
-              </h2>
-              <p className="text-sm text-slate-400 mt-3">
-                Os ERPs comuns mostram quanto você vendeu, mas não auditam centavo por centavo se
-                o marketplace descontou a tarifa certa na liquidação.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-                  Vazamento 01
-                </span>
-                <h3 className="text-lg font-bold text-white mt-2">
-                  Erro de Cubagem e Peso no Frete
-                </h3>
-                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-                  Sensores das transportadoras frequentemente leem volume errado e cobram frete de 3 kg
-                  num produto de 300g. Nosso algoritmo compara o frete de cada pedido contra o
-                  histórico real daquele mesmo SKU.
-                </p>
-              </div>
-
-              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-purple-400">
-                  Vazamento 02
-                </span>
-                <h3 className="text-lg font-bold text-white mt-2">
-                  Comissão e Taxa Fixa Fora da Faixa
-                </h3>
-                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-                  Com as mudanças nas tabelas de custo operacional e degraus de preço, centenas de
-                  pedidos sofrem cobrança de percentual de campanha ou tarifa fixa acima do padrão
-                  cadastrado.
-                </p>
-              </div>
-
-              <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-rose-400">
-                  Vazamento 03
-                </span>
-                <h3 className="text-lg font-bold text-white mt-2">
-                  Devoluções com Desconto Indevido
-                </h3>
-                <p className="text-sm text-slate-400 mt-2 leading-relaxed">
-                  Pedidos cancelados ou devolvidos por arrependimento que fecham com saldo negativo na
-                  sua conta por cobrança indevida de frete reverso ou comissão não estornada.
-                </p>
-              </div>
-            </div>
+        {/* =========================================================================
+            SEÇÃO 3: CARTÃO ZENITH PRIME + ROADMAP DA MISSÃO (Grid Inferior)
+            ========================================================================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-5">
+            <ZenithCard
+              balance="R$ 1.148,90"
+              divergencesCount={38}
+              cardNumber="4582 2456 7896 5412"
+            />
           </div>
-        </section>
-
-        {/* SEÇÃO: COMO FUNCIONA + CTA FINAL */}
-        <section className="py-16 px-4 sm:px-6 border-t border-slate-800 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Você só paga se encontrar dinheiro para recuperar
-            </h2>
-            <p className="text-sm sm:text-base text-slate-300 mt-3 leading-relaxed">
-              Faça o diagnóstico gratuito agora. Veja o valor exato em reais que o marketplace
-              descontou a maior e os 2 primeiros pedidos abertos para conferir na sua loja. Se
-              valer a pena, desbloqueie o relatório completo e os textos prontos de contestação
-              por <strong className="text-emerald-400">R$ 67,00/mês</strong>.
-            </p>
-
-            <button
-              type="button"
-              onClick={scrollToDropzone}
-              className="mt-8 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-base shadow-lg transition cursor-pointer"
-            >
-              Subir Minha Planilha Agora (Grátis)
-            </button>
+          <div className="lg:col-span-7">
+            <MissionRoadmap currentStep={2} onAction={scrollToDropzone} />
           </div>
-        </section>
+        </div>
       </main>
 
-      <footer className="border-t border-slate-800/80 py-8 px-4 text-center text-xs text-slate-500">
-        AuditaSeller • Auditoria Independente de Repasses para E-commerce. Não possuímos vínculo
-        institucional com Mercado Livre ou Shopee.
-      </footer>
+      {/* Floating Bottom Navigation */}
+      <BottomNav onCenterAction={scrollToDropzone} centerActionLabel="Subir Planilha" />
     </div>
   );
 }
