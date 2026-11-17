@@ -66,8 +66,8 @@ export function MarketplaceProductHero({
       className={cn("relative w-full max-w-6xl mx-auto pt-24 sm:pt-28 pb-12", className)}
     >
       {/* Marca d'água de tipografia de fundo inspirada no sneaker-product-hero */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 select-none pointer-events-none text-center w-full overflow-hidden opacity-[0.035] -z-10">
-        <span className="text-[120px] sm:text-[190px] font-black uppercase tracking-tighter text-slate-900 leading-none block">
+      <div className="absolute top-12 left-1/2 -translate-x-1/2 select-none pointer-events-none text-center w-full max-w-full overflow-hidden opacity-[0.035] -z-10">
+        <span className="text-[64px] sm:text-[140px] md:text-[190px] font-black uppercase tracking-tighter text-slate-900 leading-none block">
           CONFEREAI
         </span>
       </div>
@@ -85,7 +85,7 @@ export function MarketplaceProductHero({
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight leading-[1.12]">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15]">
             Descubra em 10s quanto o marketplace{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600">
               cobrou a mais
@@ -127,7 +127,7 @@ export function MarketplaceProductHero({
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">
               Selecione o tipo de auditoria do scanner:
             </span>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
               {angles.map((ang) => (
                 <button
                   key={ang.id}
@@ -157,7 +157,7 @@ export function MarketplaceProductHero({
             COLUNA DIREITA: O TERMINAL DO PRODUTO (Estágio Central Dropzone)
             ========================================================================= */}
         <div className="lg:col-span-6">
-          <div className="relative bg-white rounded-[32px] p-6 sm:p-8 border border-slate-200/90 shadow-soft-lg">
+          <div className="relative bg-white rounded-3xl sm:rounded-[32px] p-5 sm:p-8 border border-slate-200/90 shadow-soft-lg">
             {/* Halo de iluminação de fundo */}
             <div className="absolute -top-12 -right-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -219,7 +219,7 @@ export function MarketplaceProductHero({
                 if (file) onFileSelect(file);
               }}
               className={cn(
-                "relative z-10 flex flex-col items-center justify-center w-full h-52 border-2 border-dashed rounded-2xl cursor-pointer transition p-6 text-center",
+                "relative z-10 flex flex-col items-center justify-center w-full min-h-[210px] h-auto py-6 sm:h-52 border-2 border-dashed rounded-2xl cursor-pointer transition p-4 sm:p-6 text-center",
                 isDragging
                   ? "border-indigo-600 bg-indigo-50/70"
                   : "border-slate-300 bg-slate-50/60 hover:bg-slate-100/70 hover:border-indigo-300"

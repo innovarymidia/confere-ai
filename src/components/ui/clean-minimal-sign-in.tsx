@@ -83,7 +83,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
   return (
     <div
       className={cn(
-        "w-full max-w-md mx-auto bg-white rounded-3xl p-8 sm:p-10 border border-slate-200/90 shadow-soft-lg",
+        "w-full max-w-md mx-auto bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-soft-lg",
         className
       )}
     >

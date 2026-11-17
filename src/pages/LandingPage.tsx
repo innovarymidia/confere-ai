@@ -167,7 +167,7 @@ export function LandingPage() {
           <button
             type="button"
             onClick={scrollToDropzone}
-            className="mt-6 py-4 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 cursor-pointer"
+            className="mt-6 py-3.5 sm:py-4 px-6 sm:px-8 w-full sm:w-auto rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 cursor-pointer"
           >
             Auditar Minha Planilha Agora (Grátis)
           </button>

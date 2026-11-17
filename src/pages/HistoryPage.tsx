@@ -266,11 +266,11 @@ export function HistoryPage() {
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-4 mt-2 text-xs text-slate-600 font-medium">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-2 text-xs text-slate-600 font-medium">
                         <span>
                           <strong>{item.total_orders_analyzed}</strong> pedidos analisados
                         </span>
-                        <span className="w-1 h-1 rounded-full bg-slate-300" />
+                        <span className="w-1 h-1 rounded-full bg-slate-300 hidden sm:inline-block" />
                         <span className="text-rose-600 font-bold">
                           <strong>{item.total_divergent_orders}</strong> com cobranca a maior
                         </span>

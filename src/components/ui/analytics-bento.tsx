@@ -48,24 +48,24 @@ export function AnalyticsBento({
   const devolucaoPct = totalRecoverable > 0 ? 100 - fretePct - comissaoPct : 0;
 
   return (
-    <div className={cn("grid grid-cols-1 md:grid-cols-12 gap-5", className)}>
+    <div className={cn("grid grid-cols-1 lg:grid-cols-12 gap-5", className)}>
       {/* =========================================================================
           TILE 1: REVENUE LINE COM PICO DE SOBRETAXA (Bento Hero Tile - Col 7)
           ========================================================================= */}
-      <div className="md:col-span-7 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-soft flex flex-col justify-between">
+      <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+            <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-slate-400">
               DISPERSÃO HISTÓRICA POR SKU • {platform === "mercadolivre" ? "MERCADO LIVRE" : "SHOPEE"}
             </span>
-            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
+            <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 self-start sm:self-auto">
               <AlertTriangle className="w-3 h-3 text-rose-600" />
               {hoveredPoint ? `Pico Pedido #${hoveredPoint}: Cobrança Duplicada` : "Picos de Cubagem Detectados"}
             </span>
           </div>
 
-          <div className="flex items-baseline gap-3 mt-1">
-            <span className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900">
+          <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mt-1">
+            <span className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900">
               {formatBRL(totalRecoverable)}
             </span>
             <span className="text-xs font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-100">
@@ -108,7 +108,7 @@ export function AnalyticsBento({
           </svg>
 
           {/* Legenda rápida */}
-          <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 pt-2 border-t border-slate-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[11px] font-bold text-slate-400 pt-2 border-t border-slate-100">
             <span className="flex items-center gap-1.5">
               <span className="w-3 h-0.5 bg-slate-400 border-dashed" /> Frete Padrão do SKU (R$ 19,90)
             </span>
@@ -127,7 +127,7 @@ export function AnalyticsBento({
       {/* =========================================================================
           TILE 2: TREEMAP DE CATEGORIAS / DISTRIBUIÇÃO (Col 5)
           ========================================================================= */}
-      <div className="md:col-span-5 bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-soft flex flex-col justify-between">
+      <div className="lg:col-span-5 bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div>
           <span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
             DISTRIBUIÇÃO DOS VAZAMENTOS (TREEMAP)
@@ -207,9 +207,9 @@ export function AnalyticsBento({
       </div>
 
       {/* =========================================================================
-          TILE 3: TEMPO MÉDIO DE ESTORNO & IMPACTO NA MARGEM (Col 4)
+          TILE 3: TEMPO MÉDIO DE ESTORNO E IMPACTO NA MARGEM (Col 4)
           ========================================================================= */}
-      <div className="md:col-span-4 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
+      <div className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
             AGILIDADE DE REEMBOLSO
@@ -233,7 +233,7 @@ export function AnalyticsBento({
       {/* =========================================================================
           TILE 4: IMPACTO NA MARGEM LÍQUIDA (Col 4)
           ========================================================================= */}
-      <div className="md:col-span-4 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
+      <div className="col-span-1 sm:col-span-6 lg:col-span-4 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
             IMPACTO NO LUCRO
@@ -256,7 +256,7 @@ export function AnalyticsBento({
       {/* =========================================================================
           TILE 5: GARANTIA DE RECUPERAÇÃO (Col 4)
           ========================================================================= */}
-      <div className="md:col-span-4 bg-white rounded-3xl p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
+      <div className="col-span-1 sm:col-span-12 lg:col-span-4 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
             CONTESTAÇÃO 1-CLIQUE

@@ -109,7 +109,7 @@ export function CueCollapsingCardsAccordion({
       </div>
 
       {/* Accordion Horizontal de Cards Colapsáveis */}
-      <div className="flex flex-col md:flex-row gap-3 h-[420px] md:h-[360px] w-full">
+      <div className="flex flex-col md:flex-row gap-3 min-h-[480px] md:h-[370px] w-full">
         {cards.map((card) => {
           const isActive = activeId === card.id;
 
@@ -119,10 +119,10 @@ export function CueCollapsingCardsAccordion({
               onClick={() => setActiveId(card.id)}
               onMouseEnter={() => setActiveId(card.id)}
               className={cn(
-                "relative rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden p-6 flex flex-col justify-between",
+                "relative rounded-2xl md:rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden flex flex-col justify-between",
                 isActive
-                  ? "flex-[3.5] bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20"
-                  : "flex-1 bg-white/70 hover:bg-white border-slate-200/80 shadow-xs"
+                  ? "flex-[4] p-5 sm:p-6 bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20"
+                  : "flex-none h-14 md:h-auto md:flex-1 p-3.5 md:p-6 bg-white/70 hover:bg-white border-slate-200/80 shadow-xs justify-center md:justify-between"
               )}
             >
               {/* Gradiente de fundo sutil */}
@@ -135,10 +135,10 @@ export function CueCollapsingCardsAccordion({
               />
 
               {/* Topo do Card */}
-              <div className="relative z-10 flex items-start justify-between">
+              <div className={cn("relative z-10 flex items-center justify-between", !isActive && "md:flex")}>
                 <span
                   className={cn(
-                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border transition-colors",
+                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border transition-colors shrink-0",
                     isActive
                       ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
                       : "bg-slate-100 text-slate-600 border-slate-200"
@@ -147,10 +147,14 @@ export function CueCollapsingCardsAccordion({
                   {card.platform}
                 </span>
 
-                {isActive && (
-                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                {isActive ? (
+                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1 shrink-0">
                     <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                     {card.badge}
+                  </span>
+                ) : (
+                  <span className="md:hidden font-extrabold text-xs text-slate-700 tracking-tight line-clamp-1 px-2">
+                    {card.niche}
                   </span>
                 )}
               </div>
@@ -166,19 +170,19 @@ export function CueCollapsingCardsAccordion({
                     <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
                       {card.niche} • {card.divergenceType}
                     </span>
-                    <div className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1 text-emerald-600">
+                    <div className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1 text-emerald-600">
                       +{card.recoveredAmount}
                     </div>
-                    <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium bg-white/80 p-3.5 rounded-2xl border border-slate-100 shadow-xs">
+                    <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium bg-white/80 p-3 sm:p-3.5 rounded-2xl border border-slate-100 shadow-xs">
                       “{card.quote}”
                     </p>
                   </motion.div>
                 ) : (
-                  <div className="flex md:flex-col items-center justify-between md:justify-center h-full">
-                    <span className="md:-rotate-90 md:whitespace-nowrap font-extrabold text-sm text-slate-700 tracking-tight block">
+                  <div className="flex items-center justify-end md:flex-col md:justify-center h-full">
+                    <span className="hidden md:block md:-rotate-90 md:whitespace-nowrap font-extrabold text-sm text-slate-700 tracking-tight">
                       {card.niche}
                     </span>
-                    <span className="font-black text-emerald-600 text-sm mt-0 md:mt-6">
+                    <span className="font-black text-emerald-600 text-xs sm:text-sm md:mt-6 shrink-0">
                       {card.recoveredAmount}
                     </span>
                   </div>
@@ -186,22 +190,22 @@ export function CueCollapsingCardsAccordion({
               </div>
 
               {/* Rodapé do Card */}
-              <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-slate-100">
-                {isActive ? (
-                  <>
-                    <span className="text-slate-500 font-semibold">
-                      <strong>{card.ordersCount} pedidos</strong> contestados • {card.timeframe}
-                    </span>
-                    <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1">
-                      Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-[10px] text-slate-400 font-bold mx-auto hidden md:block">
+              {isActive ? (
+                <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-slate-100">
+                  <span className="text-slate-500 font-semibold text-[11px] sm:text-xs">
+                    <strong>{card.ordersCount} pedidos</strong> contestados • {card.timeframe}
+                  </span>
+                  <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1 shrink-0">
+                    Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
+                  </span>
+                </div>
+              ) : (
+                <div className="relative z-10 hidden md:block pt-3 border-t border-slate-100 text-center">
+                  <span className="text-[10px] text-slate-400 font-bold">
                     Ver caso
                   </span>
-                )}
-              </div>
+                </div>
+              )}
             </motion.div>
           );
         })}

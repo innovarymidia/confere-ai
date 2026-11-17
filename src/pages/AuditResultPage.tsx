@@ -477,7 +477,7 @@ export function AuditResultPage() {
               )}
 
               {/* Filtros em Pílulas */}
-              <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200">
+              <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200 overflow-x-auto max-w-full">
                 {(
                   [
                     { id: "all", label: "Todos" },
@@ -490,7 +490,7 @@ export function AuditResultPage() {
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveFilter(tab.id)}
-                    className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                    className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer shrink-0 ${
                       activeFilter === tab.id
                         ? "bg-slate-900 text-white shadow-xs"
                         : "text-slate-500 hover:text-slate-800"
@@ -511,7 +511,7 @@ export function AuditResultPage() {
               return (
                 <div
                   key={item.id}
-                  className="p-5 hover:bg-slate-50/70 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
+                  className="p-4 sm:p-5 hover:bg-slate-50/70 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
                   {/* Identificação do Pedido */}
                   <div className="flex items-start gap-3">
@@ -538,7 +538,7 @@ export function AuditResultPage() {
                   </div>
 
                   {/* Comparativo de Tarifas */}
-                  <div className="flex items-center gap-6 text-xs">
+                  <div className="flex items-center justify-between sm:justify-start sm:gap-6 text-xs w-full md:w-auto py-2.5 md:py-0 border-y md:border-y-0 border-slate-100">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">
                         Esperado
@@ -568,11 +568,11 @@ export function AuditResultPage() {
                   </div>
 
                   {/* Ação: Copiar Texto e Checkboxes Pro */}
-                  <div className="flex items-center gap-2.5 justify-end">
+                  <div className="flex items-center gap-2.5 justify-end w-full md:w-auto">
                     <button
                       type="button"
                       onClick={() => handleCopyDispute(item)}
-                      className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
+                      className="w-full md:w-auto justify-center px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       {copiedRowId === item.id ? (
                         <>
@@ -665,7 +665,7 @@ export function AuditResultPage() {
                 <button
                   type="button"
                   onClick={() => setIsCheckoutOpen(true)}
-                  className="mt-6 py-4 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                  className="mt-6 py-3.5 sm:py-4 px-5 sm:px-8 w-full sm:w-auto rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <span>Desbloquear Relatório Completo por R$ 67,00/mês</span>
                   <ArrowRight className="w-4 h-4" />
@@ -684,7 +684,7 @@ export function AuditResultPage() {
           ========================================================================= */}
       {isCheckoutOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 relative">
             <button
               type="button"
               onClick={() => setIsCheckoutOpen(false)}

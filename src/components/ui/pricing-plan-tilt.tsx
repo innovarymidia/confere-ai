@@ -117,6 +117,7 @@ function PlanCard({
       className="relative list-none"
       style={{ perspective: 900 }}
       onPointerMove={(e) => {
+        if (e.pointerType === "touch") return;
         const b = e.currentTarget.getBoundingClientRect();
         mx.set((e.clientX - b.left) / b.width);
         my.set((e.clientY - b.top) / b.height);
@@ -456,7 +457,7 @@ export function PricingPlanTilt({
       </div>
 
       {/* Grid com os 3 cards 3D tilt */}
-      <ul className="relative mt-10 grid items-stretch gap-6 sm:grid-cols-3">
+      <ul className="relative mt-10 grid items-stretch gap-6 grid-cols-1 md:grid-cols-3">
         {plans.map((p) => (
           <PlanCard
             key={p.id}
