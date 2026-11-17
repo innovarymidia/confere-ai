@@ -19,6 +19,7 @@ import {
   type MarketplacePlatform,
 } from "../services/auditEngine";
 import { AppHeader } from "../components/AppHeader";
+import { PricingPlanTilt } from "../components/ui/pricing-plan-tilt";
 
 const PLATFORM_GUIDES: Record<
   MarketplacePlatform,
@@ -346,7 +347,18 @@ export function LandingPage() {
         </section>
 
         {/* =========================================================================
-            DOBRA 3: COMO FUNCIONA + CTA FINAL
+            DOBRA 3: TABELA DE PREÇOS INTERATIVA 3D (PricingPlanTilt)
+            ========================================================================= */}
+        <section className="mb-16">
+          <PricingPlanTilt
+            onSelect={(_planId, _billing) => {
+              scrollToDropzone();
+            }}
+          />
+        </section>
+
+        {/* =========================================================================
+            DOBRA 4: COMO FUNCIONA + CTA FINAL
             ========================================================================= */}
         <section className="bg-white rounded-3xl p-8 sm:p-12 border border-slate-200/80 shadow-soft text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
