@@ -3,6 +3,7 @@ import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Zap, ArrowRight, User, ShieldCheck, ArrowLeft } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -36,6 +37,21 @@ export function LiquidGlassNavbar({
   const location = useLocation();
   const [hoveredIdx, setHoveredIdx] = React.useState<number | null>(null);
   const [scrolled, setScrolled] = React.useState(false);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+  React.useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      setIsLoggedIn(Boolean(data?.session?.user));
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(Boolean(session?.user));
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -139,11 +155,13 @@ export function LiquidGlassNavbar({
         {/* Acoes da Direita */}
         <div className="flex items-center gap-2 sm:gap-3">
           <Link
-            to="/login"
+            to={isLoggedIn ? "/historico" : "/login"}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-slate-600 hover:text-indigo-600 hover:bg-slate-100/70 transition"
           >
             <User className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">{isPro ? "Minha Conta" : "Entrar"}</span>
+            <span className="hidden sm:inline">
+              {isLoggedIn ? (isPro ? "Minha Conta Pro" : "Minhas Auditorias") : "Entrar"}
+            </span>
           </Link>
 
           {variant === "landing" ? (

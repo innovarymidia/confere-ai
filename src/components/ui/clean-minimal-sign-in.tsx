@@ -39,7 +39,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
 
       if (data.user) {
         onSuccess?.();
-        navigate("/");
+        navigate("/historico");
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Falha ao autenticar.";
