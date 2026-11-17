@@ -297,7 +297,7 @@ export function analyzeOrdersForDivergences(
     }
   }
 
-  // REGRA 1 & REGRA 2: Audita pedidos concluídos (Frete Cubado + Comissão Acima do Padrão)
+  // REGRA 1 E REGRA 2: Audita pedidos concluídos (Frete Cubado + Comissão Acima do Padrão)
   for (const order of validOrders) {
     const qty = Math.max(1, order.quantity ?? 1);
 
@@ -503,7 +503,7 @@ export async function runMarketplaceAuditAndSave(
 export function buildSampleCsvFile(platform: MarketplacePlatform): File {
   if (platform === "mercadolivre") {
     const rows = [
-      "Relatório de Liberações Financeiras - Mercado Livre",
+      "Relatório de Liberações Financeiras: Mercado Livre",
       "Período: Últimos 30 dias",
       "",
       "N.º de venda;SKU;Estado;Receita por produtos (BRL);Tarifa de venda e impostos (BRL);Tarifas de envio (BRL);Total (BRL)",
@@ -529,7 +529,7 @@ export function buildSampleCsvFile(platform: MarketplacePlatform): File {
   }
 
   const shopeeRows = [
-    "Relatório de Renda do Vendedor - Shopee Brasil",
+    "Relatório de Renda do Vendedor: Shopee Brasil",
     "",
     "ID do pedido;Número de referência SKU;Status do pedido;Preço original;Taxa de comissão;Taxa de envio paga pelo vendedor;Valor total liberado",
     "261108A9X101;LUMINARIA-LED-MESA;Concluído;109,90;-15,39;-14,00;80,51",

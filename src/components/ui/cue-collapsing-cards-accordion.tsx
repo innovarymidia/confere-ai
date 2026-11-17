@@ -20,7 +20,7 @@ export interface RefundEvidenceCard {
 const DEFAULT_CARDS: RefundEvidenceCard[] = [
   {
     id: "case-1",
-    niche: "Moda & Vestuário",
+    niche: "Moda e Vestuário",
     recoveredAmount: "R$ 842,50",
     platform: "Mercado Livre",
     divergenceType: "Frete Cubado Corrigido",
@@ -32,7 +32,7 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
   },
   {
     id: "case-2",
-    niche: "Eletrônicos & Acessórios",
+    niche: "Eletrônicos e Acessórios",
     recoveredAmount: "R$ 1.290,00",
     platform: "Shopee",
     divergenceType: "Erro de Balança em Lote",
@@ -44,7 +44,7 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
   },
   {
     id: "case-3",
-    niche: "Casa & Decoração",
+    niche: "Casa e Decoração",
     recoveredAmount: "R$ 640,00",
     platform: "Mercado Livre",
     divergenceType: "Frete Reverso Anulado",
@@ -56,7 +56,7 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
   },
   {
     id: "case-4",
-    niche: "Autopeças & Ferramentas",
+    niche: "Autopeças e Ferramentas",
     recoveredAmount: "R$ 2.450,00",
     platform: "Mercado Livre",
     divergenceType: "Comissões Fora da Faixa",
@@ -68,7 +68,7 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
   },
   {
     id: "case-5",
-    niche: "Cosméticos & Skincare",
+    niche: "Cosméticos e Skincare",
     recoveredAmount: "R$ 915,00",
     platform: "Shopee",
     divergenceType: "Taxas de Campanha Não Ativas",

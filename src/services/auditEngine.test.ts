@@ -26,7 +26,7 @@ describe("auditEngine: parseBRL", () => {
   });
 });
 
-describe("auditEngine: normalizeHeader & detectHeaderRowIndex", () => {
+describe("auditEngine: normalizeHeader e detectHeaderRowIndex", () => {
   it("normalizes headers by stripping accents and lowercasing", () => {
     expect(normalizeHeader("N.º de Venda")).toBe("n.º de venda");
     expect(normalizeHeader("Preço Original")).toBe("preco original");

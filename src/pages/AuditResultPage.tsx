@@ -14,7 +14,7 @@ import {
   Download,
 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
-import { AppHeader } from "../components/AppHeader";
+import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
 import { AnalyticsBento } from "../components/ui/analytics-bento";
 
 interface AuditSummary {
@@ -379,9 +379,9 @@ export function AuditResultPage() {
 
   return (
     <div className="min-h-screen bg-[#F8F9FD] text-slate-800 pb-20">
-      <AppHeader showNewAuditButton={true} />
+      <LiquidGlassNavbar variant="result" platform={audit.platform} isPro={isPro} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 space-y-6">
         {/* Banner de Desbloqueio ao Vivo pós-Pix */}
         {justUnlockedBanner && (
           <div className="p-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-between shadow-soft">
@@ -409,7 +409,7 @@ export function AuditResultPage() {
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Relatório de Liberações Financeiras
               </span>
-              <span className="text-xs font-bold text-slate-300">•</span>
+              <span className="text-xs font-bold text-slate-300">/</span>
               <span className="text-xs font-extrabold text-indigo-600 uppercase">
                 {audit.platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
               </span>
@@ -671,7 +671,7 @@ export function AuditResultPage() {
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <p className="text-xs text-slate-400 mt-2.5">
-                  Liberação automática em segundos via Pix • Cancele quando quiser com 1 clique
+                  Liberação automática em segundos via Pix, cancele quando quiser com 1 clique
                 </p>
               </div>
             </div>
@@ -699,7 +699,7 @@ export function AuditResultPage() {
                   Desbloquear Auditoria Completa
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  Plano Pro Mensal (R$ 67,00) • Auditorias ilimitadas de Mercado Livre e Shopee
+                  Plano Pro Mensal (R$ 67,00): Auditorias ilimitadas de Mercado Livre e Shopee
                 </p>
 
                 <form onSubmit={handleGeneratePix} className="mt-5 space-y-3.5">
@@ -837,7 +837,7 @@ export function AuditResultPage() {
 
       {/* Rodapé Corporativo B2B */}
       <footer className="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
-        ConfereAI • Auditoria Financeira de Repasses para E-commerce
+        ConfereAI | Auditoria Financeira de Repasses para E-commerce
       </footer>
     </div>
   );

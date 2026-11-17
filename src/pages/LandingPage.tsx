@@ -102,7 +102,7 @@ export function LandingPage() {
                 Vazamento 01
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Erro de Cubagem & Peso no Frete
+                Erro de Cubagem e Peso no Frete
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
                 Sensores ópticos e balanças das esteiras de triagem frequentemente registram volume duplicado ou peso excedente, cobrando frete de 3 kg num produto de 300g. O ConfereAI cruza com o percentil 35% do SKU e aponta a divergência.
@@ -117,7 +117,7 @@ export function LandingPage() {
                 Vazamento 02
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Tarifa Operacional & Degraus 2026
+                Tarifa Operacional e Degraus 2026
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
                 Com as novas tabelas de 2026 e faixas de preço da Shopee e Mercado Livre, pequenas alterações de centavos no anúncio aplicam alíquotas erradas ou taxas fixas duplicadas que corroem sua margem de contribuição.
@@ -177,7 +177,7 @@ export function LandingPage() {
       {/* Rodapé Corporativo B2B */}
       <footer className="border-t border-slate-200 py-8 px-4 text-center text-xs text-slate-500">
         <p className="font-bold text-slate-700">
-          ConfereAI • Auditoria Financeira Independente para Vendedores de E-commerce
+          ConfereAI | Auditoria Financeira Independente para Vendedores de E-commerce
         </p>
         <p className="mt-1">
           Não possuímos vínculo societário direto com Mercado Livre ou Shopee.
