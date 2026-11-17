@@ -6,12 +6,13 @@ import {
   CheckCircle2,
   Lock,
   ArrowRight,
+  Package,
+  Percent,
+  RotateCcw,
+  ArrowLeft,
 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { AppHeader } from "../components/AppHeader";
-import { BottomNav } from "../components/BottomNav";
-import { DonutProgress } from "../components/DonutProgress";
-import { ZenithCard } from "../components/ZenithCard";
 
 interface AuditSummary {
   id: string;
@@ -42,22 +43,22 @@ interface AuditItem {
 
 const ERROR_BADGE: Record<
   AuditItem["error_type"],
-  { label: string; badgeClass: string; dotColor: string }
+  { label: string; badgeClass: string; icon: React.ReactNode }
 > = {
   frete: {
     label: "Frete Cubado / Peso",
-    badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200/80",
-    dotColor: "bg-indigo-600",
+    badgeClass: "bg-amber-50 text-amber-800 border-amber-200/80",
+    icon: <Package className="w-3.5 h-3.5 text-amber-600" />,
   },
   comissao: {
     label: "Comissão Divergente",
-    badgeClass: "bg-violet-50 text-violet-700 border-violet-200/80",
-    dotColor: "bg-violet-500",
+    badgeClass: "bg-indigo-50 text-indigo-800 border-indigo-200/80",
+    icon: <Percent className="w-3.5 h-3.5 text-indigo-600" />,
   },
   devolucao: {
     label: "Devolução Não Estornada",
-    badgeClass: "bg-rose-50 text-rose-700 border-rose-200/80",
-    dotColor: "bg-rose-500",
+    badgeClass: "bg-rose-50 text-rose-800 border-rose-200/80",
+    icon: <RotateCcw className="w-3.5 h-3.5 text-rose-600" />,
   },
 };
 
@@ -110,7 +111,7 @@ export function AuditResultPage() {
         return;
       }
     } catch {
-      // Ignora e usa fallback local
+      // Ignora erro de rede e usa fallback local
     }
 
     // Fallback: modo demo/offline em sessionStorage
@@ -274,7 +275,7 @@ export function AuditResultPage() {
       setPixData({
         qrCodeBase64: dummyQrCode,
         copyPaste:
-          "00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540567.005802BR5913AuditaSeller6009Sao Paulo62070503***6304ABCD",
+          "00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540567.005802BR5913ConfereAI6009Sao Paulo62070503***6304ABCD",
       });
 
       // Em modo de demonstração local, simula confirmação automática em 5 segundos
@@ -317,7 +318,6 @@ export function AuditResultPage() {
     }
   };
 
-  // Itens filtrados
   const filteredItems = useMemo(() => {
     if (activeFilter === "all") return items;
     return items.filter((item) => item.error_type === activeFilter);
@@ -325,11 +325,11 @@ export function AuditResultPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F4F5FB]">
+      <div className="min-h-screen flex items-center justify-center bg-[#F8F9FD]">
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm font-black text-slate-800">
-            Carregando diagnóstico financeiro...
+          <p className="text-sm font-extrabold text-slate-800">
+            Calculando divergências financeiras...
           </p>
         </div>
       </div>
@@ -338,11 +338,11 @@ export function AuditResultPage() {
 
   if (!audit) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F4F5FB] p-6 text-center">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#F8F9FD] p-6 text-center">
         <p className="text-slate-800 font-bold mb-4">Auditoria não encontrada.</p>
         <Link
           to="/"
-          className="px-6 py-3 rounded-full bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider shadow-soft"
+          className="px-6 py-3 rounded-xl bg-indigo-600 text-white font-bold text-xs uppercase tracking-wider shadow-sm"
         >
           Fazer Nova Auditoria
         </Link>
@@ -355,27 +355,22 @@ export function AuditResultPage() {
     : [];
 
   return (
-    <div className="min-h-screen bg-[#F4F5FB] text-slate-800 pb-32">
-      {/* Top Header Neumorphic Bar */}
-      <AppHeader
-        title="DIAGNÓSTICO FINANCEIRO"
-        badge={isPro ? "PRO ATIVO" : "PRÉVIA GRATUITA"}
-      />
+    <div className="min-h-screen bg-[#F8F9FD] text-slate-800 pb-20">
+      <AppHeader showNewAuditButton={true} />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-6 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6">
         {/* Banner de Desbloqueio ao Vivo pós-Pix */}
         {justUnlockedBanner && (
-          <div className="p-4 rounded-2xl bg-emerald-600 text-white font-extrabold text-xs sm:text-sm flex items-center justify-between shadow-soft">
+          <div className="p-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-between shadow-soft">
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 shrink-0" />
               <span>
-                Pagamento confirmado via Pix! Todos os {audit.total_divergent_orders} pedidos e
-                textos de contestação foram desbloqueados.
+                Pagamento Pix confirmado! Todos os {audit.total_divergent_orders} pedidos e textos técnicos de contestação foram desbloqueados.
               </span>
             </span>
             <button
               onClick={() => setJustUnlockedBanner(false)}
-              className="text-xs underline ml-4 cursor-pointer font-bold"
+              className="text-xs underline ml-4 cursor-pointer font-extrabold"
             >
               Fechar
             </button>
@@ -383,104 +378,118 @@ export function AuditResultPage() {
         )}
 
         {/* =========================================================================
-            SEÇÃO 1: RESUMO FINANCEIRO (Cards Neumorphic Zenith)
+            CABEÇALHO DA AUDITORIA
             ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Card Principal: Total Recuperável */}
-          <div className="lg:col-span-5 bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 text-white rounded-[28px] p-6 sm:p-7 shadow-soft-lg flex flex-col justify-between relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Relatório de Liberações Financeiras
+              </span>
+              <span className="text-xs font-bold text-slate-300">•</span>
+              <span className="text-xs font-extrabold text-indigo-600 uppercase">
+                {audit.platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
+              </span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+              Diagnóstico de Cobranças Indevidas
+            </h1>
+            <p className="text-sm text-slate-600 mt-1">
+              Foram analisadas <strong>{audit.total_orders_analyzed} vendas</strong>, encontrando{" "}
+              <strong className="text-rose-600">{audit.total_divergent_orders} pedidos</strong> com cobrança acima da tabela ou do histórico padrão do anúncio.
+            </p>
+          </div>
 
-            <div className="relative z-10">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 font-bold text-xs uppercase tracking-wider transition shrink-0"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Outra Planilha</span>
+          </Link>
+        </div>
+
+        {/* =========================================================================
+            OS CARDS DE CHOQUE DE REALIDADE (Valores em Reais na Cara do Vendedor)
+            ========================================================================= */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Card Principal: Total Recuperável */}
+          <div className="md:col-span-2 bg-gradient-to-br from-rose-600 to-red-700 text-white rounded-3xl p-6 shadow-soft flex flex-col justify-between">
+            <div>
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-black uppercase tracking-widest text-indigo-200">
-                  TOTAL PARADO A RECUPERAR
+                <span className="text-xs uppercase font-extrabold tracking-wider text-rose-100">
+                  Total Identificado a Recuperar
                 </span>
-                <span className="text-[10px] font-black uppercase bg-white/20 text-white px-2.5 py-0.5 rounded-full backdrop-blur-xs">
-                  {audit.platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
+                <span className="text-[10px] uppercase font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full">
+                  Últimos 60 dias
                 </span>
               </div>
-
-              <div className="text-4xl sm:text-5xl font-black mt-3 tracking-tight">
+              <div className="text-4xl sm:text-5xl font-black mt-2 tracking-tight">
                 {formatBRL(audit.total_recoverable)}
               </div>
-              <p className="text-xs text-indigo-100 mt-2 font-medium">
-                Identificado em <strong>{audit.total_divergent_orders} pedidos</strong> com
-                cobrança acima do padrão histórico nas últimas vendas.
-              </p>
             </div>
-
-            <div className="relative z-10 mt-6 pt-4 border-t border-white/15 grid grid-cols-2 gap-3 text-xs">
-              <div>
-                <span className="text-[10px] uppercase font-bold text-indigo-200 block">
-                  Frete Cubado
-                </span>
-                <span className="text-base font-black text-white">
-                  {formatBRL(audit.frete_recoverable)}
-                </span>
-              </div>
-              <div>
-                <span className="text-[10px] uppercase font-bold text-indigo-200 block">
-                  Comissões / Estornos
-                </span>
-                <span className="text-base font-black text-white">
-                  {formatBRL(audit.comissao_recoverable + audit.devolucao_recoverable)}
-                </span>
-              </div>
-            </div>
+            <p className="text-xs text-rose-100 mt-4 font-medium">
+              Dinheiro que já é seu parado no caixa da plataforma por erro de cubagem ou comissão duplicada.
+            </p>
           </div>
 
-          {/* Gráfico Donut de Eficácia */}
-          <div className="lg:col-span-4">
-            <DonutProgress
-              percentage={78}
-              label="EFICÁCIA"
-              breakdown={[
-                {
-                  label: "Frete Cubado Acima",
-                  value: formatBRL(audit.frete_recoverable),
-                  color: "bg-indigo-600",
-                },
-                {
-                  label: "Comissão Divergente",
-                  value: formatBRL(audit.comissao_recoverable),
-                  color: "bg-violet-400",
-                },
-                {
-                  label: "Devolução / Prejuízo",
-                  value: formatBRL(audit.devolucao_recoverable),
-                  color: "bg-rose-400",
-                },
-              ]}
-            />
+          {/* Card 2: Frete Cubado */}
+          <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-soft flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">
+                  Frete Cubado / Peso
+                </span>
+                <Package className="w-4 h-4 text-amber-500" />
+              </div>
+              <div className="text-2xl font-black text-slate-900 mt-2">
+                {formatBRL(audit.frete_recoverable)}
+              </div>
+            </div>
+            <span className="text-xs text-amber-700 font-semibold mt-2">
+              Divergência de pesagem na esteira
+            </span>
           </div>
 
-          {/* Cartão Zenith Prime com Saldo Retido */}
-          <div className="lg:col-span-3">
-            <ZenithCard
-              balance={formatBRL(audit.total_recoverable)}
-              divergencesCount={audit.total_divergent_orders}
-            />
+          {/* Card 3: Comissão & Devoluções */}
+          <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-soft flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500 uppercase">
+                  Comissões & Estornos
+                </span>
+                <Percent className="w-4 h-4 text-indigo-500" />
+              </div>
+              <div className="text-2xl font-black text-slate-900 mt-2">
+                {formatBRL(audit.comissao_recoverable + audit.devolucao_recoverable)}
+              </div>
+            </div>
+            <span className="text-xs text-indigo-700 font-semibold mt-2">
+              Taxas acima da faixa e devoluções
+            </span>
           </div>
         </div>
 
         {/* =========================================================================
-            SEÇÃO 2: TABELA DE PEDIDOS DIVERGENTES (Estilo Schedule / Checklist)
+            TABELA DE PEDIDOS DIVERGENTES (Amostra Gratuita + Paywall)
             ========================================================================= */}
-        <section className="bg-white rounded-[32px] p-6 sm:p-8 border border-indigo-100/70 shadow-soft">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <section className="bg-white rounded-3xl border border-slate-200/80 shadow-soft overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-              <span className="text-[11px] font-black uppercase tracking-widest text-slate-400">
-                RELATÓRIO DETALHADO POR SKU
-              </span>
-              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-0.5">
+              <h2 className="text-lg font-extrabold text-slate-900">
                 {isPro
-                  ? `Todos os ${items.length} pedidos divergentes desbloqueados`
+                  ? `Lista Completa dos ${items.length} Pedidos com Cobrança a Maior`
                   : `Amostra de Validação (2 de ${audit.total_divergent_orders} pedidos encontrados)`}
               </h2>
+              <p className="text-xs text-slate-500 mt-0.5">
+                {isPro
+                  ? "Copie os textos de contestação e cole no chat de suporte para abrir chamados de reembolso."
+                  : "Confira as 2 linhas abaixo no seu painel para comprovar a cobrança indevida antes de assinar."}
+              </p>
             </div>
 
-            {/* Filtros em Pílulas (Inspirados nas abas 'Quotes' da imagem) */}
-            <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-2xl border border-indigo-100/60 overflow-x-auto">
+            {/* Filtros em Pílulas */}
+            <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200 self-start sm:self-auto">
               {(
                 [
                   { id: "all", label: "Todos" },
@@ -493,9 +502,9 @@ export function AuditResultPage() {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveFilter(tab.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-black tracking-wider uppercase transition cursor-pointer shrink-0 ${
+                  className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
                     activeFilter === tab.id
-                      ? "bg-indigo-600 text-white shadow-soft"
+                      ? "bg-slate-900 text-white shadow-xs"
                       : "text-slate-500 hover:text-slate-800"
                   }`}
                 >
@@ -505,30 +514,31 @@ export function AuditResultPage() {
             </div>
           </div>
 
-          {/* Lista de Pedidos em Cards / Linhas Estilizadas */}
-          <div className="space-y-3">
+          {/* Linhas da Tabela */}
+          <div className="divide-y divide-slate-100">
             {filteredItems.map((item) => {
               const badge = ERROR_BADGE[item.error_type];
 
               return (
                 <div
                   key={item.id}
-                  className="p-4 sm:p-5 rounded-2xl bg-[#F8F9FD] border border-indigo-100/70 hover:border-indigo-200 hover:bg-white transition flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs"
+                  className="p-5 hover:bg-slate-50/70 transition flex flex-col md:flex-row md:items-center justify-between gap-4"
                 >
-                  {/* Dados do Pedido */}
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-8 h-8 rounded-xl bg-white border border-indigo-100 shadow-xs flex items-center justify-center text-indigo-600 font-bold shrink-0 mt-0.5">
+                  {/* Identificação do Pedido */}
+                  <div className="flex items-start gap-3">
+                    <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0 mt-0.5">
                       #{item.row_rank}
-                    </div>
+                    </span>
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono text-sm font-black text-slate-900">
+                        <span className="font-mono text-sm font-extrabold text-slate-900">
                           #{item.order_id}
                         </span>
                         <span
-                          className={`text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full border ${badge.badgeClass}`}
+                          className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${badge.badgeClass}`}
                         >
+                          {badge.icon}
                           {badge.label}
                         </span>
                       </div>
@@ -538,8 +548,8 @@ export function AuditResultPage() {
                     </div>
                   </div>
 
-                  {/* Comparativo de Valores */}
-                  <div className="flex items-center gap-4 sm:gap-6 text-xs">
+                  {/* Comparativo de Tarifas */}
+                  <div className="flex items-center gap-6 text-xs">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">
                         Esperado
@@ -568,28 +578,28 @@ export function AuditResultPage() {
                     </div>
                   </div>
 
-                  {/* Ações (Copiar Texto e Checkboxes Pro) */}
+                  {/* Ação: Copiar Texto e Checkboxes Pro */}
                   <div className="flex items-center gap-2.5 justify-end">
                     <button
                       type="button"
                       onClick={() => handleCopyDispute(item)}
-                      className="px-3.5 py-2 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 font-bold text-xs uppercase tracking-wider shadow-xs transition flex items-center gap-1.5 cursor-pointer"
+                      className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition flex items-center gap-1.5 cursor-pointer shadow-xs"
                     >
                       {copiedRowId === item.id ? (
                         <>
-                          <Check className="w-3.5 h-3.5 text-emerald-600" />
-                          <span className="text-emerald-700">Copiado!</span>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Texto Copiado!</span>
                         </>
                       ) : (
                         <>
-                          <Copy className="w-3.5 h-3.5 text-indigo-500" />
+                          <Copy className="w-3.5 h-3.5" />
                           <span>Copiar Contestação</span>
                         </>
                       )}
                     </button>
 
                     {isPro && (
-                      <div className="flex items-center gap-2 pl-2 text-xs font-bold text-slate-600 border-l border-indigo-100">
+                      <div className="flex items-center gap-3 pl-2 text-xs font-semibold text-slate-600 border-l border-slate-200">
                         <label className="inline-flex items-center gap-1 cursor-pointer">
                           <input
                             type="checkbox"
@@ -606,7 +616,7 @@ export function AuditResultPage() {
                             onChange={() => handleToggleStatus(item, "is_refunded")}
                             className="rounded text-emerald-600"
                           />
-                          <span>Pago</span>
+                          <span>Reembolsado</span>
                         </label>
                       </div>
                     )}
@@ -617,63 +627,62 @@ export function AuditResultPage() {
           </div>
 
           {/* =========================================================================
-              SEÇÃO BORRADA + PAYWALL CONVERSÃO (Renderizado se !isPro)
+              SEÇÃO BORRADA + PAYWALL (Trava RLS Anti-Burla)
               ========================================================================= */}
           {!isPro && blurredAmounts.length > 0 && (
-            <div className="relative mt-4 pt-4 border-t border-indigo-50">
-              {/* Linhas Borradas com valores reais do array blurred_preview_amounts */}
-              <div className="space-y-3 select-none pointer-events-none filter blur-xs opacity-50">
-                {blurredAmounts.slice(0, 6).map((amount, idx) => (
+            <div className="relative border-t border-slate-100">
+              {/* Linhas borradas usando apenas os valores R$ do array blurred_preview_amounts */}
+              <div className="divide-y divide-slate-100 select-none pointer-events-none filter blur-xs opacity-50">
+                {blurredAmounts.slice(0, 7).map((amount, idx) => (
                   <div
                     key={idx}
-                    className="p-4 rounded-2xl bg-[#F8F9FD] border border-indigo-100 flex items-center justify-between"
+                    className="p-5 flex items-center justify-between text-xs"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-white border text-slate-400 flex items-center justify-center font-bold text-xs">
+                      <span className="w-8 h-8 rounded-xl bg-slate-100 text-slate-400 font-bold flex items-center justify-center">
                         #{idx + 3}
-                      </div>
+                      </span>
                       <div>
                         <div className="font-mono text-sm font-bold text-slate-800">
                           #2000094827{idx}
                         </div>
-                        <div className="text-xs text-slate-400">SKU-OCULTO-{idx + 3}</div>
+                        <div className="text-slate-400">SKU-OCULTO-{idx + 3}</div>
                       </div>
                     </div>
-                    <div className="font-black text-emerald-600">
+                    <div className="text-base font-black text-emerald-600">
                       +{formatBRL(amount)}
                     </div>
-                    <div className="px-3 py-1.5 rounded-xl bg-indigo-100 text-indigo-600 text-xs font-bold">
-                      Copiar Texto
+                    <div className="px-3 py-1.5 rounded-xl bg-slate-200 text-slate-600 font-bold text-xs">
+                      Copiar Contestação
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Card Flutuante de Conversão em Vidro Fosco */}
-              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-white/60 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full bg-rose-50 text-rose-600 border border-rose-200/60 mb-2">
+              {/* Card de Conversão sobre o Blur */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-white/70 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center">
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 mb-2">
                   <Lock className="w-3.5 h-3.5" />
-                  +{blurredAmounts.length} pedidos ocultos com dinheiro retido
+                  +{blurredAmounts.length} pedidos ocultos aguardando contestação
                 </span>
 
-                <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight max-w-lg">
-                  Recupere esses {formatBRL(audit.total_recoverable)} agora
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight max-w-lg">
+                  Recupere esses {formatBRL(audit.total_recoverable)} ainda esta semana
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 max-w-md mt-1.5">
-                  Desbloqueie a lista completa com os números dos pedidos, SKUs e os textos
-                  técnicos prontos para abrir chamado no suporte do Mercado Livre e Shopee.
+                <p className="text-xs sm:text-sm text-slate-600 max-w-md mt-2 leading-relaxed">
+                  Desbloqueie o número exato de todos os {audit.total_divergent_orders} pedidos, os SKUs afetados e as mensagens técnicas formatadas para abrir chamado no suporte.
                 </p>
 
                 <button
                   type="button"
                   onClick={() => setIsCheckoutOpen(true)}
-                  className="mt-5 py-4 px-8 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-glow-violet transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
+                  className="mt-6 py-4 px-8 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer"
                 >
                   <span>Desbloquear Relatório Completo por R$ 67,00/mês</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
-                <p className="text-[11px] text-slate-400 mt-2 font-medium">
-                  Aprovação instantânea via Pix • Cancele quando quiser com 1 clique
+                <p className="text-xs text-slate-400 mt-2.5">
+                  Liberação automática em segundos via Pix • Cancele quando quiser com 1 clique
                 </p>
               </div>
             </div>
@@ -682,37 +691,31 @@ export function AuditResultPage() {
       </main>
 
       {/* =========================================================================
-          MODAL DE CHECKOUT PIX TRANSPARENTE (Estilo Neumorphic Soft)
+          MODAL DE CHECKOUT PIX TRANSPARENTE (Asaas)
           ========================================================================= */}
       {isCheckoutOpen && (
         <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-[32px] max-w-md w-full p-6 sm:p-8 shadow-soft-lg border border-indigo-100/80 relative">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 relative">
             <button
               type="button"
               onClick={() => setIsCheckoutOpen(false)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-black cursor-pointer"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold cursor-pointer"
             >
               ✕
             </button>
 
             {!pixData ? (
               <>
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-                    PAGAMENTO INSTANTÂNEO
-                  </span>
-                </div>
-                <h3 className="text-xl font-black text-slate-900 tracking-tight">
+                <h3 className="text-xl font-extrabold text-slate-900">
                   Desbloquear Auditoria Completa
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  Plano Pro Mensal (R$ 67,00) • Desbloqueio imediato na tela via Pix
+                  Plano Pro Mensal (R$ 67,00) • Auditorias ilimitadas de Mercado Livre e Shopee
                 </p>
 
                 <form onSubmit={handleGeneratePix} className="mt-5 space-y-3.5">
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
                       Nome Completo
                     </label>
                     <input
@@ -721,13 +724,13 @@ export function AuditResultPage() {
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="Ex: Carlos Eduardo Silva"
-                      className="w-full px-4 py-2.5 rounded-xl border border-indigo-100 bg-[#F8F9FD] text-sm focus:outline-indigo-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
-                      Melhor E-mail
+                    <label className="block text-xs font-bold text-slate-700 mb-1">
+                      Melhor E-mail (seu acesso)
                     </label>
                     <input
                       type="email"
@@ -735,13 +738,13 @@ export function AuditResultPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="voce@sualoja.com.br"
-                      className="w-full px-4 py-2.5 rounded-xl border border-indigo-100 bg-[#F8F9FD] text-sm focus:outline-indigo-500"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
                         WhatsApp
                       </label>
                       <input
@@ -750,11 +753,11 @@ export function AuditResultPage() {
                         value={whatsapp}
                         onChange={(e) => setWhatsapp(e.target.value)}
                         placeholder="(11) 99999-9999"
-                        className="w-full px-4 py-2.5 rounded-xl border border-indigo-100 bg-[#F8F9FD] text-sm focus:outline-indigo-500"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
+                      <label className="block text-xs font-bold text-slate-700 mb-1">
                         CPF ou CNPJ
                       </label>
                       <input
@@ -763,13 +766,13 @@ export function AuditResultPage() {
                         value={cpfCnpj}
                         onChange={(e) => setCpfCnpj(e.target.value)}
                         placeholder="000.000.000-00"
-                        className="w-full px-4 py-2.5 rounded-xl border border-indigo-100 bg-[#F8F9FD] text-sm focus:outline-indigo-500"
+                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
                       />
                     </div>
                   </div>
 
                   {checkoutError && (
-                    <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700">
+                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
                       {checkoutError}
                     </div>
                   )}
@@ -777,7 +780,7 @@ export function AuditResultPage() {
                   <button
                     type="submit"
                     disabled={checkoutLoading}
-                    className="w-full py-3.5 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-wider shadow-glow-violet transition cursor-pointer flex items-center justify-center gap-2 mt-2"
+                    className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-md transition cursor-pointer flex items-center justify-center gap-2 mt-2"
                   >
                     {checkoutLoading ? (
                       "Gerando Pix..."
@@ -792,10 +795,10 @@ export function AuditResultPage() {
               </>
             ) : (
               <div className="text-center py-2">
-                <span className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-indigo-700 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200/60 animate-pulse">
-                  ● Aguardando Pagamento Pix...
+                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full animate-pulse">
+                  ● Aguardando pagamento Pix...
                 </span>
-                <h3 className="text-lg font-black text-slate-900 mt-3">
+                <h3 className="text-lg font-extrabold text-slate-900 mt-3">
                   Escaneie o QR Code no seu banco
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
@@ -803,7 +806,7 @@ export function AuditResultPage() {
                 </p>
 
                 <div className="my-4 flex justify-center">
-                  <div className="p-3 rounded-2xl bg-white border border-indigo-100 shadow-soft">
+                  <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
                     <img
                       src={`data:image/png;base64,${pixData.qrCodeBase64}`}
                       alt="QR Code Pix"
@@ -819,7 +822,7 @@ export function AuditResultPage() {
                     setPixCopied(true);
                     setTimeout(() => setPixCopied(false), 3000);
                   }}
-                  className="w-full py-3 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {pixCopied ? (
                     <>
@@ -839,8 +842,10 @@ export function AuditResultPage() {
         </div>
       )}
 
-      {/* Floating Bottom Navigation */}
-      <BottomNav />
+      {/* Rodapé Corporativo B2B */}
+      <footer className="mt-12 border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        ConfereAI • Auditoria Financeira de Repasses para E-commerce
+      </footer>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-# Confere AI (AuditaSeller)
+# ConfereAI
 
 Sistema de auditoria de repasses financeiros para lojistas de **Mercado Livre** e **Shopee**.
 Identifica cobranças indevidas de frete cubado, comissões fora da tabela e devoluções com saldo negativo através do cruzamento SKU a SKU.
