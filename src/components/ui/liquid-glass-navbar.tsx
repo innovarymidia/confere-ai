@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Zap, ArrowRight, User, ShieldCheck, ArrowLeft } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
+import { MercadoLivreLogo, ShopeeLogo } from "./marketplace-logos";
 
 interface NavItem {
   label: string;
@@ -140,13 +141,23 @@ export function LiquidGlassNavbar({
         ) : (
           <div className="hidden md:flex items-center gap-2 px-3.5 py-1 rounded-full bg-slate-50 border border-slate-200/80 text-xs">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-            <span className="font-bold text-slate-700">Auditoria Segura no Navegador</span>
+            <span className="font-bold text-slate-700">Conferência Privada e Segura</span>
             {platform && (
               <>
                 <span className="w-1 h-1 rounded-full bg-slate-300" />
-                <span className="font-extrabold text-indigo-600 uppercase text-[10px]">
-                  {platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
-                </span>
+                <div className="flex items-center gap-1.5 font-extrabold text-slate-800 text-[11px]">
+                  {platform === "mercadolivre" ? (
+                    <>
+                      <MercadoLivreLogo className="w-4 h-4 rounded-xs" />
+                      <span>Mercado Livre</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShopeeLogo className="w-4 h-4 rounded-xs" />
+                      <span>Shopee</span>
+                    </>
+                  )}
+                </div>
               </>
             )}
           </div>

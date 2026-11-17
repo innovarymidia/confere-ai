@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { type MarketplacePlatform } from "@/services/auditEngine";
 import { cn } from "@/lib/utils";
+import { MercadoLivreLogo, ShopeeLogo } from "./marketplace-logos";
 
 interface MarketplaceProductHeroProps {
   platform: MarketplacePlatform;
@@ -81,7 +82,7 @@ export function MarketplaceProductHero({
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-indigo-100 shadow-xs">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
             <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-700">
-              Versão 2026 • Auditoria SKU a SKU
+              Tabelas Oficiais 2026 • Conferência Pedido a Pedido
             </span>
           </div>
 
@@ -94,7 +95,7 @@ export function MarketplaceProductHero({
           </h1>
 
           <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-            Suba seu extrato de repasses. O motor inteligente do <strong className="text-slate-900 font-bold">ConfereAI</strong> compara cada pedido contra o histórico do mesmo anúncio e identifica erros de cubagem e taxas duplicadas na hora.
+            Envie seu extrato de vendas e repasses. O <strong className="text-slate-900 font-bold">ConfereAI</strong> confere cada pedido contra o valor correto do anúncio e mostra exatamente onde você pagou frete ou taxas a mais.
           </p>
 
           {/* Social Proof Mini-Card */}
@@ -117,15 +118,15 @@ export function MarketplaceProductHero({
                 <span className="text-xs font-black text-slate-800 ml-1">4.9/5</span>
               </div>
               <span className="text-[11px] text-slate-500 font-medium block">
-                + de R$ 340.000 auditados por lojistas neste mês
+                + de R$ 340.000 em estornos identificados para lojistas neste mês
               </span>
             </div>
           </div>
 
-          {/* Seletor de Ângulos / Vazamentos (Inspirado nos ângulos do produto sneaker) */}
+          {/* Seletor de Erros Frequentes */}
           <div className="pt-2">
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-2">
-              Selecione o tipo de auditoria do scanner:
+              Veja onde os marketplaces costumam cobrar a mais:
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
               {angles.map((ang) => (
@@ -154,20 +155,20 @@ export function MarketplaceProductHero({
         </div>
 
         {/* =========================================================================
-            COLUNA DIREITA: O TERMINAL DO PRODUTO (Estágio Central Dropzone)
+            COLUNA DIREITA: ÁREA DE ENVIO DE EXTRATO (Dropzone)
             ========================================================================= */}
         <div className="lg:col-span-6">
           <div className="relative bg-white rounded-3xl sm:rounded-[32px] p-5 sm:p-8 border border-slate-200/90 shadow-soft-lg">
             {/* Halo de iluminação de fundo */}
             <div className="absolute -top-12 -right-12 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
-            {/* Cabeçalho do Terminal: Seletor de Plataforma */}
+            {/* Cabeçalho: Escolha da Plataforma com Logos Oficiais */}
             <div className="relative z-10 flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                1. Selecione a plataforma:
+                1. Escolha onde você vende:
               </span>
               <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-                Client-Side Seguro
+                100% Seguro e Privado
               </span>
             </div>
 
@@ -176,15 +177,18 @@ export function MarketplaceProductHero({
                 type="button"
                 onClick={() => onPlatformChange("mercadolivre")}
                 className={cn(
-                  "py-3 px-4 rounded-2xl font-black text-xs sm:text-sm tracking-wide border-2 transition cursor-pointer flex items-center justify-center gap-2",
+                  "py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm tracking-wide border-2 transition cursor-pointer flex items-center justify-center gap-2.5",
                   platform === "mercadolivre"
-                    ? "bg-amber-400 text-slate-950 border-amber-500 shadow-xs"
+                    ? "bg-amber-400 text-slate-950 border-amber-500 shadow-xs ring-2 ring-amber-300/50"
                     : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                 )}
               >
+                <div className="w-7 h-7 rounded-lg bg-white/90 p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
+                  <MercadoLivreLogo className="w-full h-full" />
+                </div>
                 <span>Mercado Livre</span>
                 {platform === "mercadolivre" && (
-                  <span className="w-2 h-2 rounded-full bg-slate-950" />
+                  <span className="w-2 h-2 rounded-full bg-slate-950 ml-auto hidden sm:inline-block" />
                 )}
               </button>
 
@@ -192,20 +196,23 @@ export function MarketplaceProductHero({
                 type="button"
                 onClick={() => onPlatformChange("shopee")}
                 className={cn(
-                  "py-3 px-4 rounded-2xl font-black text-xs sm:text-sm tracking-wide border-2 transition cursor-pointer flex items-center justify-center gap-2",
+                  "py-3 px-3 sm:px-4 rounded-2xl font-black text-xs sm:text-sm tracking-wide border-2 transition cursor-pointer flex items-center justify-center gap-2.5",
                   platform === "shopee"
-                    ? "bg-orange-500 text-white border-orange-600 shadow-xs"
+                    ? "bg-[#EE4D2D] text-white border-[#D73211] shadow-xs ring-2 ring-orange-300/50"
                     : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                 )}
               >
+                <div className="w-7 h-7 rounded-lg bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
+                  <ShopeeLogo className="w-full h-full" />
+                </div>
                 <span>Shopee</span>
                 {platform === "shopee" && (
-                  <span className="w-2 h-2 rounded-full bg-white" />
+                  <span className="w-2 h-2 rounded-full bg-white ml-auto hidden sm:inline-block" />
                 )}
               </button>
             </div>
 
-            {/* Área Drag & Drop Principal do Scanner */}
+            {/* Área Principal de Envio do Extrato */}
             <label
               onDragOver={(e) => {
                 e.preventDefault();
@@ -240,7 +247,7 @@ export function MarketplaceProductHero({
                   <div>
                     <p className="text-sm font-black text-slate-900 tracking-tight">{loadingStep}</p>
                     <p className="text-[11px] text-indigo-600 font-bold mt-0.5">
-                      Auditoria client-side segura no seu navegador
+                      Conferência automática e privada no seu navegador
                     </p>
                   </div>
 
@@ -249,32 +256,43 @@ export function MarketplaceProductHero({
                     <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 h-full rounded-full animate-pulse w-full" />
                   </div>
 
-                  {/* Micro-contadores de status da varredura */}
+                  {/* Micro-contadores de status da conferência */}
                   <div className="grid grid-cols-3 gap-2 pt-1 text-center">
                     <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
-                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Varredura</span>
-                      <span className="text-xs font-black text-slate-800">Linha a Linha</span>
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Conferência</span>
+                      <span className="text-xs font-black text-slate-800">Pedido a Pedido</span>
                     </div>
                     <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
-                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Tabelas</span>
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Tabela</span>
                       <span className="text-xs font-black text-indigo-600">Regras 2026</span>
                     </div>
                     <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
-                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Seguranca</span>
-                      <span className="text-xs font-black text-emerald-600">100% Local</span>
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Segurança</span>
+                      <span className="text-xs font-black text-emerald-600">Dados Seguros</span>
                     </div>
                   </div>
                 </div>
               ) : (
                 <>
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold mb-3 border border-indigo-100 shadow-xs">
-                    <UploadCloud className="w-6 h-6" />
+                  <div className="flex items-center gap-2.5 mb-3">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold border border-indigo-100 shadow-xs">
+                      <UploadCloud className="w-6 h-6" />
+                    </div>
+                    {platform === "mercadolivre" ? (
+                      <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center p-1.5 shadow-xs">
+                        <MercadoLivreLogo className="w-full h-full" />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-2xl bg-orange-50 border border-orange-200/80 flex items-center justify-center p-1.5 shadow-xs">
+                        <ShopeeLogo className="w-full h-full" />
+                      </div>
+                    )}
                   </div>
                   <span className="text-base font-extrabold text-slate-900">
-                    Arraste sua planilha CSV ou XLSX
+                    Solte aqui o extrato baixado do {platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
                   </span>
-                  <span className="text-xs text-slate-500 mt-1">
-                    Extrato de liberações financeiras do {platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
+                  <span className="text-xs text-slate-500 mt-1 font-medium">
+                    Relatório oficial de vendas e repasses (.xlsx ou .csv)
                   </span>
                 </>
               )}

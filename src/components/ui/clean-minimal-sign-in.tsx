@@ -98,10 +98,10 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
           </span>
         </Link>
         <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
-          Acessar Minhas Auditorias
+          Acessar Minhas Conferências
         </h1>
         <p className="text-xs text-slate-500 mt-1 font-medium">
-          Consulte seus relatórios extraídos, SKUs auditados e textos de contestação.
+          Consulte seus relatórios salvos e veja o dinheiro recuperado do Mercado Livre e Shopee.
         </p>
       </div>
 
@@ -110,7 +110,7 @@ export function CleanMinimalSignIn({ onSuccess, className }: CleanMinimalSignInP
           <ShieldCheck className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
           <h3 className="font-extrabold text-sm text-emerald-900">Link de Acesso Enviado!</h3>
           <p className="text-xs text-emerald-700 mt-1">
-            Enviamos um link mágico para <strong>{email}</strong>. Clique nele para entrar diretamente sem precisar de senha.
+            Enviamos um link de acesso para <strong>{email}</strong>. Clique nele para entrar diretamente sem precisar de senha.
           </p>
           <button
             type="button"

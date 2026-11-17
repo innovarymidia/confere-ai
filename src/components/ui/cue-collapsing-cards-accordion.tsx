@@ -3,6 +3,7 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MercadoLivreLogo, ShopeeLogo } from "./marketplace-logos";
 
 export interface RefundEvidenceCard {
   id: string;
@@ -23,10 +24,10 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     niche: "Moda e Vestuário",
     recoveredAmount: "R$ 842,50",
     platform: "Mercado Livre",
-    divergenceType: "Frete Cubado Corrigido",
+    divergenceType: "Frete Cobrado a Mais",
     ordersCount: 29,
-    timeframe: "Reembolsado em 48h",
-    quote: "A transportadora estava pesando vestidos de 250g como se fossem 1,5 kg. O suporte do ML creditou o estorno na hora.",
+    timeframe: "Dinheiro na conta em 48h",
+    quote: "A transportadora estava pesando vestidos de 250g como se fossem 1,5 kg. O suporte do Mercado Livre creditou o estorno na hora.",
     badge: "Estorno Concluído",
     accentGradient: "from-amber-500/20 via-indigo-600/10 to-transparent",
   },
@@ -35,10 +36,10 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     niche: "Eletrônicos e Acessórios",
     recoveredAmount: "R$ 1.290,00",
     platform: "Shopee",
-    divergenceType: "Erro de Balança em Lote",
+    divergenceType: "Peso Cobrado Errado",
     ordersCount: 42,
     timeframe: "Crédito na Carteira",
-    quote: "Subi a planilha de 60 dias da Shopee e achou mais de mil reais parados. Copiei o texto gerado pelo ConfereAI e abriram chamado.",
+    quote: "Subi a planilha de 60 dias da Shopee e achou mais de mil reais parados. Copiei a mensagem gerada pelo ConfereAI e devolveram o valor.",
     badge: "100% Recuperado",
     accentGradient: "from-orange-500/20 via-indigo-600/10 to-transparent",
   },
@@ -47,10 +48,10 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     niche: "Casa e Decoração",
     recoveredAmount: "R$ 640,00",
     platform: "Mercado Livre",
-    divergenceType: "Frete Reverso Anulado",
+    divergenceType: "Frete de Devolução Anulado",
     ordersCount: 14,
     timeframe: "Devolução Revertida",
-    quote: "Comprador devolveu por arrependimento e cobraram o frete de volta da minha conta. Reclamei com a prova da planilha e estornaram.",
+    quote: "Comprador devolveu por arrependimento e cobraram o frete de volta da minha conta. Reclamei com o texto do ConfereAI e estornaram.",
     badge: "Frete Anulado",
     accentGradient: "from-emerald-500/20 via-indigo-600/10 to-transparent",
   },
@@ -59,7 +60,7 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     niche: "Autopeças e Ferramentas",
     recoveredAmount: "R$ 2.450,00",
     platform: "Mercado Livre",
-    divergenceType: "Comissões Fora da Faixa",
+    divergenceType: "Comissão Acima do Combinado",
     ordersCount: 68,
     timeframe: "Conta Gold",
     quote: "Com a mudança das tabelas de 2026, vários anúncios continuaram cobrando tarifa antiga a maior. O ConfereAI pegou cada centavo.",
@@ -71,10 +72,10 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     niche: "Cosméticos e Skincare",
     recoveredAmount: "R$ 915,00",
     platform: "Shopee",
-    divergenceType: "Taxas de Campanha Não Ativas",
+    divergenceType: "Taxas Indevidas Estornadas",
     ordersCount: 35,
     timeframe: "Estorno via Chat",
-    quote: "O suporte pediu o número exato dos pedidos com a diferença calculada. Em 2 dias úteis o saldo foi liberado para saque.",
+    quote: "O suporte pediu a lista dos pedidos com o valor da diferença. Em 2 dias úteis o saldo foi liberado para saque na minha conta.",
     badge: "Reembolsado",
     accentGradient: "from-rose-500/20 via-indigo-600/10 to-transparent",
   },
@@ -98,13 +99,13 @@ export function CueCollapsingCardsAccordion({
       <div className="text-center max-w-2xl mx-auto mb-8">
         <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs mb-3">
           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-          Provas Reais de Reembolso
+          Dinheiro de Volta no Caixa
         </span>
         <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-          Saldos que outros vendedores recuperaram
+          Valores que outros lojistas receberam de volta
         </h2>
         <p className="mt-2 text-sm text-slate-600 font-medium">
-          Passe o mouse ou toque nos cartões para ver os estornos creditados diretamente nas contas de quem já auditou.
+          Toque nos cartões abaixo para ver os valores que caíram de volta na conta de quem conferiu os extratos com o ConfereAI.
         </p>
       </div>
 
@@ -134,17 +135,22 @@ export function CueCollapsingCardsAccordion({
                 )}
               />
 
-              {/* Topo do Card */}
+              {/* Topo do Card com Logo da Plataforma */}
               <div className={cn("relative z-10 flex items-center justify-between", !isActive && "md:flex")}>
                 <span
                   className={cn(
-                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border transition-colors shrink-0",
+                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full border transition-colors shrink-0 flex items-center gap-1.5",
                     isActive
-                      ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
-                      : "bg-slate-100 text-slate-600 border-slate-200"
+                      ? "bg-slate-900 text-white border-slate-900 shadow-xs"
+                      : "bg-white text-slate-700 border-slate-200"
                   )}
                 >
-                  {card.platform}
+                  {card.platform === "Mercado Livre" ? (
+                    <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
+                  ) : (
+                    <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
+                  )}
+                  <span>{card.platform}</span>
                 </span>
 
                 {isActive ? (

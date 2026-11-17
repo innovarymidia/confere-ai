@@ -16,6 +16,7 @@ import {
 import { supabase } from "../lib/supabaseClient";
 import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
 import { AnalyticsBento } from "../components/ui/analytics-bento";
+import { MercadoLivreLogo, ShopeeLogo } from "../components/ui/marketplace-logos";
 
 interface AuditSummary {
   id: string;
@@ -303,21 +304,21 @@ export function AuditResultPage() {
   const handleExportSpreadsheet = () => {
     if (!items.length) return;
     const rows = items.map((i) => ({
-      "Posição": i.row_rank,
+      "Item": i.row_rank,
       "ID do Pedido": i.order_id,
-      "SKU": i.sku,
-      "Tipo de Divergência": ERROR_BADGE[i.error_type]?.label || i.error_type,
-      "Valor Esperado (R$)": i.expected_amount,
-      "Valor Cobrado (R$)": i.charged_amount,
-      "Diferença a Recuperar (R$)": i.recoverable_amount,
-      "Status Chamado": i.is_refunded ? "Reembolsado" : i.is_contested ? "Contestado" : "Pendente",
-      "Texto de Contestação para o Suporte": i.dispute_text,
+      "Produto (SKU)": i.sku,
+      "Motivo do Erro": ERROR_BADGE[i.error_type]?.label || i.error_type,
+      "Valor Correto (R$)": i.expected_amount,
+      "Valor Cobrado a Mais (R$)": i.charged_amount,
+      "Diferença a Devolver (R$)": i.recoverable_amount,
+      "Status da Cobrança": i.is_refunded ? "Reembolsado" : i.is_contested ? "Contestado no Suporte" : "Pendente",
+      "Mensagem Pronta para o Suporte": i.dispute_text,
     }));
 
     const ws = XLSX.utils.json_to_sheet(rows);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Contestacoes");
-    XLSX.writeFile(wb, `contestacoes-${audit?.platform || "marketplace"}-${auditId?.slice(0, 8)}.xlsx`);
+    XLSX.writeFile(wb, `devolucoes-${audit?.platform || "marketplace"}-${auditId?.slice(0, 8)}.xlsx`);
   };
 
   const handleToggleStatus = async (
@@ -388,7 +389,7 @@ export function AuditResultPage() {
             <span className="flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 shrink-0" />
               <span>
-                Pagamento Pix confirmado! Todos os {audit.total_divergent_orders} pedidos e textos técnicos de contestação foram desbloqueados.
+                Pagamento confirmado! Todos os {audit.total_divergent_orders} pedidos e textos prontos para pedir o estorno no suporte foram liberados.
               </span>
             </span>
             <button
@@ -401,25 +402,35 @@ export function AuditResultPage() {
         )}
 
         {/* =========================================================================
-            CABEÇALHO DA AUDITORIA
+            CABEÇALHO DA CONFERÊNCIA
             ========================================================================= */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                Relatório de Liberações Financeiras
+                Relatório de Valores a Recuperar
               </span>
               <span className="text-xs font-bold text-slate-300">/</span>
-              <span className="text-xs font-extrabold text-indigo-600 uppercase">
-                {audit.platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
-              </span>
+              <div className="flex items-center gap-1.5 font-extrabold text-slate-800 text-xs">
+                {audit.platform === "mercadolivre" ? (
+                  <>
+                    <MercadoLivreLogo className="w-4 h-4 rounded-xs" />
+                    <span>Mercado Livre</span>
+                  </>
+                ) : (
+                  <>
+                    <ShopeeLogo className="w-4 h-4 rounded-xs" />
+                    <span>Shopee</span>
+                  </>
+                )}
+              </div>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
-              Diagnóstico de Cobranças Indevidas
+              Valores Cobrados a Mais nas Suas Vendas
             </h1>
             <p className="text-sm text-slate-600 mt-1">
-              Foram analisadas <strong>{audit.total_orders_analyzed} vendas</strong>, encontrando{" "}
-              <strong className="text-rose-600">{audit.total_divergent_orders} pedidos</strong> com cobrança acima da tabela ou do histórico padrão do anúncio.
+              Conferimos <strong>{audit.total_orders_analyzed} vendas</strong> da sua loja e encontramos{" "}
+              <strong className="text-rose-600">{audit.total_divergent_orders} pedidos</strong> onde o marketplace cobrou mais do que deveria.
             </p>
           </div>
 
@@ -453,13 +464,13 @@ export function AuditResultPage() {
             <div>
               <h2 className="text-lg font-extrabold text-slate-900">
                 {isPro
-                  ? `Lista Completa dos ${items.length} Pedidos com Cobrança a Maior`
-                  : `Amostra de Validação (2 de ${audit.total_divergent_orders} pedidos encontrados)`}
+                  ? `Lista Completa dos ${items.length} Pedidos com Cobrança a Mais`
+                  : `Exemplo de Comprovação (2 de ${audit.total_divergent_orders} pedidos encontrados)`}
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
                 {isPro
-                  ? "Copie os textos de contestação e cole no chat de suporte para abrir chamados de reembolso."
-                  : "Confira as 2 linhas abaixo no seu painel para comprovar a cobrança indevida antes de assinar."}
+                  ? "Copie os textos de contestação e envie no chat de suporte do marketplace para receber o estorno."
+                  : "Abra esses 2 pedidos no painel do marketplace para conferir você mesmo a cobrança a maior antes de liberar os demais."}
               </p>
             </div>
 
@@ -652,14 +663,14 @@ export function AuditResultPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-white/70 backdrop-blur-xs flex flex-col items-center justify-center p-6 text-center">
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200 mb-2">
                   <Lock className="w-3.5 h-3.5" />
-                  +{blurredAmounts.length} pedidos ocultos aguardando contestação
+                  +{blurredAmounts.length} pedidos da sua lista aguardando liberação do estorno
                 </span>
 
                 <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight max-w-lg">
-                  Recupere esses {formatBRL(audit.total_recoverable)} ainda esta semana
+                  Receba esses {formatBRL(audit.total_recoverable)} de volta no seu caixa
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-600 max-w-md mt-2 leading-relaxed">
-                  Desbloqueie o número exato de todos os {audit.total_divergent_orders} pedidos, os SKUs afetados e as mensagens técnicas formatadas para abrir chamado no suporte.
+                  Desbloqueie o número de todos os {audit.total_divergent_orders} pedidos, os produtos afetados e o texto pronto de contestação para pedir o estorno imediato no suporte.
                 </p>
 
                 <button
@@ -696,10 +707,10 @@ export function AuditResultPage() {
             {!pixData ? (
               <>
                 <h3 className="text-xl font-extrabold text-slate-900">
-                  Desbloquear Auditoria Completa
+                  Liberar Lista Completa e Textos de Reembolso
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  Plano Pro Mensal (R$ 67,00): Auditorias ilimitadas de Mercado Livre e Shopee
+                  Plano Pro Mensal (R$ 67,00): Conferências ilimitadas no Mercado Livre e Shopee
                 </p>
 
                 <form onSubmit={handleGeneratePix} className="mt-5 space-y-3.5">

@@ -26,14 +26,14 @@ export function LandingPage() {
 
   const processFile = async (file: File) => {
     setErrorMsg(null);
-    setLoadingStep("Lendo transações e identificando cabeçalhos...");
+    setLoadingStep("Lendo seu extrato de vendas e pedidos...");
 
     try {
       const timer1 = setTimeout(() => {
-        setLoadingStep("Agrupando histórico de envio e cubagem por SKU...");
+        setLoadingStep("Comparando o frete cobrado em cada produto...");
       }, 450);
       const timer2 = setTimeout(() => {
-        setLoadingStep("Detectando tarifas fora da tabela e devoluções...");
+        setLoadingStep("Localizando cobranças indevidas e valores a recuperar...");
       }, 900);
 
       const result = await runMarketplaceAuditAndSave(file, platform, supabase);
@@ -46,7 +46,7 @@ export function LandingPage() {
       setErrorMsg(
         err instanceof Error
           ? err.message
-          : "Não foi possível processar a planilha. Verifique se o arquivo é um CSV ou XLSX oficial."
+          : "Não foi possível ler a planilha. Envie o extrato oficial baixado diretamente do painel do Mercado Livre ou Shopee."
       );
     }
   };
@@ -89,7 +89,7 @@ export function LandingPage() {
               Onde o lojista perde de 2% a 7% do lucro sem ver?
             </h2>
             <p className="text-sm text-slate-600 mt-2 font-medium">
-              Os ERPs tradicionais mostram quanto você vendeu, mas não conferem se a transportadora e a plataforma descontaram as tarifas exatas da tabela.
+              Os sistemas de gestão mostram quanto você faturou, mas nenhum confere se o marketplace descontou a comissão e o frete corretos na hora de pagar.
             </p>
           </div>
 
@@ -102,10 +102,10 @@ export function LandingPage() {
                 Vazamento 01
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Erro de Cubagem e Peso no Frete
+                Erro de Peso e Medida no Frete
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Sensores ópticos e balanças das esteiras de triagem frequentemente registram volume duplicado ou peso excedente, cobrando frete de 3 kg num produto de 300g. O ConfereAI cruza com o percentil 35% do SKU e aponta a divergência.
+                Nos centros de triagem e envio, produtos pequenos são pesados com pressa e registrados com peso muito acima do real, cobrando frete de 3 kg num produto de 300g. O ConfereAI cruza com o frete padrão do seu anúncio e identifica quando você pagou a mais.
               </p>
             </div>
 
@@ -117,10 +117,10 @@ export function LandingPage() {
                 Vazamento 02
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Tarifa Operacional e Degraus 2026
+                Comissão e Tarifas Fora da Tabela 2026
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Com as novas tabelas de 2026 e faixas de preço da Shopee e Mercado Livre, pequenas alterações de centavos no anúncio aplicam alíquotas erradas ou taxas fixas duplicadas que corroem sua margem de contribuição.
+                Com as mudanças de tabelas na Shopee e no Mercado Livre, pequenas variações no preço de venda fazem a plataforma cobrar comissão acima da alíquota correta ou aplicar tarifa fixa duplicada sem você notar.
               </p>
             </div>
 
@@ -132,10 +132,10 @@ export function LandingPage() {
                 Vazamento 03
               </span>
               <h3 className="text-base font-extrabold text-slate-900 mt-3">
-                Devoluções com Saldo Líquido Negativo
+                Devoluções que Deixaram Prejuízo
               </h3>
               <p className="text-xs text-slate-600 mt-2 leading-relaxed font-medium">
-                Pedidos devolvidos por arrependimento do comprador que fecham com saldo negativo na sua conta devido à cobrança indevida de frete reverso ou estorno incompleto da comissão do marketplace.
+                Vendas devolvidas por arrependimento do comprador que terminaram com saldo negativo no seu extrato devido à cobrança indevida de frete reverso ou falta de estorno integral da comissão pelo marketplace.
               </p>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  Package,
   Calendar,
   ArrowRight,
   ShieldCheck,
@@ -11,6 +10,7 @@ import {
 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
+import { MercadoLivreLogo, ShopeeLogo } from "../components/ui/marketplace-logos";
 
 interface SavedAudit {
   id: string;
@@ -150,13 +150,13 @@ export function HistoryPage() {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/90 shadow-soft flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">
-              Painel do Lojista
+              Minha Conta de Vendedor
             </span>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Minhas Auditorias
+              Minhas Conferências
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
-              Consulte seus relatorios de repasses extraidos e abra os chamados de estorno.
+              Consulte suas conferências de vendas e veja quanto dinheiro você tem para receber de volta.
             </p>
           </div>
 
@@ -246,19 +246,33 @@ export function HistoryPage() {
                 >
                   <div className="flex items-start gap-4">
                     <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold shrink-0 border ${
+                      className={`w-12 h-12 rounded-2xl flex items-center justify-center p-1.5 shrink-0 border ${
                         item.platform === "mercadolivre"
-                          ? "bg-amber-50 text-amber-900 border-amber-200/80"
-                          : "bg-orange-50 text-orange-900 border-orange-200/80"
+                          ? "bg-amber-50 border-amber-200/80"
+                          : "bg-orange-50 border-orange-200/80"
                       }`}
                     >
-                      <Package className="w-6 h-6" />
+                      {item.platform === "mercadolivre" ? (
+                        <MercadoLivreLogo className="w-full h-full" />
+                      ) : (
+                        <ShopeeLogo className="w-full h-full" />
+                      )}
                     </div>
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700">
-                          {item.platform === "mercadolivre" ? "Mercado Livre" : "Shopee"}
+                        <span className="text-xs font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-850 flex items-center gap-1.5">
+                          {item.platform === "mercadolivre" ? (
+                            <>
+                              <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
+                              <span>Mercado Livre</span>
+                            </>
+                          ) : (
+                            <>
+                              <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
+                              <span>Shopee</span>
+                            </>
+                          )}
                         </span>
                         <span className="text-xs text-slate-400 flex items-center gap-1 font-medium">
                           <Calendar className="w-3.5 h-3.5" />
@@ -272,7 +286,7 @@ export function HistoryPage() {
                         </span>
                         <span className="w-1 h-1 rounded-full bg-slate-300 hidden sm:inline-block" />
                         <span className="text-rose-600 font-bold">
-                          <strong>{item.total_divergent_orders}</strong> com cobranca a maior
+                          <strong>{item.total_divergent_orders}</strong> com cobrança a maior
                         </span>
                       </div>
                     </div>
@@ -281,7 +295,7 @@ export function HistoryPage() {
                   <div className="flex items-center justify-between md:justify-end gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
                     <div className="text-left md:text-right">
                       <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                        Valor Identificado
+                        Valor a Recuperar
                       </span>
                       <span className="text-xl sm:text-2xl font-black text-emerald-600">
                         +{formatBRL(item.total_recoverable)}
@@ -292,7 +306,7 @@ export function HistoryPage() {
                       to={`/resultado/${item.id}`}
                       className="py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-xs shrink-0"
                     >
-                      <span>Abrir Diagnostico</span>
+                      <span>Ver Dinheiro a Recuperar</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
