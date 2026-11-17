@@ -381,7 +381,7 @@ export function AuditResultPage() {
     <div className="min-h-screen bg-[#F8F9FD] text-slate-800 pb-20">
       <LiquidGlassNavbar variant="result" platform={audit.platform} isPro={isPro} />
 
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-10 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-24 md:pb-10 space-y-6">
         {/* Banner de Desbloqueio ao Vivo pós-Pix */}
         {justUnlockedBanner && (
           <div className="p-4 rounded-2xl bg-emerald-600 text-white font-bold text-sm flex items-center justify-between shadow-soft">
@@ -833,6 +833,32 @@ export function AuditResultPage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Barra Fixa de Conversao no Mobile (Sticky Bottom Bar) */}
+      {!isPro && !isCheckoutOpen && audit && (
+        <aside
+          aria-label="Acao de desbloqueio mobile"
+          className="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 p-3.5 shadow-[0_-8px_25px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3"
+        >
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Total a Recuperar
+            </span>
+            <span className="text-lg font-black text-emerald-600 leading-tight">
+              +{formatBRL(audit.total_recoverable)}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsCheckoutOpen(true)}
+            className="py-2.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <span>Liberar por R$ 67</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </aside>
       )}
 
       {/* Rodapé Corporativo B2B */}

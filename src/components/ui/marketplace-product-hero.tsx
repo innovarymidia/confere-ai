@@ -8,6 +8,7 @@ import {
   Percent,
   RotateCcw,
   Star,
+  Zap,
 } from "lucide-react";
 import { type MarketplacePlatform } from "@/services/auditEngine";
 import { cn } from "@/lib/utils";
@@ -225,12 +226,44 @@ export function MarketplaceProductHero({
               )}
             >
               {loadingStep ? (
-                <div className="space-y-3">
-                  <div className="w-10 h-10 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto" />
-                  <p className="text-sm font-black text-slate-900">{loadingStep}</p>
-                  <p className="text-xs text-indigo-600 font-bold">
-                    Processando localmente no seu navegador...
-                  </p>
+                <div className="space-y-3.5 w-full max-w-sm mx-auto">
+                  <div className="relative flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold shadow-glow-violet animate-pulse">
+                      <Zap className="w-6 h-6 fill-white" />
+                    </div>
+                    <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                    </span>
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-black text-slate-900 tracking-tight">{loadingStep}</p>
+                    <p className="text-[11px] text-indigo-600 font-bold mt-0.5">
+                      Auditoria client-side segura no seu navegador
+                    </p>
+                  </div>
+
+                  {/* Barra de progresso animada */}
+                  <div className="w-full bg-slate-200/80 rounded-full h-2 overflow-hidden border border-slate-200">
+                    <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-indigo-600 h-full rounded-full animate-pulse w-full" />
+                  </div>
+
+                  {/* Micro-contadores de status da varredura */}
+                  <div className="grid grid-cols-3 gap-2 pt-1 text-center">
+                    <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Varredura</span>
+                      <span className="text-xs font-black text-slate-800">Linha a Linha</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Tabelas</span>
+                      <span className="text-xs font-black text-indigo-600">Regras 2026</span>
+                    </div>
+                    <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
+                      <span className="text-[9px] uppercase font-bold text-slate-400 block">Seguranca</span>
+                      <span className="text-xs font-black text-emerald-600">100% Local</span>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <>
