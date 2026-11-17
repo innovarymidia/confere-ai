@@ -120,10 +120,10 @@ export function CueCollapsingCardsAccordion({
               onClick={() => setActiveId(card.id)}
               onMouseEnter={() => setActiveId(card.id)}
               className={cn(
-                "relative rounded-2xl md:rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden flex flex-col justify-between",
+                "relative rounded-2xl md:rounded-3xl border transition-all duration-300 cursor-pointer overflow-hidden",
                 isActive
-                  ? "flex-[4] p-5 sm:p-6 bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20"
-                  : "flex-none h-14 md:h-auto md:flex-1 p-3.5 md:p-6 bg-white/70 hover:bg-white border-slate-200/80 shadow-xs justify-center md:justify-between"
+                  ? "flex-[4] p-5 sm:p-6 bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20 flex flex-col justify-between"
+                  : "flex-none h-14 md:h-auto md:flex-1 bg-white/80 hover:bg-white border-slate-200/90 shadow-2xs hover:shadow-soft"
               )}
             >
               {/* Gradiente de fundo sutil */}
@@ -135,82 +135,113 @@ export function CueCollapsingCardsAccordion({
                 )}
               />
 
-              {/* Topo do Card com Logo da Plataforma */}
-              <div className={cn("relative z-10 flex items-center justify-between", !isActive && "md:flex")}>
-                <span
-                  className={cn(
-                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full border transition-colors shrink-0 flex items-center gap-1.5",
-                    isActive
-                      ? "bg-slate-900 text-white border-slate-900 shadow-xs"
-                      : "bg-white text-slate-700 border-slate-200"
-                  )}
-                >
-                  {card.platform === "Mercado Livre" ? (
-                    <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
-                  ) : (
-                    <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
-                  )}
-                  <span>{card.platform}</span>
-                </span>
-
-                {isActive ? (
-                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1 shrink-0">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    {card.badge}
-                  </span>
-                ) : (
-                  <span className="md:hidden font-extrabold text-xs text-slate-700 tracking-tight line-clamp-1 px-2">
-                    {card.niche}
-                  </span>
-                )}
-              </div>
-
-              {/* Conteúdo Central */}
-              <div className="relative z-10 my-auto">
-                {isActive ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.25 }}
-                  >
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
-                      {card.niche} • {card.divergenceType}
+              {isActive ? (
+                /* =========================================================================
+                   CARD ATIVO EXPANDIDO
+                   ========================================================================= */
+                <>
+                  {/* Topo do Card com Logo da Plataforma */}
+                  <div className="relative z-10 flex items-center justify-between">
+                    <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-900 text-white border border-slate-900 shadow-xs flex items-center gap-1.5 shrink-0">
+                      {card.platform === "Mercado Livre" ? (
+                        <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
+                      ) : (
+                        <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
+                      )}
+                      <span>{card.platform}</span>
                     </span>
-                    <div className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1 text-emerald-600">
-                      +{card.recoveredAmount}
-                    </div>
-                    <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium bg-white/80 p-3 sm:p-3.5 rounded-2xl border border-slate-100 shadow-xs">
-                      “{card.quote}”
-                    </p>
-                  </motion.div>
-                ) : (
-                  <div className="flex items-center justify-end md:flex-col md:justify-center h-full">
-                    <span className="hidden md:block md:-rotate-90 md:whitespace-nowrap font-extrabold text-sm text-slate-700 tracking-tight">
-                      {card.niche}
-                    </span>
-                    <span className="font-black text-emerald-600 text-xs sm:text-sm md:mt-6 shrink-0">
-                      {card.recoveredAmount}
+
+                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1 shrink-0">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                      {card.badge}
                     </span>
                   </div>
-                )}
-              </div>
 
-              {/* Rodapé do Card */}
-              {isActive ? (
-                <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-slate-100">
-                  <span className="text-slate-500 font-semibold text-[11px] sm:text-xs">
-                    <strong>{card.ordersCount} pedidos</strong> contestados • {card.timeframe}
-                  </span>
-                  <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1 shrink-0">
-                    Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
+                  {/* Conteúdo Central */}
+                  <div className="relative z-10 my-auto py-2">
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                    >
+                      <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                        {card.niche} • {card.divergenceType}
+                      </span>
+                      <div className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1 text-emerald-600">
+                        +{card.recoveredAmount}
+                      </div>
+                      <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium bg-white/80 p-3 sm:p-3.5 rounded-2xl border border-slate-100 shadow-xs">
+                        “{card.quote}”
+                      </p>
+                    </motion.div>
+                  </div>
+
+                  {/* Rodapé do Card */}
+                  <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-slate-100">
+                    <span className="text-slate-500 font-semibold text-[11px] sm:text-xs">
+                      <strong>{card.ordersCount} pedidos</strong> estornados • {card.timeframe}
+                    </span>
+                    <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1 shrink-0">
+                      Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </>
               ) : (
-                <div className="relative z-10 hidden md:block pt-3 border-t border-slate-100 text-center">
-                  <span className="text-[10px] text-slate-400 font-bold">
-                    Ver caso
-                  </span>
-                </div>
+                /* =========================================================================
+                   CARD COLAPSADO / FECHADO (Sem nenhuma sobreposição)
+                   ========================================================================= */
+                <>
+                  {/* Visão Mobile: Barra horizontal limpa */}
+                  <div className="md:hidden relative z-10 flex items-center justify-between h-full px-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-white border border-slate-200 p-0.5 flex items-center justify-center shadow-2xs shrink-0">
+                        {card.platform === "Mercado Livre" ? (
+                          <MercadoLivreLogo className="w-full h-full" />
+                        ) : (
+                          <ShopeeLogo className="w-full h-full" />
+                        )}
+                      </div>
+                      <span className="font-extrabold text-xs text-slate-800 truncate max-w-[150px]">
+                        {card.niche}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-black text-xs text-emerald-600">
+                        {card.recoveredAmount}
+                      </span>
+                      <span className="text-[10px] font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
+                        Ver
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Visão Desktop / Tablet: Coluna vertical perfeitamente distribuída */}
+                  <div className="hidden md:flex relative z-10 flex-col items-center justify-between h-full py-5 px-1 text-center">
+                    {/* Topo: Logo Oficial */}
+                    <div className="w-9 h-9 rounded-xl bg-white border border-slate-200/80 p-1 flex items-center justify-center shadow-2xs shrink-0">
+                      {card.platform === "Mercado Livre" ? (
+                        <MercadoLivreLogo className="w-full h-full" />
+                      ) : (
+                        <ShopeeLogo className="w-full h-full" />
+                      )}
+                    </div>
+
+                    {/* Centro: Nome do Nicho em writing-mode vertical nativo */}
+                    <div className="my-auto py-2 flex items-center justify-center overflow-hidden max-h-[200px]">
+                      <span className="[writing-mode:vertical-rl] rotate-180 text-xs font-black uppercase tracking-wider text-slate-700 select-none whitespace-nowrap">
+                        {card.niche}
+                      </span>
+                    </div>
+
+                    {/* Rodapé: Valor do Estorno em pílula verde */}
+                    <div className="w-full px-2 pt-2 border-t border-slate-200/60 shrink-0">
+                      <span className="text-[11px] font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-lg block truncate shadow-2xs">
+                        {card.recoveredAmount}
+                      </span>
+                    </div>
+                  </div>
+                </>
               )}
             </motion.div>
           );

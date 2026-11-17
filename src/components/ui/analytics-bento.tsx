@@ -51,7 +51,7 @@ export function AnalyticsBento({
   return (
     <div className={cn("grid grid-cols-1 lg:grid-cols-12 gap-5", className)}>
       {/* =========================================================================
-          TILE 1: REVENUE LINE COM PICO DE SOBRETAXA (Bento Hero Tile - Col 7)
+          TILE 1: REVENUE LINE COM PICO DE SOBRETAXA (Bento Hero Tile: Col 7)
           ========================================================================= */}
       <div className="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/90 shadow-soft flex flex-col justify-between">
         <div>

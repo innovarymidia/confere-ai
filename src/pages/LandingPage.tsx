@@ -15,6 +15,7 @@ import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
 import { MarketplaceProductHero } from "../components/ui/marketplace-product-hero";
 import { CueCollapsingCardsAccordion } from "../components/ui/cue-collapsing-cards-accordion";
 import { PricingPlanTilt } from "../components/ui/pricing-plan-tilt";
+import { CheckoutModal } from "../components/ui/checkout-modal";
 
 export function LandingPage() {
   const navigate = useNavigate();
@@ -23,6 +24,9 @@ export function LandingPage() {
   const [platform, setPlatform] = useState<MarketplacePlatform>("mercadolivre");
   const [loadingStep, setLoadingStep] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [selectedPlanId, setSelectedPlanId] = useState<"pro" | "escala">("pro");
+  const [selectedBilling, setSelectedBilling] = useState<"monthly" | "yearly">("monthly");
 
   const processFile = async (file: File) => {
     setErrorMsg(null);
@@ -149,8 +153,14 @@ export function LandingPage() {
           <PricingPlanTilt
             title="Escolha o Plano Ideal para a Sua Operação"
             subtitle="Você só paga se encontrar dinheiro para recuperar. Cancele com 1 clique quando quiser."
-            onSelect={(_planId, _billing) => {
-              scrollToDropzone();
+            onSelect={(planId, billing) => {
+              if (planId === "free") {
+                scrollToDropzone();
+              } else {
+                setSelectedPlanId(planId as "pro" | "escala");
+                setSelectedBilling(billing);
+                setIsCheckoutOpen(true);
+              }
             }}
           />
         </section>
@@ -173,6 +183,18 @@ export function LandingPage() {
           </button>
         </section>
       </main>
+
+      {/* Modal de Checkout Pix Transparente com Escolha de Plano e Ciclo */}
+      <CheckoutModal
+        key={`${isCheckoutOpen}-${selectedPlanId}-${selectedBilling}`}
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        initialPlanId={selectedPlanId}
+        initialBilling={selectedBilling}
+        onSuccess={() => {
+          navigate("/historico");
+        }}
+      />
 
       {/* Rodapé Corporativo B2B */}
       <footer className="border-t border-slate-200 py-8 px-4 text-center text-xs text-slate-500">

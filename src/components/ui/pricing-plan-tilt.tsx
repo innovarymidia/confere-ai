@@ -132,6 +132,7 @@ function PlanCard({
       transition={{ duration: 0.3 }}
     >
       <motion.div
+        onClick={onPick}
         style={{
           rotateX: reduce ? 0 : rx,
           rotateY: reduce ? 0 : ry,
@@ -139,7 +140,7 @@ function PlanCard({
           transformStyle: "preserve-3d",
         }}
         className={cn(
-          "relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-6 text-slate-900 shadow-soft transition-colors",
+          "relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white p-6 text-slate-900 shadow-soft transition-colors cursor-pointer",
           selected
             ? "border-transparent ring-2 ring-indigo-600"
             : plan.popular
@@ -284,7 +285,7 @@ function PlanCard({
                     />
                   </svg>
                 )}
-                {selected ? "Plano Selecionado" : plan.cta ?? "Escolher Plano"}
+                {plan.cta ?? "Escolher Plano"}
               </motion.span>
             </AnimatePresence>
           </span>
@@ -335,7 +336,7 @@ const DEFAULT_CONFERE_PLANS: Plan[] = [
       "Acompanhe cada valor devolvido ao caixa",
       "Liberação imediata no Pix",
     ],
-    cta: "Liberar Tudo (R$ 67)",
+    cta: "Assinar Pro Seller",
   },
   {
     id: "escala",

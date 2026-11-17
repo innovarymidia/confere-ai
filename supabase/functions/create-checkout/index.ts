@@ -11,7 +11,9 @@ interface CheckoutRequest {
   email: string;
   whatsapp: string;
   cpfCnpj: string;
-  auditId: string;
+  auditId?: string;
+  planId?: "pro" | "escala" | string;
+  billing?: "monthly" | "yearly";
 }
 
 serve(async (req: Request) => {
@@ -25,9 +27,11 @@ serve(async (req: Request) => {
     const email = body.email?.trim().toLowerCase();
     const whatsapp = body.whatsapp?.replace(/\D/g, "");
     const cpfCnpj = body.cpfCnpj?.replace(/\D/g, "");
-    const auditId = body.auditId?.trim();
+    const auditId = body.auditId?.trim() || "direct";
+    const planId = body.planId === "escala" ? "escala" : "pro";
+    const billing = body.billing === "yearly" ? "yearly" : "monthly";
 
-    if (!fullName || !email || !cpfCnpj || !auditId) {
+    if (!fullName || !email || !cpfCnpj) {
       return new Response(
         JSON.stringify({ error: "Preencha nome, e-mail, WhatsApp e CPF/CNPJ." }),
         { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -129,8 +133,34 @@ serve(async (req: Request) => {
       })
       .eq("id", userId);
 
-    // 3. Cria Assinatura Mensal via Pix (R$ 67,00/mês) com vencimento hoje
+    // 3. Cria Assinatura com plano e ciclo escolhidos pelo lojista
     const todayStr = new Date().toISOString().split("T")[0];
+    let subscriptionValue = 67.0;
+    let subscriptionCycle = "MONTHLY";
+    let subscriptionDescription = "ConfereAI Pro Seller Mensal: Auditoria de Vendas";
+
+    if (planId === "escala") {
+      if (billing === "yearly") {
+        subscriptionValue = 1416.0;
+        subscriptionCycle = "YEARLY";
+        subscriptionDescription = "ConfereAI Operacao Escala Anual: 20% OFF";
+      } else {
+        subscriptionValue = 147.0;
+        subscriptionCycle = "MONTHLY";
+        subscriptionDescription = "ConfereAI Operacao Escala Mensal: Ate 5 Lojas";
+      }
+    } else {
+      if (billing === "yearly") {
+        subscriptionValue = 648.0;
+        subscriptionCycle = "YEARLY";
+        subscriptionDescription = "ConfereAI Pro Seller Anual: 20% OFF";
+      } else {
+        subscriptionValue = 67.0;
+        subscriptionCycle = "MONTHLY";
+        subscriptionDescription = "ConfereAI Pro Seller Mensal: Auditoria de Vendas";
+      }
+    }
+
     const subscriptionRes = await fetch(`${asaasBaseUrl}/subscriptions`, {
       method: "POST",
       headers: {
@@ -140,10 +170,10 @@ serve(async (req: Request) => {
       body: JSON.stringify({
         customer: asaasCustomerId,
         billingType: "PIX",
-        value: 67.0,
+        value: subscriptionValue,
         nextDueDate: todayStr,
-        cycle: "MONTHLY",
-        description: "Assinatura Mensal - Auditoria de Marketplaces Pro",
+        cycle: subscriptionCycle,
+        description: subscriptionDescription,
         externalReference: `${userId}:${auditId}`,
       }),
     });

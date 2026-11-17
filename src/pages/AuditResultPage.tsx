@@ -17,6 +17,7 @@ import { supabase } from "../lib/supabaseClient";
 import { LiquidGlassNavbar } from "../components/ui/liquid-glass-navbar";
 import { AnalyticsBento } from "../components/ui/analytics-bento";
 import { MercadoLivreLogo, ShopeeLogo } from "../components/ui/marketplace-logos";
+import { CheckoutModal } from "../components/ui/checkout-modal";
 
 interface AuditSummary {
   id: string;
@@ -84,19 +85,10 @@ export function AuditResultPage() {
   const [copiedRowId, setCopiedRowId] = useState<string | null>(null);
   const [activeFilter, setActiveFilter] = useState<"all" | "frete" | "comissao" | "devolucao">("all");
 
-  // Estados do Modal Pix
+  // Estados do Modal Pix e Seleção de Plano
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [whatsapp, setWhatsapp] = useState("");
-  const [cpfCnpj, setCpfCnpj] = useState("");
-  const [checkoutLoading, setCheckoutLoading] = useState(false);
-  const [checkoutError, setCheckoutError] = useState<string | null>(null);
-  const [pixData, setPixData] = useState<{
-    qrCodeBase64: string;
-    copyPaste: string;
-  } | null>(null);
-  const [pixCopied, setPixCopied] = useState(false);
+  const [selectedPlanId] = useState<"pro" | "escala">("pro");
+  const [selectedBilling] = useState<"monthly" | "yearly">("monthly");
   const [justUnlockedBanner, setJustUnlockedBanner] = useState(false);
 
   // Busca itens via RLS (2 se visitante, todos se Pro)
@@ -218,7 +210,6 @@ export function AuditResultPage() {
           if (updatedProfile?.is_pro) {
             setIsPro(true);
             setIsCheckoutOpen(false);
-            setPixData(null);
             setJustUnlockedBanner(true);
             await loadAuditItems(true);
           }
@@ -230,70 +221,6 @@ export function AuditResultPage() {
       supabase.removeChannel(channel);
     };
   }, [userId, isPro, loadAuditItems]);
-
-  // Submissão do checkout Pix
-  const handleGeneratePix = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!auditId) return;
-
-    setCheckoutLoading(true);
-    setCheckoutError(null);
-
-    try {
-      const { data, error } = await supabase.functions.invoke("create-checkout", {
-        body: {
-          fullName,
-          email,
-          whatsapp,
-          cpfCnpj,
-          auditId,
-        },
-      });
-
-      if (error) {
-        throw new Error(error.message || "Falha ao gerar cobrança.");
-      }
-      if (data?.error) {
-        throw new Error(data.error);
-      }
-
-      if (data?.session) {
-        await supabase.auth.setSession({
-          access_token: data.session.access_token,
-          refresh_token: data.session.refresh_token,
-        });
-      }
-
-      if (data?.userId) {
-        setUserId(data.userId);
-      }
-
-      setPixData({
-        qrCodeBase64: data.qrCodeBase64,
-        copyPaste: data.copyPaste,
-      });
-    } catch {
-      // Simulação instantânea no modo Demo/Local
-      const dummyQrCode =
-        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
-      setPixData({
-        qrCodeBase64: dummyQrCode,
-        copyPaste:
-          "00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540567.005802BR5913ConfereAI6009Sao Paulo62070503***6304ABCD",
-      });
-
-      // Em modo de demonstração local, simula confirmação automática em 5 segundos
-      setTimeout(async () => {
-        setIsPro(true);
-        setIsCheckoutOpen(false);
-        setPixData(null);
-        setJustUnlockedBanner(true);
-        await loadAuditItems(true);
-      }, 5000);
-    } finally {
-      setCheckoutLoading(false);
-    }
-  };
 
   const handleCopyDispute = (item: AuditItem) => {
     navigator.clipboard.writeText(item.dispute_text);
@@ -678,7 +605,7 @@ export function AuditResultPage() {
                   onClick={() => setIsCheckoutOpen(true)}
                   className="mt-6 py-3.5 sm:py-4 px-5 sm:px-8 w-full sm:w-auto rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  <span>Desbloquear Relatório Completo por R$ 67,00/mês</span>
+                  <span>Desbloquear Relatório Completo ({audit.total_divergent_orders} Pedidos)</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
                 <p className="text-xs text-slate-400 mt-2.5">
@@ -690,160 +617,22 @@ export function AuditResultPage() {
         </section>
       </main>
 
-      {/* =========================================================================
-          MODAL DE CHECKOUT PIX TRANSPARENTE (Asaas)
-          ========================================================================= */}
-      {isCheckoutOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 max-h-[92vh] overflow-y-auto shadow-2xl border border-slate-200 relative">
-            <button
-              type="button"
-              onClick={() => setIsCheckoutOpen(false)}
-              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-bold cursor-pointer"
-            >
-              ✕
-            </button>
-
-            {!pixData ? (
-              <>
-                <h3 className="text-xl font-extrabold text-slate-900">
-                  Liberar Lista Completa e Textos de Reembolso
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Plano Pro Mensal (R$ 67,00): Conferências ilimitadas no Mercado Livre e Shopee
-                </p>
-
-                <form onSubmit={handleGeneratePix} className="mt-5 space-y-3.5">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Nome Completo
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Ex: Carlos Eduardo Silva"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Melhor E-mail (seu acesso)
-                    </label>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="voce@sualoja.com.br"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        WhatsApp
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={whatsapp}
-                        onChange={(e) => setWhatsapp(e.target.value)}
-                        placeholder="(11) 99999-9999"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        CPF ou CNPJ
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={cpfCnpj}
-                        onChange={(e) => setCpfCnpj(e.target.value)}
-                        placeholder="000.000.000-00"
-                        className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-indigo-600"
-                      />
-                    </div>
-                  </div>
-
-                  {checkoutError && (
-                    <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-semibold text-red-700">
-                      {checkoutError}
-                    </div>
-                  )}
-
-                  <button
-                    type="submit"
-                    disabled={checkoutLoading}
-                    className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-md transition cursor-pointer flex items-center justify-center gap-2 mt-2"
-                  >
-                    {checkoutLoading ? (
-                      "Gerando Pix..."
-                    ) : (
-                      <>
-                        <span>Gerar Pix de R$ 67,00</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </form>
-              </>
-            ) : (
-              <div className="text-center py-2">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full animate-pulse">
-                  ● Aguardando pagamento Pix...
-                </span>
-                <h3 className="text-lg font-extrabold text-slate-900 mt-3">
-                  Escaneie o QR Code no seu banco
-                </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Assim que você pagar, esta tela desbloqueia em 3 segundos.
-                </p>
-
-                <div className="my-4 flex justify-center">
-                  <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
-                    <img
-                      src={
-                        pixData.qrCodeBase64.startsWith("data:")
-                          ? pixData.qrCodeBase64
-                          : `data:image/png;base64,${pixData.qrCodeBase64}`
-                      }
-                      alt="QR Code Pix"
-                      className="w-44 h-44 object-contain"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(pixData.copyPaste);
-                    setPixCopied(true);
-                    setTimeout(() => setPixCopied(false), 3000);
-                  }}
-                  className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  {pixCopied ? (
-                    <>
-                      <Check className="w-4 h-4 text-emerald-400" />
-                      <span>Código Copiado!</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4" />
-                      <span>Copiar Código Pix Copia-e-Cola</span>
-                    </>
-                  )}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+      {/* Modal de Checkout Pix Transparente com Escolha de Plano e Ciclo */}
+      {audit && (
+        <CheckoutModal
+          key={`${isCheckoutOpen}-${selectedPlanId}-${selectedBilling}`}
+          isOpen={isCheckoutOpen}
+          onClose={() => setIsCheckoutOpen(false)}
+          initialPlanId={selectedPlanId}
+          initialBilling={selectedBilling}
+          auditId={audit.id}
+          totalOrders={audit.total_divergent_orders}
+          onSuccess={async () => {
+            setIsPro(true);
+            setJustUnlockedBanner(true);
+            await loadAuditItems(true);
+          }}
+        />
       )}
 
       {/* Barra Fixa de Conversao no Mobile (Sticky Bottom Bar) */}
@@ -866,7 +655,7 @@ export function AuditResultPage() {
             onClick={() => setIsCheckoutOpen(true)}
             className="py-2.5 px-5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs uppercase tracking-wider shadow-md transition flex items-center gap-1.5 cursor-pointer shrink-0"
           >
-            <span>Liberar por R$ 67</span>
+            <span>Liberar Relatório Completo</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </aside>
