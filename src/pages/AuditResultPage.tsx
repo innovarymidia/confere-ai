@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { AppHeader } from "../components/AppHeader";
+import { AnalyticsBento } from "../components/ui/analytics-bento";
 
 interface AuditSummary {
   id: string;
@@ -410,65 +411,17 @@ export function AuditResultPage() {
         </div>
 
         {/* =========================================================================
-            OS CARDS DE CHOQUE DE REALIDADE (Valores em Reais na Cara do Vendedor)
+            BENTO GRID ANALYTICS (Inspirado no @romanvasnev/analytics-bento)
             ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          {/* Card Principal: Total Recuperável */}
-          <div className="md:col-span-2 bg-gradient-to-br from-rose-600 to-red-700 text-white rounded-3xl p-6 shadow-soft flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-rose-100">
-                  Total Identificado a Recuperar
-                </span>
-                <span className="text-[10px] uppercase font-bold bg-white/20 text-white px-2.5 py-0.5 rounded-full">
-                  Últimos 60 dias
-                </span>
-              </div>
-              <div className="text-4xl sm:text-5xl font-black mt-2 tracking-tight">
-                {formatBRL(audit.total_recoverable)}
-              </div>
-            </div>
-            <p className="text-xs text-rose-100 mt-4 font-medium">
-              Dinheiro que já é seu parado no caixa da plataforma por erro de cubagem ou comissão duplicada.
-            </p>
-          </div>
-
-          {/* Card 2: Frete Cubado */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-soft flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase">
-                  Frete Cubado / Peso
-                </span>
-                <Package className="w-4 h-4 text-amber-500" />
-              </div>
-              <div className="text-2xl font-black text-slate-900 mt-2">
-                {formatBRL(audit.frete_recoverable)}
-              </div>
-            </div>
-            <span className="text-xs text-amber-700 font-semibold mt-2">
-              Divergência de pesagem na esteira
-            </span>
-          </div>
-
-          {/* Card 3: Comissão & Devoluções */}
-          <div className="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-soft flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-500 uppercase">
-                  Comissões & Estornos
-                </span>
-                <Percent className="w-4 h-4 text-indigo-500" />
-              </div>
-              <div className="text-2xl font-black text-slate-900 mt-2">
-                {formatBRL(audit.comissao_recoverable + audit.devolucao_recoverable)}
-              </div>
-            </div>
-            <span className="text-xs text-indigo-700 font-semibold mt-2">
-              Taxas acima da faixa e devoluções
-            </span>
-          </div>
-        </div>
+        <AnalyticsBento
+          totalRecoverable={audit.total_recoverable}
+          freteRecoverable={audit.frete_recoverable}
+          comissaoRecoverable={audit.comissao_recoverable}
+          devolucaoRecoverable={audit.devolucao_recoverable}
+          totalOrdersAnalyzed={audit.total_orders_analyzed}
+          totalDivergentOrders={audit.total_divergent_orders}
+          platform={audit.platform}
+        />
 
         {/* =========================================================================
             TABELA DE PEDIDOS DIVERGENTES (Amostra Gratuita + Paywall)

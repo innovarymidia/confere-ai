@@ -1,0 +1,213 @@
+"use client";
+import * as React from "react";
+import { motion } from "framer-motion";
+import { CheckCircle2, ArrowUpRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+export interface RefundEvidenceCard {
+  id: string;
+  niche: string;
+  recoveredAmount: string;
+  platform: "Mercado Livre" | "Shopee";
+  divergenceType: string;
+  ordersCount: number;
+  timeframe: string;
+  quote: string;
+  badge: string;
+  accentGradient: string;
+}
+
+const DEFAULT_CARDS: RefundEvidenceCard[] = [
+  {
+    id: "case-1",
+    niche: "Moda & Vestuário",
+    recoveredAmount: "R$ 842,50",
+    platform: "Mercado Livre",
+    divergenceType: "Frete Cubado Corrigido",
+    ordersCount: 29,
+    timeframe: "Reembolsado em 48h",
+    quote: "A transportadora estava pesando vestidos de 250g como se fossem 1,5 kg. O suporte do ML creditou o estorno na hora.",
+    badge: "Estorno Concluído",
+    accentGradient: "from-amber-500/20 via-indigo-600/10 to-transparent",
+  },
+  {
+    id: "case-2",
+    niche: "Eletrônicos & Acessórios",
+    recoveredAmount: "R$ 1.290,00",
+    platform: "Shopee",
+    divergenceType: "Erro de Balança em Lote",
+    ordersCount: 42,
+    timeframe: "Crédito na Carteira",
+    quote: "Subi a planilha de 60 dias da Shopee e achou mais de mil reais parados. Copiei o texto gerado pelo ConfereAI e abriram chamado.",
+    badge: "100% Recuperado",
+    accentGradient: "from-orange-500/20 via-indigo-600/10 to-transparent",
+  },
+  {
+    id: "case-3",
+    niche: "Casa & Decoração",
+    recoveredAmount: "R$ 640,00",
+    platform: "Mercado Livre",
+    divergenceType: "Frete Reverso Anulado",
+    ordersCount: 14,
+    timeframe: "Devolução Revertida",
+    quote: "Comprador devolveu por arrependimento e cobraram o frete de volta da minha conta. Reclamei com a prova da planilha e estornaram.",
+    badge: "Frete Anulado",
+    accentGradient: "from-emerald-500/20 via-indigo-600/10 to-transparent",
+  },
+  {
+    id: "case-4",
+    niche: "Autopeças & Ferramentas",
+    recoveredAmount: "R$ 2.450,00",
+    platform: "Mercado Livre",
+    divergenceType: "Comissões Fora da Faixa",
+    ordersCount: 68,
+    timeframe: "Conta Gold",
+    quote: "Com a mudança das tabelas de 2026, vários anúncios continuaram cobrando tarifa antiga a maior. O ConfereAI pegou cada centavo.",
+    badge: "Maior Volume",
+    accentGradient: "from-indigo-600/20 via-violet-600/10 to-transparent",
+  },
+  {
+    id: "case-5",
+    niche: "Cosméticos & Skincare",
+    recoveredAmount: "R$ 915,00",
+    platform: "Shopee",
+    divergenceType: "Taxas de Campanha Não Ativas",
+    ordersCount: 35,
+    timeframe: "Estorno via Chat",
+    quote: "O suporte pediu o número exato dos pedidos com a diferença calculada. Em 2 dias úteis o saldo foi liberado para saque.",
+    badge: "Reembolsado",
+    accentGradient: "from-rose-500/20 via-indigo-600/10 to-transparent",
+  },
+];
+
+export function CueCollapsingCardsAccordion({
+  cards = DEFAULT_CARDS,
+  className,
+}: {
+  cards?: RefundEvidenceCard[];
+  className?: string;
+}) {
+  const [activeId, setActiveId] = React.useState<string>(cards[0]?.id ?? "case-1");
+
+  return (
+    <section
+      id="casos-reais"
+      aria-label="Resultados Reais de Recuperação"
+      className={cn("w-full max-w-5xl mx-auto", className)}
+    >
+      <div className="text-center max-w-2xl mx-auto mb-8">
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 shadow-2xs mb-3">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+          Provas Reais de Reembolso
+        </span>
+        <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Saldos que outros vendedores recuperaram
+        </h2>
+        <p className="mt-2 text-sm text-slate-600 font-medium">
+          Passe o mouse ou toque nos cartões para ver os estornos creditados diretamente nas contas de quem já auditou.
+        </p>
+      </div>
+
+      {/* Accordion Horizontal de Cards Colapsáveis */}
+      <div className="flex flex-col md:flex-row gap-3 h-[420px] md:h-[360px] w-full">
+        {cards.map((card) => {
+          const isActive = activeId === card.id;
+
+          return (
+            <motion.div
+              key={card.id}
+              onClick={() => setActiveId(card.id)}
+              onMouseEnter={() => setActiveId(card.id)}
+              className={cn(
+                "relative rounded-3xl border transition-all duration-500 cursor-pointer overflow-hidden p-6 flex flex-col justify-between",
+                isActive
+                  ? "flex-[3.5] bg-white border-indigo-300 shadow-soft-lg ring-1 ring-indigo-500/20"
+                  : "flex-1 bg-white/70 hover:bg-white border-slate-200/80 shadow-xs"
+              )}
+            >
+              {/* Gradiente de fundo sutil */}
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-br transition-opacity duration-500 pointer-events-none",
+                  card.accentGradient,
+                  isActive ? "opacity-100" : "opacity-30"
+                )}
+              />
+
+              {/* Topo do Card */}
+              <div className="relative z-10 flex items-start justify-between">
+                <span
+                  className={cn(
+                    "text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full border transition-colors",
+                    isActive
+                      ? "bg-indigo-600 text-white border-indigo-600 shadow-xs"
+                      : "bg-slate-100 text-slate-600 border-slate-200"
+                  )}
+                >
+                  {card.platform}
+                </span>
+
+                {isActive && (
+                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                    {card.badge}
+                  </span>
+                )}
+              </div>
+
+              {/* Conteúdo Central */}
+              <div className="relative z-10 my-auto">
+                {isActive ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">
+                      {card.niche} • {card.divergenceType}
+                    </span>
+                    <div className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-1 text-emerald-600">
+                      +{card.recoveredAmount}
+                    </div>
+                    <p className="mt-3 text-xs sm:text-sm text-slate-600 leading-relaxed font-medium bg-white/80 p-3.5 rounded-2xl border border-slate-100 shadow-xs">
+                      “{card.quote}”
+                    </p>
+                  </motion.div>
+                ) : (
+                  <div className="flex md:flex-col items-center justify-between md:justify-center h-full">
+                    <span className="md:-rotate-90 md:whitespace-nowrap font-extrabold text-sm text-slate-700 tracking-tight block">
+                      {card.niche}
+                    </span>
+                    <span className="font-black text-emerald-600 text-sm mt-0 md:mt-6">
+                      {card.recoveredAmount}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Rodapé do Card */}
+              <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-slate-100">
+                {isActive ? (
+                  <>
+                    <span className="text-slate-500 font-semibold">
+                      <strong>{card.ordersCount} pedidos</strong> contestados • {card.timeframe}
+                    </span>
+                    <span className="text-indigo-600 font-extrabold text-[11px] flex items-center gap-1">
+                      Comprovado <ArrowUpRight className="w-3.5 h-3.5" />
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-[10px] text-slate-400 font-bold mx-auto hidden md:block">
+                    Ver caso
+                  </span>
+                )}
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+export default CueCollapsingCardsAccordion;
