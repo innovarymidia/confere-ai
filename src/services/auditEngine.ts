@@ -8,6 +8,7 @@ export interface NormalizedOrderRow {
   orderId: string;
   sku: string;
   status: string;
+  quantity?: number;     // Quantidade de unidades vendidas (default 1)
   grossAmount: number;    // Valor bruto da venda (positivo)
   feeAmount: number;      // Comissão + taxa fixa cobrada (valor absoluto positivo)
   shippingAmount: number; // Frete descontado do vendedor (valor absoluto positivo)
@@ -38,6 +39,7 @@ export const COLUMN_ALIASES: Record<MarketplacePlatform, Record<keyof Normalized
     orderId: ["n.º de venda", "numero da venda", "id da venda", "codigo da venda", "nº de venda", "operation_id", "order_id", "venda"],
     sku: ["sku", "codigo universal", "mlb", "n.º de anuncio", "numero do anuncio", "titulo do anuncio", "anuncio"],
     status: ["estado", "status", "situacao", "estado da venda", "status da venda"],
+    quantity: ["quantidade", "unidades", "qtd", "quantidade de produtos", "quantity"],
     grossAmount: ["receita por produtos (brl)", "valor do produto", "total (brl)", "preco unitario", "valor bruto", "receita por produtos"],
     feeAmount: ["tarifa de venda e impostos (brl)", "tarifa de venda", "custo de gestao", "comissao", "tarifas", "tarifa de venda e impostos"],
     shippingAmount: ["tarifas de envio (brl)", "custo de envio", "frete", "envio por conta do vendedor", "tarifas de envio"],
@@ -47,6 +49,7 @@ export const COLUMN_ALIASES: Record<MarketplacePlatform, Record<keyof Normalized
     orderId: ["id do pedido", "nº do pedido", "numero do pedido", "order id", "pedido"],
     sku: ["numero de referencia sku", "sku principal", "sku", "codigo do produto", "nome do produto", "referencia sku"],
     status: ["status do pedido", "status", "status da devolucao / reembolso", "situacao"],
+    quantity: ["quantidade", "qtd", "unidades", "quantity", "quantidade do produto"],
     grossAmount: ["preco original", "subtotal do produto", "valor total do pedido", "preco acordado", "subtotal"],
     feeAmount: ["taxa de comissao", "taxa de servico", "taxa de transacao", "total de taxas", "taxas"],
     shippingAmount: ["taxa de envio paga pelo vendedor", "desconto de frete do vendedor", "taxa de envio", "frete reverso", "frete"],
@@ -142,6 +145,7 @@ export function mapColumnIndices(
     orderId: findIndex(aliases.orderId),
     sku: findIndex(aliases.sku),
     status: findIndex(aliases.status),
+    quantity: findIndex(aliases.quantity),
     grossAmount: findIndex(aliases.grossAmount),
     feeAmount: findIndex(aliases.feeAmount),
     shippingAmount: findIndex(aliases.shippingAmount),
@@ -212,11 +216,14 @@ export async function parseMarketplaceFile(
     const fee = colIdx.feeAmount !== -1 ? Math.abs(parseBRL(row[colIdx.feeAmount])) : 0;
     const shipping = colIdx.shippingAmount !== -1 ? Math.abs(parseBRL(row[colIdx.shippingAmount])) : 0;
     const net = colIdx.netAmount !== -1 ? parseBRL(row[colIdx.netAmount]) : round2(gross - fee - shipping);
+    const rawQty = colIdx.quantity !== -1 ? Math.round(parseBRL(row[colIdx.quantity])) : 1;
+    const quantity = Number.isFinite(rawQty) && rawQty > 0 ? rawQty : 1;
 
     orders.push({
       orderId: rawOrderId,
       sku: rawSku || "SKU-NAO-INFORMADO",
       status: rawStatus,
+      quantity,
       grossAmount: gross,
       feeAmount: fee,
       shippingAmount: shipping,
@@ -257,9 +264,12 @@ export function analyzeOrdersForDivergences(
   const skuFeeRateMap = new Map<string, number[]>();
 
   for (const order of validOrders) {
+    const qty = Math.max(1, order.quantity ?? 1);
     if (order.shippingAmount > 0) {
+      // Normaliza o frete unitário considerando volume de multi-unidades
+      const unitShipping = qty === 1 ? order.shippingAmount : order.shippingAmount / (1 + (qty - 1) * 0.45);
       const list = skuShippingMap.get(order.sku) ?? [];
-      list.push(order.shippingAmount);
+      list.push(unitShipping);
       skuShippingMap.set(order.sku, list);
     }
     if (order.grossAmount > 0 && order.feeAmount > 0) {
@@ -289,20 +299,27 @@ export function analyzeOrdersForDivergences(
 
   // REGRA 1 & REGRA 2: Audita pedidos concluídos (Frete Cubado + Comissão Acima do Padrão)
   for (const order of validOrders) {
+    const qty = Math.max(1, order.quantity ?? 1);
+
     // Regra 1: Frete Outlier por SKU (erro de cubagem/peso na triagem)
-    const expectedShipping = baselineShippingBySku.get(order.sku);
-    if (expectedShipping && order.shippingAmount > expectedShipping * 1.22) {
-      const diff = round2(order.shippingAmount - expectedShipping);
-      if (diff >= 3.5) {
-        rawDivergences.push({
-          order_id: order.orderId,
-          sku: order.sku,
-          error_type: "frete",
-          expected_amount: round2(expectedShipping),
-          charged_amount: round2(order.shippingAmount),
-          recoverable_amount: diff,
-          dispute_text: `Olá, solicito revisão da tarifa de envio cobrada no pedido #${order.orderId} (SKU: ${order.sku}). O custo padrão de peso/cubagem deste mesmo anúncio no ${platformLabel} é de ${formatBRL(expectedShipping)}, porém neste pedido foi descontado ${formatBRL(order.shippingAmount)} (cobrança a maior de ${formatBRL(diff)}). Peço a conferência da cubagem e o estorno da diferença.`,
-        });
+    const baseUnitShipping = baselineShippingBySku.get(order.sku);
+    if (baseUnitShipping) {
+      const expectedShipping = round2(
+        qty === 1 ? baseUnitShipping : baseUnitShipping * (1 + (qty - 1) * 0.45)
+      );
+      if (order.shippingAmount > expectedShipping * 1.22) {
+        const diff = round2(order.shippingAmount - expectedShipping);
+        if (diff >= 3.5) {
+          rawDivergences.push({
+            order_id: order.orderId,
+            sku: order.sku,
+            error_type: "frete",
+            expected_amount: expectedShipping,
+            charged_amount: round2(order.shippingAmount),
+            recoverable_amount: diff,
+            dispute_text: `Olá, solicito revisão da tarifa de envio cobrada no pedido #${order.orderId} (SKU: ${order.sku}, Qtd: ${qty}). O custo padrão de peso/cubagem deste anúncio no ${platformLabel} para ${qty} unidade(s) é de ${formatBRL(expectedShipping)}, porém foi descontado ${formatBRL(order.shippingAmount)} (cobrança a maior de ${formatBRL(diff)}). Peço a conferência da cubagem e o estorno da diferença.`,
+          });
+        }
       }
     }
 

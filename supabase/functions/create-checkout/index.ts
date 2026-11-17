@@ -46,9 +46,9 @@ serve(async (req: Request) => {
     const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
     const supabaseAuthClient = createClient(supabaseUrl, anonKey);
 
-    // 1. Cria ou localiza o usuário no Supabase Auth e gera sessão instantânea
-    const ephemeralPassword = `${crypto.randomUUID()}-Sec#2026`;
+    // 1. Cria ou localiza o usuário no Supabase Auth com proteção de credenciais
     let userId: string;
+    let userSession: unknown = null;
 
     const { data: existingProfile } = await supabaseAdmin
       .from("profiles")
@@ -58,12 +58,17 @@ serve(async (req: Request) => {
 
     if (existingProfile?.id) {
       userId = existingProfile.id;
-      await supabaseAdmin.auth.admin.updateUserById(userId, {
-        password: ephemeralPassword,
-        email_confirm: true,
-        user_metadata: { full_name: fullName },
-      });
+      // Usuário existente: nunca sobrescreve a senha do lojista
+      const authHeader = req.headers.get("authorization");
+      if (authHeader) {
+        const token = authHeader.replace("Bearer ", "");
+        const { data: userData } = await supabaseAdmin.auth.getUser(token);
+        if (userData?.user?.id === userId) {
+          userSession = { access_token: token };
+        }
+      }
     } else {
+      const ephemeralPassword = `${crypto.randomUUID()}-Sec#2026`;
       const { data: createdUser, error: createErr } = await supabaseAdmin.auth.admin.createUser({
         email,
         password: ephemeralPassword,
@@ -75,17 +80,13 @@ serve(async (req: Request) => {
         throw new Error(`Falha ao criar conta: ${createErr?.message}`);
       }
       userId = createdUser.user.id;
-    }
 
-    // Autentica para retornar os tokens JWT ao navegador (habilita Realtime + RLS imediatamente)
-    const { data: signInData, error: signInErr } =
-      await supabaseAuthClient.auth.signInWithPassword({
+      // Autentica apenas a nova conta criada para devolver a sessão imediata ao checkout
+      const { data: signInData } = await supabaseAuthClient.auth.signInWithPassword({
         email,
         password: ephemeralPassword,
       });
-
-    if (signInErr || !signInData.session) {
-      throw new Error(`Falha ao iniciar sessão: ${signInErr?.message}`);
+      userSession = signInData?.session ?? null;
     }
 
     // 2. Cria ou recupera o cliente no Asaas
@@ -184,7 +185,7 @@ serve(async (req: Request) => {
     return new Response(
       JSON.stringify({
         userId,
-        session: signInData.session,
+        session: userSession,
         qrCodeBase64: pixJson.encodedImage,
         copyPaste: pixJson.payload,
         expirationDate: pixJson.expirationDate,

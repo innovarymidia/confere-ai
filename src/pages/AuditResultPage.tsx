@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+import * as XLSX from "xlsx";
 import {
   Copy,
   Check,
@@ -10,6 +11,7 @@ import {
   Percent,
   RotateCcw,
   ArrowLeft,
+  Download,
 } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
 import { AppHeader } from "../components/AppHeader";
@@ -298,6 +300,26 @@ export function AuditResultPage() {
     setTimeout(() => setCopiedRowId(null), 2500);
   };
 
+  const handleExportSpreadsheet = () => {
+    if (!items.length) return;
+    const rows = items.map((i) => ({
+      "Posição": i.row_rank,
+      "ID do Pedido": i.order_id,
+      "SKU": i.sku,
+      "Tipo de Divergência": ERROR_BADGE[i.error_type]?.label || i.error_type,
+      "Valor Esperado (R$)": i.expected_amount,
+      "Valor Cobrado (R$)": i.charged_amount,
+      "Diferença a Recuperar (R$)": i.recoverable_amount,
+      "Status Chamado": i.is_refunded ? "Reembolsado" : i.is_contested ? "Contestado" : "Pendente",
+      "Texto de Contestação para o Suporte": i.dispute_text,
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Contestacoes");
+    XLSX.writeFile(wb, `contestacoes-${audit?.platform || "marketplace"}-${auditId?.slice(0, 8)}.xlsx`);
+  };
+
   const handleToggleStatus = async (
     item: AuditItem,
     field: "is_contested" | "is_refunded"
@@ -441,29 +463,43 @@ export function AuditResultPage() {
               </p>
             </div>
 
-            {/* Filtros em Pílulas */}
-            <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200 self-start sm:self-auto">
-              {(
-                [
-                  { id: "all", label: "Todos" },
-                  { id: "frete", label: "Frete" },
-                  { id: "comissao", label: "Comissão" },
-                  { id: "devolucao", label: "Devoluções" },
-                ] as const
-              ).map((tab) => (
+            {/* Ações e Filtros */}
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              {isPro && (
                 <button
-                  key={tab.id}
                   type="button"
-                  onClick={() => setActiveFilter(tab.id)}
-                  className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
-                    activeFilter === tab.id
-                      ? "bg-slate-900 text-white shadow-xs"
-                      : "text-slate-500 hover:text-slate-800"
-                  }`}
+                  onClick={handleExportSpreadsheet}
+                  className="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition flex items-center gap-1.5 shadow-xs cursor-pointer"
                 >
-                  {tab.label}
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Baixar Planilha (.xlsx)</span>
                 </button>
-              ))}
+              )}
+
+              {/* Filtros em Pílulas */}
+              <div className="flex items-center gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-200">
+                {(
+                  [
+                    { id: "all", label: "Todos" },
+                    { id: "frete", label: "Frete" },
+                    { id: "comissao", label: "Comissão" },
+                    { id: "devolucao", label: "Devoluções" },
+                  ] as const
+                ).map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveFilter(tab.id)}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider transition cursor-pointer ${
+                      activeFilter === tab.id
+                        ? "bg-slate-900 text-white shadow-xs"
+                        : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -761,7 +797,11 @@ export function AuditResultPage() {
                 <div className="my-4 flex justify-center">
                   <div className="p-3 rounded-2xl bg-white border border-slate-200 shadow-sm">
                     <img
-                      src={`data:image/png;base64,${pixData.qrCodeBase64}`}
+                      src={
+                        pixData.qrCodeBase64.startsWith("data:")
+                          ? pixData.qrCodeBase64
+                          : `data:image/png;base64,${pixData.qrCodeBase64}`
+                      }
                       alt="QR Code Pix"
                       className="w-44 h-44 object-contain"
                     />

@@ -112,6 +112,20 @@ describe("auditEngine: analyzeOrdersForDivergences", () => {
     expect(devError?.order_id).toBe("4");
     expect(devError?.recoverable_amount).toBe(25);
   });
+
+  it("does not falsely flag multi-unit orders with proportional shipping as cubing divergence", () => {
+    const orders: NormalizedOrderRow[] = [
+      // Baseline 1 unidade: frete R$ 20
+      { orderId: "1", sku: "SKU-COMBO", status: "entregue", quantity: 1, grossAmount: 50, feeAmount: 7.5, shippingAmount: 20, netAmount: 22.5 },
+      { orderId: "2", sku: "SKU-COMBO", status: "entregue", quantity: 1, grossAmount: 50, feeAmount: 7.5, shippingAmount: 20, netAmount: 22.5 },
+      // Pedido com 2 unidades: frete R$ 29 (esperado ~29, perfeitamente proporcional a 2 unidades no pacote)
+      { orderId: "3", sku: "SKU-COMBO", status: "entregue", quantity: 2, grossAmount: 100, feeAmount: 15, shippingAmount: 29, netAmount: 56 },
+    ];
+
+    const result = analyzeOrdersForDivergences(orders, "mercadolivre");
+    const shippingError = result.items.find((i) => i.order_id === "3" && i.error_type === "frete");
+    expect(shippingError).toBeUndefined(); // Não deve ser apontado como erro de cubagem
+  });
 });
 
 describe("auditEngine: Sample CSV parsing end-to-end", () => {

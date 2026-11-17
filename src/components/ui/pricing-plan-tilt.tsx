@@ -304,7 +304,7 @@ function PlanCard({
   );
 }
 
-export const DEFAULT_CONFERE_PLANS: Plan[] = [
+const DEFAULT_CONFERE_PLANS: Plan[] = [
   {
     id: "free",
     name: "Starter Grátis",
