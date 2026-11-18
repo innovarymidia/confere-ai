@@ -108,6 +108,28 @@ CREATE POLICY "Users can update own basic info"
     AND is_pro = (SELECT is_pro FROM public.profiles WHERE id = auth.uid())
   );
 
+-- TRIGGER DE SEGURANÇA: Impede que clientes autenticados alterem is_pro, subscription_status e pro_expires_at diretamente
+CREATE OR REPLACE FUNCTION public.protect_profile_privileged_fields()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF auth.role() = 'authenticated' THEN
+    IF NEW.is_pro IS DISTINCT FROM OLD.is_pro
+       OR NEW.subscription_status IS DISTINCT FROM OLD.subscription_status
+       OR NEW.pro_expires_at IS DISTINCT FROM OLD.pro_expires_at
+       OR NEW.asaas_customer_id IS DISTINCT FROM OLD.asaas_customer_id
+       OR NEW.asaas_subscription_id IS DISTINCT FROM OLD.asaas_subscription_id THEN
+      RAISE EXCEPTION 'Não autorizado a alterar campos de assinatura diretamente.';
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+DROP TRIGGER IF EXISTS trg_protect_profile_fields ON public.profiles;
+CREATE TRIGGER trg_protect_profile_fields
+  BEFORE UPDATE ON public.profiles
+  FOR EACH ROW EXECUTE FUNCTION public.protect_profile_privileged_fields();
+
 -- POLÍTICAS: AUDITS
 DROP POLICY IF EXISTS "Anyone can create an audit" ON public.audits;
 CREATE POLICY "Anyone can create an audit"
@@ -125,11 +147,23 @@ CREATE POLICY "Users can claim anonymous audit"
   USING (user_id IS NULL OR user_id = auth.uid())
   WITH CHECK (user_id = auth.uid());
 
--- POLÍTICAS: AUDIT_ITEMS (BLOQUEIO ANTI-BURLA)
+DROP POLICY IF EXISTS "Users can delete own audits" ON public.audits;
+CREATE POLICY "Users can delete own audits"
+  ON public.audits FOR DELETE
+  USING (user_id = auth.uid());
+
+-- POLÍTICAS: AUDIT_ITEMS (BLOQUEIO ANTI-BURLA E ANTI-TAMPERING)
 DROP POLICY IF EXISTS "Anyone can insert audit items" ON public.audit_items;
 CREATE POLICY "Anyone can insert audit items"
   ON public.audit_items FOR INSERT
-  WITH CHECK (TRUE);
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM public.audits a
+      WHERE a.id = audit_items.audit_id
+        AND (a.user_id IS NULL OR a.user_id = auth.uid())
+        AND a.created_at >= (NOW() - INTERVAL '30 minutes')
+    )
+  );
 
 -- REGRA: Visitante gratuito vê APENAS row_rank <= 2.
 -- Assinante PRO vê TODOS os itens das suas auditorias (ou da auditoria atual).
@@ -164,3 +198,48 @@ CREATE POLICY "Pro users can update item status"
 
 -- 7. ATIVAR REALTIME NA TABELA PROFILES
 ALTER PUBLICATION supabase_realtime ADD TABLE public.profiles;
+
+-- 8. POLÍTICA DE EXCLUSÃO DE PERFIL (LGPD Art. 18, VI)
+DROP POLICY IF EXISTS "Users can delete own profile" ON public.profiles;
+CREATE POLICY "Users can delete own profile"
+  ON public.profiles FOR DELETE
+  USING (id = auth.uid());
+
+-- 9. FUNÇÃO RPC: Exclusão de Conta Self-Service (Art. 18, VI da LGPD)
+CREATE OR REPLACE FUNCTION public.delete_user_account()
+RETURNS VOID AS $$
+DECLARE
+  current_user_id UUID := auth.uid();
+BEGIN
+  IF current_user_id IS NULL THEN
+    RAISE EXCEPTION 'Usuário não autenticado.';
+  END IF;
+
+  -- 1. Exclui todas as auditorias e itens do usuário (audit_items possui ON DELETE CASCADE)
+  DELETE FROM public.audits WHERE user_id = current_user_id;
+
+  -- 2. Exclui o perfil do usuário
+  DELETE FROM public.profiles WHERE id = current_user_id;
+
+  -- 3. Exclui a conta no auth.users
+  DELETE FROM auth.users WHERE id = current_user_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- 10. POLÍTICA DE RETENÇÃO: Purgar auditorias anônimas abandonadas após 90 dias (Art. 16 da LGPD)
+CREATE OR REPLACE FUNCTION public.purge_anonymous_audits()
+RETURNS INTEGER AS $$
+DECLARE
+  deleted_count INTEGER;
+BEGIN
+  WITH deleted AS (
+    DELETE FROM public.audits
+    WHERE user_id IS NULL
+      AND created_at < (NOW() - INTERVAL '90 days')
+    RETURNING id
+  )
+  SELECT count(*) INTO deleted_count FROM deleted;
+
+  RETURN deleted_count;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

@@ -12,11 +12,22 @@ serve(async (req: Request) => {
   }
 
   try {
-    // 1. Validação de segurança: verifica o token configurado no painel do Asaas
-    const expectedToken = Deno.env.get("ASAAS_WEBHOOK_TOKEN");
-    const receivedToken = req.headers.get("asaas-access-token");
+    // 1. Validação de segurança: verifica o token configurado no painel do Asaas em tempo constante (anti-timing attack)
+    const expectedToken = Deno.env.get("ASAAS_WEBHOOK_TOKEN") || "";
+    const receivedToken = req.headers.get("asaas-access-token") || "";
 
-    if (!expectedToken || receivedToken !== expectedToken) {
+    const isAuthorized =
+      expectedToken.length > 0 &&
+      expectedToken.length === receivedToken.length &&
+      (() => {
+        let diff = 0;
+        for (let i = 0; i < expectedToken.length; i++) {
+          diff |= expectedToken.charCodeAt(i) ^ receivedToken.charCodeAt(i);
+        }
+        return diff === 0;
+      })();
+
+    if (!isAuthorized) {
       console.error("Tentativa de acesso não autorizado no webhook Asaas.");
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
@@ -45,23 +56,31 @@ serve(async (req: Request) => {
     const subscriptionId = payment.subscription as string | undefined;
     const externalRef = payment.externalReference as string | undefined;
 
-    // Extrai userId e auditId do externalReference ("userId:auditId")
+    // Extrai userId, auditId e billing do externalReference ("userId:auditId:billing")
     let userIdFromRef: string | null = null;
     let auditIdFromRef: string | null = null;
+    let billingFromRef: string | null = null;
 
     if (externalRef && externalRef.includes(":")) {
-      const [uId, aId] = externalRef.split(":");
-      userIdFromRef = uId || null;
-      auditIdFromRef = aId || null;
+      const parts = externalRef.split(":");
+      userIdFromRef = parts[0] || null;
+      auditIdFromRef = parts[1] || null;
+      billingFromRef = parts[2] || null;
     } else if (externalRef) {
       userIdFromRef = externalRef;
     }
 
     // 3. Eventos de Pagamento Confirmado / Recebido (Pix ou Cartão)
     if (event === "PAYMENT_CONFIRMED" || event === "PAYMENT_RECEIVED") {
-      // Concede 32 dias de acesso (30 dias + 2 dias de margem para renovação)
+      // Concede 366 dias para plano anual ou 32 dias para plano mensal (com margem de renovação)
+      const isYearly =
+        billingFromRef === "yearly" ||
+        payment?.subscriptionCycle === "YEARLY" ||
+        payment?.cycle === "YEARLY";
+      const daysToAdd = isYearly ? 366 : 32;
+
       const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + 32);
+      expiresAt.setDate(expiresAt.getDate() + daysToAdd);
 
       // Localiza o profile pelo userId (externalReference) ou pelo asaas_customer_id
       let targetUserId = userIdFromRef;

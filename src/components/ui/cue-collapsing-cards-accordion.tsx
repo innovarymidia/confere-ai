@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MercadoLivreLogo, ShopeeLogo } from "./marketplace-logos";
 
@@ -15,7 +15,6 @@ export interface RefundEvidenceCard {
   timeframe: string;
   quote: string;
   badge: string;
-  accentGradient: string;
 }
 
 const DEFAULT_CARDS: RefundEvidenceCard[] = [
@@ -29,7 +28,6 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     timeframe: "Dinheiro na conta em 48h",
     quote: "A transportadora estava pesando vestidos de 250g como se fossem 1,5 kg. O suporte do Mercado Livre creditou o estorno na hora.",
     badge: "Estorno Concluído",
-    accentGradient: "from-amber-500/20 via-indigo-600/10 to-transparent",
   },
   {
     id: "case-2",
@@ -41,7 +39,6 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     timeframe: "Crédito na Carteira",
     quote: "Subi a planilha de 60 dias da Shopee e achou mais de mil reais parados. Copiei a mensagem gerada pelo ConfereAI e devolveram o valor.",
     badge: "100% Recuperado",
-    accentGradient: "from-orange-500/20 via-indigo-600/10 to-transparent",
   },
   {
     id: "case-3",
@@ -53,7 +50,6 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     timeframe: "Devolução Revertida",
     quote: "Comprador devolveu por arrependimento e cobraram o frete de volta da minha conta. Reclamei com o texto do ConfereAI e estornaram.",
     badge: "Frete Anulado",
-    accentGradient: "from-emerald-500/20 via-indigo-600/10 to-transparent",
   },
   {
     id: "case-4",
@@ -65,7 +61,6 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     timeframe: "Conta Gold",
     quote: "Com a mudança das tabelas de 2026, vários anúncios continuaram cobrando tarifa antiga a maior. O ConfereAI pegou cada centavo.",
     badge: "Maior Volume",
-    accentGradient: "from-indigo-600/20 via-violet-600/10 to-transparent",
   },
   {
     id: "case-5",
@@ -77,7 +72,6 @@ const DEFAULT_CARDS: RefundEvidenceCard[] = [
     timeframe: "Estorno via Chat",
     quote: "O suporte pediu a lista dos pedidos com o valor da diferença. Em 2 dias úteis o saldo foi liberado para saque na minha conta.",
     badge: "Reembolsado",
-    accentGradient: "from-rose-500/20 via-indigo-600/10 to-transparent",
   },
 ];
 
@@ -94,22 +88,21 @@ export function CueCollapsingCardsAccordion({
     <section
       id="casos-reais"
       aria-label="Resultados Reais de Recuperação"
-      className={cn("w-full max-w-5xl mx-auto", className)}
+      className={cn("w-full max-w-[1200px] mx-auto", className)}
     >
-      <div className="text-center max-w-2xl mx-auto mb-8">
-        <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#297a3a] inline-flex items-center gap-1.5 mb-2">
-          <CheckCircle2 className="w-3.5 h-3.5 text-[#297a3a]" />
+      <div className="text-center max-w-2xl mx-auto mb-10">
+        <span className="text-[12px] font-semibold uppercase tracking-[-0.01em] text-[#60646c] bg-[#f3f3f7] border border-[#b9bbc6] px-2.5 py-1 rounded-[6px] inline-flex items-center gap-1.5 mb-2">
           Dinheiro Recuperado Comprovado
         </span>
-        <h2 className="text-2xl sm:text-4xl font-normal text-[#171717] tracking-[-0.05em]">
+        <h2 className="text-2xl sm:text-4xl font-semibold text-[#000000] tracking-[-0.025em] mt-2">
           Valores que outros lojistas receberam de volta
         </h2>
-        <p className="mt-2 text-sm text-[#4d4d4d] font-normal leading-relaxed">
-          Toque nos cartões abaixo para ver os valores que caíram de volta na conta de quem conferiu os extratos com o ConfereAI.
+        <p className="mt-2 text-base text-[#60646c] font-normal leading-relaxed tracking-[-0.01em]">
+          Toque nos cartões abaixo para conferir os valores que caíram de volta no caixa de quem auditou os extratos com o ConfereAI.
         </p>
       </div>
 
-      {/* Accordion Horizontal de Cards Colapsáveis */}
+      {/* Accordion Horizontal de Cards Colapsáveis com 12px de raio */}
       <div className="flex flex-col md:flex-row gap-3 min-h-[480px] md:h-[370px] w-full">
         {cards.map((card) => {
           const isActive = activeId === card.id;
@@ -120,10 +113,10 @@ export function CueCollapsingCardsAccordion({
               onClick={() => setActiveId(card.id)}
               onMouseEnter={() => setActiveId(card.id)}
               className={cn(
-                "relative rounded-[6px] border transition-all duration-300 cursor-pointer overflow-hidden",
+                "relative rounded-[12px] border transition-all duration-300 cursor-pointer overflow-hidden",
                 isActive
-                  ? "flex-[4] p-5 sm:p-6 bg-white border-[#171717] shadow-subtle flex flex-col justify-between"
-                  : "flex-none h-14 md:h-auto md:flex-1 bg-white hover:bg-[#fafafa] border-[#ebebeb] shadow-subtle-2"
+                  ? "flex-[4] p-6 sm:p-7 bg-[#ffffff] border-[#000000] flex flex-col justify-between"
+                  : "flex-none h-14 md:h-auto md:flex-1 bg-[#ffffff] hover:bg-[#f3f3f7] border-[#b9bbc6]"
               )}
             >
               {isActive ? (
@@ -133,7 +126,7 @@ export function CueCollapsingCardsAccordion({
                 <>
                   {/* Topo do Card com Logo da Plataforma */}
                   <div className="relative z-10 flex items-center justify-between">
-                    <span className="font-mono text-[11px] uppercase tracking-[0.071em] px-2.5 py-1 rounded-[6px] bg-[#171717] text-white flex items-center gap-1.5 shrink-0">
+                    <span className="text-[11px] font-semibold uppercase tracking-[-0.01em] px-2.5 py-1 rounded-[6px] bg-[#000000] text-white flex items-center gap-1.5 shrink-0">
                       {card.platform === "Mercado Livre" ? (
                         <MercadoLivreLogo className="w-3.5 h-3.5" />
                       ) : (
@@ -142,8 +135,8 @@ export function CueCollapsingCardsAccordion({
                       <span>{card.platform}</span>
                     </span>
 
-                    <span className="font-mono text-[11px] text-[#297a3a] bg-[#297a3a]/10 px-2.5 py-0.5 rounded-[6px] border border-[#297a3a]/20 flex items-center gap-1 shrink-0">
-                      <CheckCircle2 className="w-3 h-3 text-[#297a3a]" />
+                    <span className="text-[11px] font-semibold text-[#000000] bg-[#f3f3f7] px-2.5 py-1 rounded-[6px] border border-[#b9bbc6] flex items-center gap-1 shrink-0">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#ff5900]" />
                       {card.badge}
                     </span>
                   </div>
@@ -155,62 +148,62 @@ export function CueCollapsingCardsAccordion({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.25 }}
                     >
-                      <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] block">
-                        {card.niche} • {card.divergenceType}
+                      <span className="text-xs font-semibold uppercase tracking-[-0.01em] text-[#60646c] block">
+                        {card.niche}: {card.divergenceType}
                       </span>
-                      <div className="font-mono font-medium text-2xl sm:text-4xl tracking-tight mt-1 text-[#297a3a]">
+                      <div className="text-2xl sm:text-4xl font-semibold tracking-[-0.025em] mt-1 text-[#000000]">
                         +{card.recoveredAmount}
                       </div>
-                      <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm text-[#4d4d4d] leading-relaxed font-normal bg-[#fafafa] p-3 sm:p-3.5 rounded-[6px] border border-[#ebebeb]">
+                      <p className="mt-3 text-xs sm:text-sm text-[#60646c] leading-relaxed font-normal bg-[#f3f3f7] p-3.5 rounded-[12px] border border-[#b9bbc6]">
                         “{card.quote}”
                       </p>
                     </motion.div>
                   </div>
 
                   {/* Rodapé do Card */}
-                  <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-[#ebebeb]">
-                    <span className="text-[#666666] font-mono text-[11px]">
-                      <strong className="text-[#171717]">{card.ordersCount} pedidos</strong> estornados • {card.timeframe}
+                  <div className="relative z-10 flex items-center justify-between text-xs pt-3 border-t border-[#b9bbc6]">
+                    <span className="text-[#60646c] text-[11px] tracking-[-0.01em]">
+                      <strong className="text-[#000000]">{card.ordersCount} pedidos</strong> estornados, {card.timeframe}
                     </span>
-                    <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#171717] flex items-center gap-1 shrink-0">
-                      Comprovado <ArrowUpRight className="w-3.5 h-3.5 text-[#171717]" />
+                    <span className="text-[11px] font-semibold uppercase tracking-[-0.01em] text-[#000000] flex items-center gap-1 shrink-0">
+                      Comprovado <ArrowUpRight className="w-3.5 h-3.5 text-[#ff5900]" />
                     </span>
                   </div>
                 </>
               ) : (
                 /* =========================================================================
-                   CARD COLAPSADO / FECHADO (Sem nenhuma sobreposição)
+                   CARD COLAPSADO / FECHADO
                    ========================================================================= */
                 <>
                   {/* Visão Mobile: Barra horizontal limpa */}
                   <div className="md:hidden relative z-10 flex items-center justify-between h-full px-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-[4px] bg-white border border-[#ebebeb] p-0.5 flex items-center justify-center shrink-0">
+                      <div className="w-7 h-7 rounded-[6px] bg-[#ffffff] border border-[#b9bbc6] p-0.5 flex items-center justify-center shrink-0">
                         {card.platform === "Mercado Livre" ? (
                           <MercadoLivreLogo className="w-full h-full" />
                         ) : (
                           <ShopeeLogo className="w-full h-full" />
                         )}
                       </div>
-                      <span className="font-medium text-xs text-[#171717] truncate max-w-[150px]">
+                      <span className="font-medium text-xs text-[#000000] truncate max-w-[150px]">
                         {card.niche}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                      <span className="font-mono text-xs text-[#297a3a]">
+                      <span className="text-xs font-semibold text-[#000000]">
                         {card.recoveredAmount}
                       </span>
-                      <span className="font-mono text-[10px] text-[#171717] bg-[#fafafa] px-2 py-0.5 rounded-[4px] border border-[#ebebeb]">
+                      <span className="text-[10px] text-[#000000] bg-[#f3f3f7] px-2 py-0.5 rounded-[6px] border border-[#b9bbc6]">
                         Ver
                       </span>
                     </div>
                   </div>
 
-                  {/* Visão Desktop / Tablet: Coluna vertical perfeitamente distribuída */}
+                  {/* Visão Desktop: Coluna vertical */}
                   <div className="hidden md:flex relative z-10 flex-col items-center justify-between h-full py-5 px-1 text-center">
                     {/* Topo: Logo Oficial */}
-                    <div className="w-9 h-9 rounded-[6px] bg-white border border-[#ebebeb] p-1 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-[6px] bg-[#ffffff] border border-[#b9bbc6] p-1 flex items-center justify-center shrink-0">
                       {card.platform === "Mercado Livre" ? (
                         <MercadoLivreLogo className="w-full h-full" />
                       ) : (
@@ -218,16 +211,16 @@ export function CueCollapsingCardsAccordion({
                       )}
                     </div>
 
-                    {/* Centro: Nome do Nicho em writing-mode vertical nativo */}
+                    {/* Centro: Nome do Nicho */}
                     <div className="my-auto py-2 flex items-center justify-center overflow-hidden max-h-[200px]">
-                      <span className="[writing-mode:vertical-rl] rotate-180 font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666] select-none whitespace-nowrap">
+                      <span className="[writing-mode:vertical-rl] rotate-180 text-xs uppercase font-medium tracking-[-0.01em] text-[#60646c] select-none whitespace-nowrap">
                         {card.niche}
                       </span>
                     </div>
 
-                    {/* Rodapé: Valor do Estorno em pílula monospace verde */}
-                    <div className="w-full px-2 pt-2 border-t border-[#ebebeb] shrink-0">
-                      <span className="font-mono text-[11px] text-[#297a3a] bg-[#297a3a]/10 border border-[#297a3a]/20 px-2 py-1 rounded-[4px] block truncate">
+                    {/* Rodapé: Valor do Estorno */}
+                    <div className="w-full px-2 pt-2 border-t border-[#b9bbc6] shrink-0">
+                      <span className="text-[11px] font-semibold text-[#000000] bg-[#f3f3f7] border border-[#b9bbc6] px-2 py-1 rounded-[6px] block truncate">
                         {card.recoveredAmount}
                       </span>
                     </div>

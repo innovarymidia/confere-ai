@@ -79,3 +79,22 @@ export function ConfereAiLogo({
     />
   );
 }
+
+/**
+ * Símbolo e Ícone Miniatura Oficial da ConfereAI.
+ */
+export function ConfereAiSymbol({
+  className,
+  alt = "ConfereAI",
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  return (
+    <img
+      src="/logos/confereai-symbol.png"
+      alt={alt}
+      loading="eager"
+      className={cn("object-contain shrink-0 select-none", className)}
+      {...props}
+    />
+  );
+}

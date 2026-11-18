@@ -91,11 +91,11 @@ function PlanCard({
   const reduce = useReducedMotion();
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
-  const rx = useSpring(useTransform(my, [0, 1], [11, -11]), {
+  const rx = useSpring(useTransform(my, [0, 1], [10, -10]), {
     stiffness: 160,
     damping: 14,
   });
-  const ry = useSpring(useTransform(mx, [0, 1], [-13, 13]), {
+  const ry = useSpring(useTransform(mx, [0, 1], [-12, 12]), {
     stiffness: 160,
     damping: 14,
   });
@@ -111,7 +111,7 @@ function PlanCard({
         const b = e.currentTarget.getBoundingClientRect();
         mx.set((e.clientX - b.left) / b.width);
         my.set((e.clientY - b.top) / b.height);
-        lift.set(40);
+        lift.set(30);
       }}
       onPointerLeave={() => {
         mx.set(0.5);
@@ -130,35 +130,35 @@ function PlanCard({
           transformStyle: "preserve-3d",
         }}
         className={cn(
-          "relative flex h-full flex-col overflow-hidden rounded-[6px] border bg-white p-6 text-[#171717] shadow-subtle transition-colors cursor-pointer",
+          "relative flex h-full flex-col overflow-hidden rounded-[12px] border bg-[#ffffff] p-6 sm:p-7 text-[#000000] transition-colors cursor-pointer",
           selected
-            ? "border-[#171717] ring-1 ring-[#171717]"
+            ? "border-[#000000] ring-1 ring-[#000000]"
             : plan.popular
-              ? "border-[#171717]/40 shadow-subtle"
-              : "border-[#ebebeb]"
+              ? "border-[#000000]/40"
+              : "border-[#b9bbc6]"
         )}
       >
         {plan.popular && (
           <span
-            className="absolute top-3 right-4 z-10 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.071em] px-2 py-0.5 rounded-[4px] bg-[#171717] text-white shadow-subtle"
+            className="absolute top-3.5 right-4 z-10 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[-0.01em] px-2.5 py-0.5 rounded-[6px] bg-[#000000] text-white"
           >
-            <Sparkles className="size-3 text-white/80" aria-hidden /> Mais Escolhido
+            <Sparkles className="size-3 text-[#ff5900]" aria-hidden /> Mais Escolhido
           </span>
         )}
 
         <div className="relative z-10">
-          <h3 className="text-base font-medium text-[#171717] tracking-tight">
+          <h3 className="text-base font-semibold text-[#000000] tracking-[-0.01em]">
             {plan.name}
           </h3>
-          <p className="mt-1 text-xs text-[#666666] font-normal">{plan.tagline}</p>
+          <p className="mt-1 text-xs text-[#60646c] font-normal tracking-[-0.01em]">{plan.tagline}</p>
           <p className="mt-4 flex items-baseline gap-1">
-            <span className="font-mono text-xs text-[#666666]">{currency}</span>
-            <span className="font-mono text-3xl sm:text-4xl font-normal tracking-tight text-[#171717]">
+            <span className="text-sm font-medium text-[#60646c]">{currency}</span>
+            <span className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] text-[#000000]">
               <Roll value={price} dir={dir} />
             </span>
-            <span className="ml-1 font-mono text-xs text-[#666666]">/ mês</span>
+            <span className="ml-1 text-xs text-[#60646c]">/ mês</span>
           </p>
-          <p className="mt-1 h-4 font-mono text-[11px] text-[#8f8f8f]">
+          <p className="mt-1 h-4 text-xs text-[#6f737b] tracking-[-0.01em]">
             {billing === "yearly" && plan.monthly > 0
               ? `Cobrado ${currency}${plan.yearly * 12} ao ano (20% OFF)`
               : billing === "monthly" && plan.monthly > 0
@@ -167,7 +167,7 @@ function PlanCard({
           </p>
         </div>
 
-        <ul className="relative z-10 mt-6 flex-1 space-y-2.5 text-xs text-[#4d4d4d] font-normal">
+        <ul className="relative z-10 mt-6 flex-1 space-y-2.5 text-xs text-[#60646c] font-normal tracking-[-0.01em]">
           {plan.features.map((f, i) => (
             <motion.li
               key={f}
@@ -177,7 +177,7 @@ function PlanCard({
               viewport={{ once: true }}
               transition={{ delay: 0.15 + i * 0.05 }}
             >
-              <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-full bg-[#fafafa] border border-[#ebebeb] text-[#171717]">
+              <span className="mt-0.5 grid size-4 shrink-0 place-items-center rounded-[4px] bg-[#f3f3f7] border border-[#b9bbc6] text-[#000000]">
                 <Check className="size-2.5 stroke-[2.5]" aria-hidden />
               </span>
               <span className="leading-tight">{f}</span>
@@ -185,16 +185,17 @@ function PlanCard({
           ))}
         </ul>
 
+        {/* Botao de Acao Brex: 12px de raio, Ember #ff5900 quando selecionado */}
         <motion.button
           type="button"
           onClick={onPick}
           aria-pressed={selected}
           whileTap={reduce ? undefined : { scale: 0.98 }}
           className={cn(
-            "relative mt-6 inline-flex min-h-10 w-full items-center justify-center gap-1.5 rounded-[6px] text-xs font-medium uppercase tracking-wider transition-all outline-none cursor-pointer",
+            "relative mt-6 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-[12px] text-xs font-semibold uppercase tracking-[-0.01em] transition-all outline-none cursor-pointer",
             selected
-              ? "bg-[#171717] hover:bg-[#000000] text-white shadow-subtle"
-              : "border border-[#ebebeb] bg-white text-[#171717] hover:bg-[#fafafa] hover:border-[#171717]"
+              ? "bg-[#ff5900] hover:bg-[#e04f00] text-white"
+              : "border border-[#b9bbc6] bg-[#ffffff] text-[#000000] hover:bg-[#f3f3f7] hover:border-[#000000]"
           )}
         >
           <span className="relative z-10 inline-flex items-center gap-1.5">
@@ -319,15 +320,15 @@ export function PricingPlanTilt({
   };
 
   return (
-    <section aria-label={title} className={cn("relative w-full max-w-5xl mx-auto", className)}>
+    <section aria-label={title} className={cn("relative w-full max-w-[1200px] mx-auto", className)}>
       <div className="relative text-center max-w-2xl mx-auto">
-        <span className="font-mono text-[11px] uppercase tracking-[0.071em] text-[#666666]">
+        <span className="text-[12px] font-semibold uppercase tracking-[-0.01em] text-[#60646c] bg-[#f3f3f7] border border-[#b9bbc6] px-2.5 py-1 rounded-[6px]">
           Investimento Transparente
         </span>
-        <h2 className="text-2xl sm:text-4xl font-normal text-[#171717] tracking-[-0.05em] mt-2">
+        <h2 className="text-2xl sm:text-4xl font-semibold text-[#000000] tracking-[-0.025em] mt-2">
           {title}
         </h2>
-        <p className="mt-2 text-sm text-[#4d4d4d] font-normal leading-relaxed">{subtitle}</p>
+        <p className="mt-2 text-base text-[#60646c] font-normal leading-relaxed tracking-[-0.01em]">{subtitle}</p>
 
         {/* Toggle Mensal / Anual */}
         <div className="mt-6 inline-flex items-center gap-3">
@@ -335,7 +336,7 @@ export function PricingPlanTilt({
             role="radiogroup"
             aria-labelledby={`${uid}-b`}
             onKeyDown={key}
-            className="relative inline-grid grid-cols-2 rounded-full border border-[#ebebeb] bg-white p-1 shadow-subtle-2"
+            className="relative inline-grid grid-cols-2 rounded-[12px] border border-[#b9bbc6] bg-[#f3f3f7] p-1"
           >
             <span id={`${uid}-b`} className="sr-only">
               Período de cobrança
@@ -349,16 +350,16 @@ export function PricingPlanTilt({
                 tabIndex={billing === o.id ? 0 : -1}
                 onClick={() => choose(o.id)}
                 className={cn(
-                  "relative min-h-9 min-w-24 rounded-full px-4 font-mono text-[11px] uppercase tracking-[0.071em] outline-none transition-colors cursor-pointer",
+                  "relative min-h-9 min-w-24 rounded-[8px] px-4 text-xs font-semibold tracking-[-0.01em] outline-none transition-colors cursor-pointer",
                   billing === o.id
                     ? "text-white"
-                    : "text-[#666666] hover:text-[#171717]"
+                    : "text-[#60646c] hover:text-[#000000]"
                 )}
               >
                 {billing === o.id && (
                   <motion.span
                     layoutId="bill-pill"
-                    className="absolute inset-0 rounded-full bg-[#171717]"
+                    className="absolute inset-0 rounded-[8px] bg-[#000000]"
                     transition={
                       reduce
                         ? { duration: 0 }
@@ -372,14 +373,14 @@ export function PricingPlanTilt({
           </div>
 
           <span
-            className="rounded-full px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-[0.071em] text-[#297a3a] bg-[#297a3a]/10 border border-[#297a3a]/20"
+            className="rounded-[6px] px-2.5 py-1 text-xs font-semibold tracking-[-0.01em] text-[#000000] bg-[#f3f3f7] border border-[#b9bbc6]"
           >
             Economize 20%
           </span>
         </div>
       </div>
 
-      {/* Grid com os 3 cards 3D tilt */}
+      {/* Grid com os 3 cards */}
       <ul className="relative mt-10 grid items-stretch gap-6 grid-cols-1 md:grid-cols-3">
         {plans.map((p) => (
           <PlanCard

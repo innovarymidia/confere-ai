@@ -1,245 +1,221 @@
-# Vercel — Style Reference
-> Typeset terminal on white paper
+# Brex — Style Reference
+> White concrete, single ember — a clinical financial instrument where one orange spark does all the talking.
 
 **Theme:** light
 
 Source measurements are normalized; roles and recommendations are interpreted. Font summary lists are independent, not paired by position. HTML examples are reconstructions, not source components.
 
-Vercel's design system is an exercise in disciplined monochrome: a near-white canvas (#fafafa), black typography, hairline borders, and the complete absence of decorative color. The visual language reads like a developer terminal rendered in print — Geist Sans whispers at hero scale with weight 400-450 and -0.06em tracking, while Geist Mono stamps labels, metadata, and code samples in 11-13px caps. Buttons are sharp 6px-radius pills or rectangles in pure black-on-white or white-on-black. The system trusts contrast and typography hierarchy over color, using the triangle mark (▲) and a two-line wordmark as the only brand ornament. Surfaces stack as #fafafa → #ebebeb → #171717, creating depth through tonal value shifts rather than shadow or color. Every element is built on a 4px grid with compact density, producing an interface that feels like an engineer's notebook — precise, functional, and unafraid of empty space.
+Brex is a white concrete financial workbench lit by a single orange ember. The interface lives on a near-pure white canvas with tight, almost compressed Inter type and a custom Flecha display face, and the only chromatic voice in the system is #ff5900 — a vivid ember that marks every primary action, link, and tab indicator without ever becoming decorative. Dark surfaces (#000710 footer, #15191 announcement bar) frame the bright body, creating a hard light/dark bookend that makes the white sections feel taller. Components are flat with a 12px radius, minimal shadows, hairline borders, and generous 48px section gaps — the system is designed to feel like a precision instrument for finance teams, not a marketing site.
 
 ## Tokens — Colors
 
 | Name | Value | Token | Role |
 |------|-------|-------|------|
-| Paper White | `#fafafa` | `--color-paper-white` | Page canvas, card surfaces, light button fills — the default background that everything else sits on |
-| Pure White | `#ffffff` | `--color-pure-white` | Elevated card surfaces, inset highlights, input fields |
-| Hairline | `#ebebeb` | `--color-hairline` | 1px borders on buttons, links, and cards — visible at high zoom, invisible at speed |
-| Ash | `#c9c9c9` | `--color-ash` | Disabled text, muted labels, brand name watermarks in customer logos |
-| Smoke | `#a8a8a8` | `--color-smoke` | Tertiary text, placeholder copy, subtle icon fills |
-| Graphite | `#8f8f8f` | `--color-graphite` | Footer micro-copy, secondary metadata |
-| Slate | `#7d7d7d` | `--color-slate` | Customer brand names in logo strips, muted heading variants |
-| Stone | `#666666` | `--color-stone` | Muted captions, helper text, and de-emphasized UI labels. |
-| Charcoal | `#4d4d4d` | `--color-charcoal` | Body paragraph text, card descriptions, button secondary labels — where reading weight lives |
-| Obsidian | `#171717` | `--color-obsidian` | Primary headings, nav borders, dark button fills, list markers — near-black that avoids pure #000 harshness |
-| Carbon | `#000000` | `--color-carbon` | SVG icon fills, logo marks, the triangle brand glyph — pure black reserved for graphic elements only |
-| Terminal Green | `#297a3a` | `--color-terminal-green` | Green text accent for links, tags, and emphasized short phrases. Use as a supporting accent, not as a status color |
-| Spectrum Gradient | `linear-gradient(90deg, rgb(0, 255, 149) 0%, rgb(255, 208, 0) 25%, rgb(255, 23, 68) 50%, rgb(149, 0, 255) 75%, rgb(0, 229, 255) 100%)` | `--color-spectrum-gradient` | Decorative gradient sweep for marketing hero accents — the only place color is permitted to exist |
-| Solar Edge | `linear-gradient(90deg, rgb(255, 220, 48) 0%, rgb(56, 162, 255) 100%)` | `--color-solar-edge` | Decorative two-stop gradient for feature callouts — yellow-to-blue sweep |
+| Ember | `#ff5900` | `--color-ember` | Orange supporting accent for decorative details and low-frequency emphasis; Orange supporting accent for decorative details and low-frequency emphasis. |
+| Abyss | `#000710` | `--color-abyss` | Footer background, deepest dark surface — a near-black with a barely-perceptible blue cast that distinguishes it from pure black at section transitions |
+| Carbon | `#15191e` | `--color-carbon` | Announcement bar, dark mode headers, elevated dark surfaces — softer than Abyss, used where dark needs to feel like product chrome rather than footer |
+| Ink | `#000000` | `--color-ink` | Primary headings, body text, heavy borders — the dominant text color across light surfaces |
+| Paper | `#ffffff` | `--color-paper` | Page background, card surfaces, button text on dark fills — the primary canvas |
+| Fog | `#f3f3f7` | `--color-fog` | Secondary surface, input field backgrounds, subtle section dividers — the only off-white that creates layered card stacks on the Paper canvas |
+| Mist | `#b9bbc6` | `--color-mist` | Hairline borders, dividers, disabled states — the structural gray that keeps cards and inputs defined without visual weight |
+| Steel | `#8b8d98` | `--color-steel` | Muted icon strokes, placeholder text, secondary nav text — the mid-gray for chrome that shouldn't compete with content |
+| Pewter | `#6f737b` | `--color-pewter` | Tertiary body text, caption-level labels, helper text — a step between Steel and Graphite for mid-importance copy |
+| Graphite | `#60646c` | `--color-graphite` | Secondary body text, subhead descriptions, muted link text — the workhorse gray for any paragraph that isn't a heading |
 
 ## Tokens — Typography
 
-### Geist Sans — Primary interface and display typeface — custom geometric sans from Vercel with tight tracking on large sizes (-0.06em at 56-64px, -0.05em at 30px). Weight 450 for hero headlines is the signature choice: heavier than a light but lighter than a semibold, producing a tone that is confident without shouting. · `--font-geist-sans`
-- **Substitute:** Inter
-- **Weights:** 400, 450, 500
-- **Sizes:** 14, 16, 30, 56, 64
-- **Line height:** 1.00, 1.10, 1.43, 1.50
-- **Letter spacing:** -3.84px at 64px, -3.36px at 56px, -1.5px at 30px, normal at body sizes
-- **OpenType features:** `"calt" 0, "rlig", "ss11"`
-- **Role:** Primary interface and display typeface — custom geometric sans from Vercel with tight tracking on large sizes (-0.06em at 56-64px, -0.05em at 30px). Weight 450 for hero headlines is the signature choice: heavier than a light but lighter than a semibold, producing a tone that is confident without shouting.
-
-### Geist Mono — Monospace secondary typeface for labels, code blocks, CLI output panels, metadata tags, and uppercase eyebrows. The 8px/600/uppercase combination stamps tiny wordmarks with mechanical precision. Wide letter-spacing (0.071em) in mono gives uppercase labels breathing room. · `--font-geist-mono`
-- **Substitute:** JetBrains Mono
+### Inter — Universal workhorse — body, navigation, buttons, inputs, labels, links. The signature is aggressive negative tracking (-0.01 to -0.03em) at every size, making the type feel compressed and engineered rather than airy. Weight 500 carries UI chrome; weight 600 is reserved for emphasis. Inter's geometric neutrality is intentional — Flecha does the emotional work in headlines. · `--font-inter`
+- **Substitute:** Inter (Google Fonts)
 - **Weights:** 400, 500, 600
-- **Sizes:** 8, 11, 12, 13, 14
-- **Line height:** 1.00, 1.33, 1.43, 1.50, 1.54, 1.60, 1.67
-- **Letter spacing:** 0.071em for mono at 11-12px
-- **OpenType features:** `"calt" 0, "rlig", "ss11"`
-- **Role:** Monospace secondary typeface for labels, code blocks, CLI output panels, metadata tags, and uppercase eyebrows. The 8px/600/uppercase combination stamps tiny wordmarks with mechanical precision. Wide letter-spacing (0.071em) in mono gives uppercase labels breathing room.
+- **Sizes:** 10, 12, 13, 14, 16, 20, 24, 36, 48, 72
+- **Line height:** 1.20–1.57
+- **Letter spacing:** -0.03em at 72px, -0.025em at 48px, -0.02em at 36px, -0.01em at 24px and below
+- **OpenType features:** `"calt" 0, "liga" 0, "ss03", "cv01", "cv05" 0, "cv10", "ss01" 0, "zero" 0`
+- **Role:** Universal workhorse — body, navigation, buttons, inputs, labels, links. The signature is aggressive negative tracking (-0.01 to -0.03em) at every size, making the type feel compressed and engineered rather than airy. Weight 500 carries UI chrome; weight 600 is reserved for emphasis. Inter's geometric neutrality is intentional — Flecha does the emotional work in headlines.
+
+### Flecha — Display headline face — used selectively for hero-level statements where character matters. The single weight and tight 1.11 leading give headlines a compressed, engineered presence. Inter handles all sub-headings; Flecha appears only when a heading needs brand personality. · `--font-flecha`
+- **Substitute:** Söhne Breit (Klim Type Foundry) or Reckless Neue as a wide-grotesk alternative
+- **Weights:** 500
+- **Sizes:** 36
+- **Line height:** 1.11
+- **OpenType features:** `"calt" 0, "cv01", "cv05" 0, "cv10", "liga" 0, "ss01" 0, "ss03", "zero" 0`
+- **Role:** Display headline face — used selectively for hero-level statements where character matters. The single weight and tight 1.11 leading give headlines a compressed, engineered presence. Inter handles all sub-headings; Flecha appears only when a heading needs brand personality.
 
 ### Type Scale
 
 | Role | Family | Weight | Size | Line Height | Letter Spacing | Token |
 |------|--------|--------|------|-------------|----------------|-------|
-| eyebrow | — | — | 11px | 1.5 | — | `--text-eyebrow` |
-| caption | — | — | 13px | 1.54 | — | `--text-caption` |
-| body | — | — | 16px | 1.5 | — | `--text-body` |
-| heading | — | — | 30px | 1.1 | -1.5px | `--text-heading` |
-| heading-lg | — | — | 56px | 1 | -3.36px | `--text-heading-lg` |
-| display | — | — | 64px | 1 | -3.84px | `--text-display` |
+| caption | — | — | 12px | 1.5 | -0.01px | `--text-caption` |
+| body-sm | — | — | 14px | 1.43 | -0.01px | `--text-body-sm` |
+| body | — | — | 16px | 1.5 | -0.01px | `--text-body` |
+| subheading | — | — | 20px | 1.4 | -0.01px | `--text-subheading` |
+| heading-sm | — | — | 24px | 1.33 | -0.01px | `--text-heading-sm` |
+| heading | — | — | 36px | 1.21 | -0.02px | `--text-heading` |
+| heading-lg | — | — | 48px | 1.2 | -0.025px | `--text-heading-lg` |
+| display | — | — | 72px | 1 | -0.03px | `--text-display` |
 
 ## Tokens — Spacing & Shapes
 
-**Density:** compact
+**Base unit:** 8px
+
+**Density:** comfortable
 
 ### Spacing Scale
 
 | Name | Value | Token |
 |------|-------|-------|
-| 4 | 4px | `--spacing-4` |
-| 6 | 6px | `--spacing-6` |
 | 8 | 8px | `--spacing-8` |
-| 12 | 12px | `--spacing-12` |
-| 14 | 14px | `--spacing-14` |
 | 16 | 16px | `--spacing-16` |
-| 20 | 20px | `--spacing-20` |
 | 24 | 24px | `--spacing-24` |
 | 32 | 32px | `--spacing-32` |
-| 40 | 40px | `--spacing-40` |
-| 44 | 44px | `--spacing-44` |
-| 208 | 208px | `--spacing-208` |
+| 48 | 48px | `--spacing-48` |
+| 72 | 72px | `--spacing-72` |
+| 80 | 80px | `--spacing-80` |
+| 160 | 160px | `--spacing-160` |
 
 ### Border Radius
 
 | Element | Value |
 |---------|-------|
-| nav | 2px |
-| cards | 6px |
-| pills | 9999px |
-| buttons | 6px |
-
-### Shadows
-
-| Name | Value | Token |
-|------|-------|-------|
-| subtle | `rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0...` | `--shadow-subtle` |
-| subtle-2 | `rgb(235, 235, 235) 0px 0px 0px 1px` | `--shadow-subtle-2` |
+| tags | 6px |
+| cards | 12px |
+| inputs | 12px |
+| buttons | 12px |
 
 ### Layout
 
-- **Page max-width:** 1280px
-- **Section gap:** 96-128px
-- **Card padding:** 16px
-- **Element gap:** 12px
+- **Page max-width:** 1200px
+- **Section gap:** 48-80px
+- **Card padding:** 24-32px
+- **Element gap:** 8-16px
 
 ## Components
 
-### Filled Black Button
-**Role:** Primary action — the strongest visual weight in the system
+### Top Announcement Bar
+**Role:** Slim dark bar above the main nav for promotional or time-sensitive messaging
 
-Background #171717, text #ffffff, 6px radius, 12px horizontal padding, Geist Sans 14px/400. Used for Deploy Now, Sign Up. The only element that reaches 'Obsidian' black, making it unmistakable as the page's primary call.
+Full-bleed Carbon (#15191e) background, 1px vertical padding, centered Inter 12px weight 500 white text with inline Ember-colored link. No close button visible in standard use.
 
-### Ghost Outline Button
-**Role:** Secondary action — present but not competing with primary
+### Primary Navigation Bar
+**Role:** Main horizontal navigation with logo, menu items, and right-aligned actions
 
-Background transparent, text #4d4d4d, 1px border #ebebeb (rendered via box-shadow ring), 6px radius, 20px all padding, Geist Sans 14px/400. Used for Talk to Sales, Get a Demo. Reads as 'available' without asserting hierarchy.
+White background, 12px radius on the right-side CTA only. Left: Brex wordmark in Ink (#000000). Center: Inter 14px weight 500 Ink nav items with caret indicators. Right: 'Sign in' and 'See a demo' as plain text links (Ink), followed by 'Get started' as a filled Ember button (12px radius, 8px 16px padding, Inter 14px weight 600, white text).
 
-### Pill Button
-**Role:** Compact action in dense contexts (nav, header right cluster)
+### Ember CTA Button (Filled)
+**Role:** The single primary action variant — used for 'Get started', form submissions, and high-intent conversion moments
 
-Background #171717 or #ffffff, text contrasting, 9999px radius (full pill), 12px horizontal padding, 0 vertical padding for tight header use.
+Background Ember (#ff5900), white text, 12px border-radius, 8px vertical × 16px horizontal padding, Inter 14–16px weight 600, no border. On dark backgrounds the same fill applies with Paper text. The vivid orange against white creates immediate visual priority without needing size or weight escalation.
 
-### Text Link Button
-**Role:** Lowest-weight interactive — pure underline or color shift on text
+### Ghost Link Button
+**Role:** Secondary action — 'See a demo', 'See Brex in action'
 
-No background, no border, 0px radius, color #171717 or #4d4d4d, 14-16px Geist Sans. Used for nav items and inline references.
+No background, no border, Ink (#000000) text at Inter 14px weight 500, often prefixed with a small Ember-colored icon (play circle, arrow). Sits beside or below filled CTAs as a lower-commitment alternative.
 
-### Bordered Card
-**Role:** Feature/content container — depth via hairline border, never shadow
+### Email Capture Input
+**Role:** Hero and inline form email field with attached submit button
 
-Background #ffffff, 6px radius, 1px border via stacked box-shadows: inset ring rgba(0,0,0,0.08) + outer ring #fafafa, 16px padding. The double-ring technique creates a border that survives any background — a signature Vercel trick.
+White background, 1px Mist (#b9bbc6) border, 12px radius, 12–16px padding. Placeholder text in Steel (#8b8d98). The Ember 'Get started' button is attached or adjacent, creating a horizontal field+button pair with a 4–8px gap.
 
-### Inverted Card
-**Role:** Visual punctuation in a grid — flips the value scale
+### Feature Category Card
+**Role:** Product category tiles in 'The card is just the start' section (Corporate cards, Expense management, Travel, Bill pay, Banking and treasury)
 
-Background #171717, white text, 6px radius. Used sparingly (e.g., the Passport card) to break the monotony of an all-light layout.
+White background, 12px radius, 24–32px padding, no visible border, subtle separation by spacing alone. Heading in Ink Inter 20–24px weight 600, body in Graphite 14–16px weight 400. Selected/active card shows Ember-colored text or underline. Product images (cards, phones, charts) anchor the bottom of the card.
 
-### CLI Output Panel
-**Role:** Demonstrates the product in its native environment — a terminal screenshot embedded as UI
+### Customer Logo Grid
+**Role:** Social proof band — 'Trusted by 35,000+ top companies'
 
-Light background with Geist Mono 12-13px text in #171717, prefixed with ▲ triangle marker in #171717 for commands, ✓ checkmark in #297a3a for confirmations. The terminal IS the marketing.
+Fog (#f3f3f7) background section, heading in Ink Inter ~36px weight 600 centered. Logos arranged in a 6×2 grid (or 4–5 per row on narrower layouts), all rendered in Steel/Mist monochrome. No logo gets a colored treatment — the uniformity reinforces enterprise scale.
 
-### Logo Strip Row
-**Role:** Social proof — customer brand names in a single horizontal line
+### Article / Resource Card
+**Role:** Blog or content cards in horizontal scroll/carousel sections
 
-7+ logos in a row with 24-32px gaps. Customer names render in Geist Sans at the customer's actual brand treatment, faded to #7d7d7d for the page's neutral context.
+White background, 12px radius, no border. Top: full-bleed image (16:9 or 4:3) within the card radius. Below: Inter 20px weight 600 Ink headline, Graphite 14px weight 400 excerpt, 2–3 lines max. Carousel uses circular Paper buttons with Ink arrows at the section's left edge.
 
-### Eyebrow Label
-**Role:** Tiny uppercase section markers — the monospace 'stamp'
+### Dark Footer
+**Role:** Site-wide footer with link columns and brand mark
 
-Geist Mono 11px/400, 0.071em letter-spacing, uppercase, color #171717. Pairs with a 12px gap before the heading it announces. Examples: 'FOR CODING AGENTS', 'TO SHIP APPS AND AGENTS'.
+Abyss (#000710) background, full-bleed. Brex wordmark in Paper at top-left. Multi-column link groups in Inter 14px weight 400 with column headers in weight 600 Paper. Link text in a slightly lighter gray against Abyss for hierarchy. Generous 48–64px vertical padding.
 
-### Top Nav Bar
-**Role:** Global navigation — minimal, horizontal, no shadow
+### Cookie Consent Dialog
+**Role:** Bottom-center modal for GDPR/consent compliance
 
-Height 64px, sticky, background #fafafa with backdrop-blur (20-48px), wordmark left (▲ + Vercel), nav items center-left at 14px Geist Sans #171717, action cluster right (Get a Demo ghost, Log In ghost, Sign Up filled). No bottom border — separation comes from spacing alone.
+White background, 12px radius, subtle shadow, max-width ~480px. Title 'Cookie Consent' in Inter 16px weight 600 Ink. Body in Graphite 14px. Three buttons in a row: 'Accept all' (filled Ember), 'Reject all' (outlined with Mist border), 'More choices' (text link). Floats above content with a 24px bottom margin.
 
-### Hero Composition
-**Role:** First screen — oversized type on left, brand mark on right, supporting text far right
+### Carousel Navigation Controls
+**Role:** Horizontal scroll indicators on content strips
 
-Three-column asymmetric layout: headline (56-64px, -0.06em tracking, weight 450) left, black triangle glyph center, eyebrow stack right. No background image. The triangle floats with no border or fill — pure black silhouette.
-
-### Feature Card Grid
-**Role:** 2-up product showcase cards with mini product UI embedded
-
-Large cards with the Bordered Card treatment, 16-24px padding, title at 30px heading weight, description at 14-16px body in #4d4d4d. Each card contains a small product mockup (CLI output, passport, framework logo) as visual evidence.
+Circular Paper buttons, 32–40px diameter, containing left/right Ink arrow icons. Positioned at the far left of the scroll strip with a faint horizontal line indicating scroll progress.
 
 ## Do's and Don'ts
 
 ### Do
-- Use #171717 for all primary text and filled buttons — never pure #000000 for text or #ffffff for dark surfaces
-- Apply 6px radius to all cards, buttons, and bordered containers (--geist-radius) — use 9999px only for pill-shaped nav actions
-- Set headlines at weight 400-450 with -0.06em letter-spacing at 56-64px — never bold headlines over 700
-- Use Geist Mono 11-12px uppercase with 0.071em tracking for all eyebrows, labels, and metadata stamps
-- Build depth with hairline borders via stacked box-shadows (0 0 0 1px rgba(0,0,0,0.08), 0 0 0 2px #fafafa) — never with drop-shadow
-- Space sections at 96-128px vertical gaps with no background shifts or dividers between bands
-- Prefix CLI commands with ▲ and confirmations with ✓ in #297a3a — the terminal pattern is the product demo
+- Use Ember (#ff5900) for exactly one purpose per region: the primary action. Never use it for decorative fills, backgrounds, or multiple competing elements on the same screen.
+- Apply Inter's negative tracking to every size: -0.01em at 24px and below, -0.02em at 36px, -0.03em at 72px. The compression is the signature.
+- Use 12px border-radius on all interactive surfaces (buttons, inputs, cards). Use 6px only for inline tags and small chips.
+- Keep section gaps at 48–80px and card padding at 24–32px. The system breathes; do not pack content.
+- Default to Paper (#ffffff) canvas with Fog (#f3f3f7) for section-level contrast. Reserve Abyss and Carbon for header/footer dark frames only.
+- Use Graphite (#60646c) for body paragraphs and Pewter (#6f737b) for helper/caption text. Never use Steel for anything longer than a label.
+- Set font-feature-settings to disable calt and liga on Inter — the system intentionally avoids contextual alternates and ligatures for a neutral engineered feel.
 
 ### Don't
-- Never introduce a chromatic color outside the Terminal Green (#297a3a) success indicator and the spectrum gradient — 0% colorfulness is the rule
-- Never use border-radius larger than 6px on cards or rectangular buttons — the sharpness is the point
-- Never set body or heading type in any color other than the #171717 / #4d4d4d / #666666 scale
-- Never use drop-shadows for elevation — hairline rings only, or no depth at all
-- Never use light or semibold (300 or 600-700) weights for headlines — the system speaks at 400-450 maximum
-- Never set line-height above 1.0 for display sizes (56-64px) — the tight leading is what makes the type feel architectural
-- Never use Geist Sans for labels, metadata, or code — Geist Mono owns that space exclusively
+- Don't introduce a second accent color. The single-ember system is the brand; adding blue, green, or purple breaks the visual contract.
+- Don't use shadows for card elevation. The system relies on Paper/Fog contrast and 1px Mist borders — drop shadows are out of system.
+- Don't use Flecha for body or sub-headings. It is a display face only; Inter handles everything below 48px.
+- Don't center body text paragraphs. Headlines can be centered, but Inter body copy at 16px is left-aligned with max-width ~640px.
+- Don't use Ember for text links inside paragraphs — reserve it for CTA buttons and standalone link phrases. Inline body links use Ink with an underline.
+- Don't mix border-radius values within a component group. All buttons get 12px, all cards get 12px, all tags get 6px — never 8px or 10px as compromises.
+- Don't use the announcement bar background (#15191e) as a generic dark surface inside the body. It belongs only at the very top of the page.
 
 ## Surfaces
 
 | Level | Name | Value | Purpose |
 |-------|------|-------|---------|
-| 0 | Page Canvas | `#fafafa` | Default page background — the warm off-white that makes the system feel paper-like rather than screen-like |
-| 1 | Card Surface | `#ffffff` | Elevated cards sit one step above canvas in brightness, distinguished by hairline border not shadow |
-| 2 | Inverted Surface | `#171717` | Dark inverted panels (e.g., Passport card) flip the value scale for visual punctuation in a grid |
+| 0 | Paper Canvas | `#ffffff` | Default page background; the dominant surface across all content sections |
+| 1 | Fog Section | `#f3f3f7` | Alternating section background for logo grids and banded content breaks; subtle separation without borders |
+| 2 | Card Surface | `#ffffff` | Product cards, article cards, feature tiles — always Paper with 12px radius, no shadow |
+| 3 | Dark Chrome | `#15191` | Announcement bar and elevated dark UI elements above the main canvas |
+| 4 | Abyss Footer | `#000710` | Footer and full-bleed dark sections; the deepest surface, bookending the light body |
 
 ## Elevation
 
-- **Bordered Card:** `0 0 0 1px rgba(0,0,0,0.08), 0 0 0 2px #fafafa`
-- **Ghost Button / Link:** `0 0 0 1px #ebebeb`
+The system deliberately avoids drop shadows for elevation. Cards and surfaces are defined by Paper-on-Fog contrast and 1px Mist (#b9bbc6) hairline borders. The only exception is floating UI (cookie consent, modals), which uses a single soft shadow to indicate detachment from the canvas.
 
 ## Imagery
 
-Imagery is sparse and always functional. The primary visual element is the black triangle (▲) — a geometric brand mark that appears at hero scale as a floating silhouette. Customer logos in the social-proof strip use each brand's actual wordmark in grayscale. Product mockups (Notion chat UI, CLI terminal output, passport card) are embedded as light-mode screenshots within bordered cards. There is no photography, no illustration, no 3D — the system is pure typography and geometric shapes on white paper.
+Product photography is the dominant visual: physical credit cards, iPhone screens showing the Brex app, and receipt/transaction interfaces, all shot on clean white or light surfaces. Photography is high-key and product-focused — no lifestyle context, no human subjects in marketing imagery. Customer logos in the trust band are rendered monochrome (Steel/Mist) to create visual uniformity regardless of original brand color. Article and blog cards use editorial photography with varied subjects (interior spaces, workspace shots, product mockups) treated as contained 16:9 crops within 12px-radius card frames. The app is icon-light in chrome areas, using simple line icons in Steel or Ember weight.
 
 ## Layout
 
-Max-width 1280px centered container with generous horizontal padding (24-48px). The hero uses an asymmetric three-zone composition: oversized headline left, brand glyph center, eyebrow stack right. Below the hero, content flows in alternating bands: a full-width customer logo strip, then a two-column 'build agents' section with heading left and product mockup right, then a three-up feature card grid. Sections are separated by 96-128px vertical gaps with no dividers or background shifts. The nav is a single 64px sticky bar with backdrop blur. Card grids consistently use a 2-column or 3-column layout with 16-24px gaps. The overall density is compact — text is comfortable to read, whitespace is generous, but the type scale and component sizing keep the page from feeling airy.
+The page is a full-bleed vertical stack of max-width 1200px centered content bands. The hero uses an asymmetric split: left-aligned text block (headline + subtext + email capture + ghost link) occupies roughly 45% width, with a product visual (angled card stack on phone mockup) on the right. Below the hero, a Fog-banded logo grid provides social proof with generous vertical padding. Feature sections alternate between centered headlines over horizontal card strips and tabbed product category selectors. Article/resource sections use a 4-column card grid with carousel overflow. The footer is a full-bleed dark Abyss band with multi-column link groups. Vertical rhythm is consistent: 48–80px between major sections, 24–32px card padding, 8–16px element gaps.
 
 ## Agent Prompt Guide
 
 **Quick Color Reference**
-- Background: #fafafa
-- Text: #171717
-- Border: #ebebeb
-- Accent: #000000 (triangle mark only)
-- primary action: #171717 (filled action)
+- background: #ffffff
+- surface alternate: #f3f3f7
+- text primary: #000000 (Ink)
+- text secondary: #60646c (Graphite)
+- border: #b9bbc6 (Mist)
+- primary action: no distinct CTA color
 
 **Example Component Prompts**
 
-1. Create a hero headline: Geist Sans 56px weight 450, color #171717, letter-spacing -3.36px, line-height 1.0. Below it, a filled black button (background #171717, text #ffffff, 6px radius, 12px 20px padding, Geist Sans 14px weight 400) and a ghost button beside it (background transparent, text #4d4d4d, 1px border #ebebeb, 6px radius, 20px padding).
+1. *Create a hero section:* White (#ffffff) background, max-width 1200px centered. Headline at 72px Inter weight 600, #000000, letter-spacing -0.03em, line-height 1.0. Subtext at 20px Inter weight 400, #60646c. Email input (white, 1px #b9bbc6 border, 12px radius, Steel #8b8d98 placeholder) paired with an Ember (#ff5900) filled button (12px radius, 8px 16px padding, white Inter 16px weight 600 text).
 
-2. Create a feature card: background #ffffff, 6px radius, border via stacked box-shadows (0 0 0 1px rgba(0,0,0,0.08), 0 0 0 2px #fafafa), 16px padding. Title in Geist Sans 30px weight 400 with -1.5px tracking, color #171717. Description in Geist Sans 14px weight 400, color #4d4d4d.
+2. *Create a feature category card:* White background, 12px radius, 32px padding, no border. Heading Inter 24px weight 600 #000000. Body Inter 16px weight 400 #60646c. Product image anchored at the bottom within the card's 12px radius.
 
-3. Create an eyebrow label: Geist Mono 11px weight 400, 0.071em letter-spacing, uppercase, color #171717. Pair with 12px margin-bottom before the heading it introduces.
+3. *Create a customer logo band:* Fog (#f3f3f7) full-width section, 80px vertical padding. Centered heading Inter 36px weight 600 #000000. Logos in 6-column grid, all rendered in #8b8d98 monochrome at uniform 32px height.
 
-4. Create a CLI output panel: background #ffffff with 1px border #ebebeb, 6px radius, 16px padding. Commands prefixed with ▲ in #171717, confirmations prefixed with ✓ in #297a3a, all text in Geist Mono 12px weight 400, color #171717.
+4. *Create the footer:* Abyss (#000710) full-bleed background, 64px vertical padding, max-width 1200px content. Brex wordmark in #ffffff at top-left. Four columns of links: column headers in Inter 14px weight 600 #ffffff, links in Inter 14px weight 400 #b9bbc6.
 
-5. Create a top nav bar: height 64px, background #fafafa with backdrop-filter blur(20px), flex row. Left: ▲ glyph in #000000 + 'Vercel' in Geist Sans 14px weight 500. Center-left: nav items in Geist Sans 14px weight 400, color #171717, 24px gaps. Right: ghost button (border #ebebeb, text #4d4d4d, 6px radius) + filled button (background #171717, text #ffffff, 6px radius, pill-shaped at 9999px radius for tight header use).
-
-## Typographic Discipline
-
-The type system has only two families and 8 sizes. Headlines are weight 400-450 (not 700), tracking tight at -0.06em, line-height 1.0 — they sit on a single line, dense and confident. Body is 14-16px weight 400 at 1.43-1.5 line-height. The only color in the type system is the value shift from #171717 to #4d4d4d to #666666 — never a chromatic tint. Labels and metadata are ALWAYS monospace, ALWAYS uppercase, ALWAYS small (8-12px). This binary — Geist Sans for reading, Geist Mono for stamping — is the system's most recognizable rule.
-
-## The Triangle Protocol
-
-The ▲ glyph is the brand's most deployed element. It appears as: the wordmark icon, the CLI command prefix, a decorative hero silhouette, a loading indicator, and an interactive collapse marker. Always rendered in #000000 at 1:1 aspect ratio, never with a border, never with a fill other than black. It is the only element in the system permitted to be pure #000000 — everything else is #171717 or lighter.
+5. *Create a dark announcement bar:* Carbon (#15191e) full-bleed, 1px vertical padding, centered Inter 12px weight 500 #ffffff text with an inline #ff5900 link.
 
 ## Similar Brands
 
-- **Linear** — Same sharp 6-8px radii, monochromatic light canvas, and tight-tracking geometric sans-serif headlines — Linear and Vercel share a print-engineering aesthetic
-- **Railway** — Similar near-black on warm-white palette, monospace CLI panels, and the discipline of using one accent color (or none) across an entire interface
-- **Stripe** — Hairline borders, generous whitespace, and the trust that typography hierarchy alone can carry a page without decorative color or imagery
-- **Resend** — Developer-marketing approach: terminal output as hero, monospace labels, the same paper-white canvas and pure-black wordmark
-- **Plaid** — High-contrast achromatic system with a single chromatic note for state, trusting typographic weight and spacing to create hierarchy
+- **Stripe** — Same monochrome-first fintech aesthetic with a single saturated accent for CTAs, Inter-based type, and 12px card radii
+- **Linear** — Same aggressive negative letter-spacing on Inter, near-pure white canvas, and minimal-shadow flat card system
+- **Ramp** — Direct fintech competitor with the same 'finance product as precision instrument' visual language — white canvas, single accent, tight compressed type
+- **Notion** — Same hairline-border card system on near-white canvas with generous breathing room and no decorative shadows
 
 ## Quick Start
 
@@ -248,89 +224,85 @@ The ▲ glyph is the brand's most deployed element. It appears as: the wordmark 
 ```css
 :root {
   /* Colors */
-  --color-paper-white: #fafafa;
-  --color-pure-white: #ffffff;
-  --color-hairline: #ebebeb;
-  --color-ash: #c9c9c9;
-  --color-smoke: #a8a8a8;
-  --color-graphite: #8f8f8f;
-  --color-slate: #7d7d7d;
-  --color-stone: #666666;
-  --color-charcoal: #4d4d4d;
-  --color-obsidian: #171717;
-  --color-carbon: #000000;
-  --color-terminal-green: #297a3a;
-  --color-spectrum-gradient: #ff1744;
-  --gradient-spectrum-gradient: linear-gradient(90deg, rgb(0, 255, 149) 0%, rgb(255, 208, 0) 25%, rgb(255, 23, 68) 50%, rgb(149, 0, 255) 75%, rgb(0, 229, 255) 100%);
-  --color-solar-edge: #ffdc30;
-  --gradient-solar-edge: linear-gradient(90deg, rgb(255, 220, 48) 0%, rgb(56, 162, 255) 100%);
+  --color-ember: #ff5900;
+  --color-abyss: #000710;
+  --color-carbon: #15191e;
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-fog: #f3f3f7;
+  --color-mist: #b9bbc6;
+  --color-steel: #8b8d98;
+  --color-pewter: #6f737b;
+  --color-graphite: #60646c;
 
   /* Typography — Font Families */
-  --font-geist-sans: 'Geist Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-geist-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-flecha: 'Flecha', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
-  --text-eyebrow: 11px;
-  --leading-eyebrow: 1.5;
-  --text-caption: 13px;
-  --leading-caption: 1.54;
+  --text-caption: 12px;
+  --leading-caption: 1.5;
+  --tracking-caption: -0.01px;
+  --text-body-sm: 14px;
+  --leading-body-sm: 1.43;
+  --tracking-body-sm: -0.01px;
   --text-body: 16px;
   --leading-body: 1.5;
-  --text-heading: 30px;
-  --leading-heading: 1.1;
-  --tracking-heading: -1.5px;
-  --text-heading-lg: 56px;
-  --leading-heading-lg: 1;
-  --tracking-heading-lg: -3.36px;
-  --text-display: 64px;
+  --tracking-body: -0.01px;
+  --text-subheading: 20px;
+  --leading-subheading: 1.4;
+  --tracking-subheading: -0.01px;
+  --text-heading-sm: 24px;
+  --leading-heading-sm: 1.33;
+  --tracking-heading-sm: -0.01px;
+  --text-heading: 36px;
+  --leading-heading: 1.21;
+  --tracking-heading: -0.02px;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.2;
+  --tracking-heading-lg: -0.025px;
+  --text-display: 72px;
   --leading-display: 1;
-  --tracking-display: -3.84px;
+  --tracking-display: -0.03px;
 
   /* Typography — Weights */
   --font-weight-regular: 400;
-  --font-weight-w450: 450;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
 
   /* Spacing */
-  --spacing-4: 4px;
-  --spacing-6: 6px;
+  --spacing-unit: 8px;
   --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-14: 14px;
   --spacing-16: 16px;
-  --spacing-20: 20px;
   --spacing-24: 24px;
   --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-44: 44px;
-  --spacing-208: 208px;
+  --spacing-48: 48px;
+  --spacing-72: 72px;
+  --spacing-80: 80px;
+  --spacing-160: 160px;
 
   /* Layout */
-  --page-max-width: 1280px;
-  --section-gap: 96-128px;
-  --card-padding: 16px;
-  --element-gap: 12px;
+  --page-max-width: 1200px;
+  --section-gap: 48-80px;
+  --card-padding: 24-32px;
+  --element-gap: 8-16px;
 
   /* Border Radius */
-  --radius-sm: 2px;
   --radius-md: 6px;
-  --radius-full: 9999px;
+  --radius-xl: 12px;
 
   /* Named Radii */
-  --radius-nav: 2px;
-  --radius-cards: 6px;
-  --radius-pills: 9999px;
-  --radius-buttons: 6px;
-
-  /* Shadows */
-  --shadow-subtle: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px;
-  --shadow-subtle-2: rgb(235, 235, 235) 0px 0px 0px 1px;
+  --radius-tags: 6px;
+  --radius-cards: 12px;
+  --radius-inputs: 12px;
+  --radius-buttons: 12px;
 
   /* Surfaces */
-  --surface-page-canvas: #fafafa;
+  --surface-paper-canvas: #ffffff;
+  --surface-fog-section: #f3f3f7;
   --surface-card-surface: #ffffff;
-  --surface-inverted-surface: #171717;
+  --surface-dark-chrome: #15191;
+  --surface-abyss-footer: #000710;
 }
 ```
 
@@ -339,63 +311,59 @@ The ▲ glyph is the brand's most deployed element. It appears as: the wordmark 
 ```css
 @theme {
   /* Colors */
-  --color-paper-white: #fafafa;
-  --color-pure-white: #ffffff;
-  --color-hairline: #ebebeb;
-  --color-ash: #c9c9c9;
-  --color-smoke: #a8a8a8;
-  --color-graphite: #8f8f8f;
-  --color-slate: #7d7d7d;
-  --color-stone: #666666;
-  --color-charcoal: #4d4d4d;
-  --color-obsidian: #171717;
-  --color-carbon: #000000;
-  --color-terminal-green: #297a3a;
-  --color-spectrum-gradient: #ff1744;
-  --color-solar-edge: #ffdc30;
+  --color-ember: #ff5900;
+  --color-abyss: #000710;
+  --color-carbon: #15191e;
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-fog: #f3f3f7;
+  --color-mist: #b9bbc6;
+  --color-steel: #8b8d98;
+  --color-pewter: #6f737b;
+  --color-graphite: #60646c;
 
   /* Typography */
-  --font-geist-sans: 'Geist Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-geist-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-flecha: 'Flecha', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   /* Typography — Scale */
-  --text-eyebrow: 11px;
-  --leading-eyebrow: 1.5;
-  --text-caption: 13px;
-  --leading-caption: 1.54;
+  --text-caption: 12px;
+  --leading-caption: 1.5;
+  --tracking-caption: -0.01px;
+  --text-body-sm: 14px;
+  --leading-body-sm: 1.43;
+  --tracking-body-sm: -0.01px;
   --text-body: 16px;
   --leading-body: 1.5;
-  --text-heading: 30px;
-  --leading-heading: 1.1;
-  --tracking-heading: -1.5px;
-  --text-heading-lg: 56px;
-  --leading-heading-lg: 1;
-  --tracking-heading-lg: -3.36px;
-  --text-display: 64px;
+  --tracking-body: -0.01px;
+  --text-subheading: 20px;
+  --leading-subheading: 1.4;
+  --tracking-subheading: -0.01px;
+  --text-heading-sm: 24px;
+  --leading-heading-sm: 1.33;
+  --tracking-heading-sm: -0.01px;
+  --text-heading: 36px;
+  --leading-heading: 1.21;
+  --tracking-heading: -0.02px;
+  --text-heading-lg: 48px;
+  --leading-heading-lg: 1.2;
+  --tracking-heading-lg: -0.025px;
+  --text-display: 72px;
   --leading-display: 1;
-  --tracking-display: -3.84px;
+  --tracking-display: -0.03px;
 
   /* Spacing */
-  --spacing-4: 4px;
-  --spacing-6: 6px;
   --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-14: 14px;
   --spacing-16: 16px;
-  --spacing-20: 20px;
   --spacing-24: 24px;
   --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-44: 44px;
-  --spacing-208: 208px;
+  --spacing-48: 48px;
+  --spacing-72: 72px;
+  --spacing-80: 80px;
+  --spacing-160: 160px;
 
   /* Border Radius */
-  --radius-sm: 2px;
   --radius-md: 6px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-subtle: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px, rgb(250, 250, 250) 0px 0px 0px 1px;
-  --shadow-subtle-2: rgb(235, 235, 235) 0px 0px 0px 1px;
+  --radius-xl: 12px;
 }
 ```

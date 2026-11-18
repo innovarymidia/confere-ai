@@ -1,73 +1,59 @@
 @import "tailwindcss";
 
 @theme {
-  /* Cores Vercel / DESIGN.md */
-  --color-paper-white: #fafafa;
-  --color-pure-white: #ffffff;
-  --color-hairline: #ebebeb;
-  --color-ash: #c9c9c9;
-  --color-smoke: #a8a8a8;
-  --color-graphite: #8f8f8f;
-  --color-slate: #7d7d7d;
-  --color-stone: #666666;
-  --color-charcoal: #4d4d4d;
-  --color-obsidian: #171717;
-  --color-carbon: #000000;
-  --color-terminal-green: #297a3a;
-  --color-confere-navy: #07152d;
-  --color-confere-orange: #f97316;
+  /* Cores Brex / DESIGN.md */
+  --color-ember: #ff5900;
+  --color-abyss: #000710;
+  --color-carbon: #15191e;
+  --color-ink: #000000;
+  --color-paper: #ffffff;
+  --color-fog: #f3f3f7;
+  --color-mist: #b9bbc6;
+  --color-steel: #8b8d98;
+  --color-pewter: #6f737b;
+  --color-graphite: #60646c;
+
+  /* Aliases do sistema */
+  --color-primary: #ff5900;
+  --color-surface-alternate: #f3f3f7;
 
   /* Tipografia */
-  --font-sans: 'Geist', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-inter: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 
-  /* Raios de Borda do DESIGN.md (6px para cards e botões, full para pills) */
-  --radius-sm: 2px;
+  /* Raios de Borda do DESIGN.md (12px para cards, inputs e botoes; 6px para tags) */
+  --radius-sm: 6px;
   --radius-md: 6px;
-  --radius-full: 9999px;
+  --radius-lg: 12px;
+  --radius-xl: 12px;
+  --radius-cards: 12px;
+  --radius-buttons: 12px;
+  --radius-inputs: 12px;
+  --radius-tags: 6px;
 }
 
 @layer base {
   :root {
     font-family: var(--font-sans);
-    --font-geist-sans: var(--font-sans);
-    --font-geist-mono: var(--font-mono);
+    font-feature-settings: "calt" 0, "liga" 0;
   }
 
   body {
-    background-color: #fafafa;
-    color: #171717;
+    background-color: #ffffff;
+    color: #000000;
     overflow-x: hidden;
   }
 }
 
-/* Bordas hairline e elevações do DESIGN.md */
-.shadow-subtle {
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08), 0 0 0 1px #ebebeb;
+/* Bordas e acabamento Brex */
+.border-mist {
+  border: 1px solid #b9bbc6;
 }
 
-.shadow-subtle-2 {
-  box-shadow: 0 0 0 1px #ebebeb;
+.border-mist-subtle {
+  border: 1px solid rgba(185, 187, 198, 0.4);
 }
 
-.border-hairline {
-  border: 1px solid #ebebeb;
-}
-
-.shadow-soft {
-  box-shadow: 0 0 0 1px #ebebeb, 0 4px 12px -2px rgba(0, 0, 0, 0.03);
-}
-
-.shadow-soft-lg {
-  box-shadow: 0 0 0 1px #ebebeb, 0 12px 24px -4px rgba(0, 0, 0, 0.05);
-}
-
-.shadow-glow-orange {
-  box-shadow: 0 4px 14px -2px rgba(249, 115, 22, 0.35);
-}
-
-.bg-glass {
-  background: rgba(250, 250, 250, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+.shadow-modal {
+  box-shadow: 0 16px 32px -4px rgba(0, 7, 16, 0.12), 0 4px 12px -2px rgba(0, 7, 16, 0.08);
 }

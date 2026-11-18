@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, User, ShieldCheck, ArrowLeft } from "lucide-react";
+import { ArrowRight, User, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import { cn } from "@/lib/utils";
 import { MercadoLivreLogo, ShopeeLogo, ConfereAiLogo } from "./marketplace-logos";
@@ -77,93 +77,113 @@ export function LiquidGlassNavbar({
   };
 
   return (
-    <header
-      className={cn(
-        "fixed top-0 inset-x-0 z-50 h-16 flex items-center justify-center px-4 transition-all duration-200 border-b border-[#ebebeb] bg-[#fafafa]/90 backdrop-blur-xl",
-        scrolled ? "bg-white shadow-subtle-2" : "bg-[#fafafa]/90",
-        className
-      )}
-    >
-      <nav
-        aria-label="Navegacao Principal"
-        className="flex items-center justify-between gap-4 w-full max-w-6xl mx-auto"
+    <header className={cn("fixed top-0 inset-x-0 z-50 flex flex-col transition-all", className)}>
+      {/* 1. Announcement Bar Carbon (#15191e) do DESIGN.md */}
+      <aside
+        aria-label="Aviso institucional"
+        className="w-full bg-[#15191e] text-white py-1.5 px-4 text-center font-sans text-xs font-medium tracking-[-0.01em] border-b border-[#15191e]"
       >
-        {/* Logo Oficial ConfereAI */}
-        <Link to="/" className="flex items-center gap-2 group shrink-0" aria-label="ConfereAI Home">
-          <ConfereAiLogo className="h-8 w-auto rounded-[6px] group-hover:opacity-90 transition-opacity" />
-        </Link>
-
-        {/* Centro: Links na Landing ou Badge de Seguranca na Pagina de Resultado */}
-        {variant === "landing" ? (
-          <div className="hidden md:flex items-center gap-6">
-            {NAV_ITEMS.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item)}
-                className="text-xs font-medium text-[#4d4d4d] hover:text-[#171717] transition-colors"
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
-        ) : (
-          <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-[6px] bg-white border border-[#ebebeb] text-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#297a3a]" />
-            <span className="font-medium text-[#171717]">Conferência Privada e Segura</span>
-            {platform && (
-              <>
-                <span className="w-1 h-1 rounded-full bg-[#c9c9c9]" />
-                <div className="flex items-center gap-1.5 font-semibold text-[#171717] text-[11px] font-mono">
-                  {platform === "mercadolivre" ? (
-                    <>
-                      <MercadoLivreLogo className="w-3.5 h-3.5 rounded-xs" />
-                      <span>Mercado Livre</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShopeeLogo className="w-3.5 h-3.5 rounded-xs" />
-                      <span>Shopee</span>
-                    </>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        )}
-
-        {/* Acoes da Direita (Ghost Button + Filled Button do DESIGN.md) */}
-        <div className="flex items-center gap-2 shrink-0">
-          <Link
-            to={isLoggedIn ? "/historico" : "/login"}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border border-[#ebebeb] text-xs font-medium text-[#4d4d4d] hover:text-[#171717] hover:bg-[#ebebeb]/50 transition shrink-0"
+        <div className="max-w-[1200px] mx-auto flex items-center justify-center gap-2">
+          <span>Tabelas Oficiais 2026 ativadas: confira fretes e tarifas da sua conta</span>
+          <button
+            type="button"
+            onClick={onAuditClick}
+            className="text-[#ff5900] hover:underline font-semibold cursor-pointer inline-flex items-center gap-1"
           >
-            <User className="w-3.5 h-3.5 text-[#8f8f8f]" />
-            <span className="hidden sm:inline">
-              {isLoggedIn ? (isPro ? "Minha Conta Pro" : "Minhas Auditorias") : "Entrar"}
-            </span>
+            <span>Conferir agora</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
+        </div>
+      </aside>
+
+      {/* 2. Barra de Navegacao Paper (#ffffff) com borda Mist (#b9bbc6) */}
+      <div
+        className={cn(
+          "w-full h-16 flex items-center justify-center px-4 sm:px-6 bg-[#ffffff] transition-all duration-200 border-b border-[#b9bbc6]",
+          scrolled ? "shadow-sm" : ""
+        )}
+      >
+        <nav
+          aria-label="Navegacao Principal"
+          className="flex items-center justify-between gap-4 w-full max-w-[1200px] mx-auto"
+        >
+          {/* Logo Oficial ConfereAI */}
+          <Link to="/" className="flex items-center gap-2 group shrink-0" aria-label="ConfereAI Inicio">
+            <ConfereAiLogo className="h-8 w-auto rounded-[6px] group-hover:opacity-90 transition-opacity" />
           </Link>
 
+          {/* Centro: Links na Landing ou Badge de Seguranca na Pagina de Resultado */}
           {variant === "landing" ? (
-            <button
-              type="button"
-              onClick={onAuditClick}
-              className="px-3.5 py-1.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-xs transition-colors flex items-center gap-1.5 cursor-pointer shrink-0 shadow-subtle-2"
-            >
-              <span>Auditar Grátis</span>
-              <ArrowRight className="w-3 h-3 text-[#f97316]" />
-            </button>
+            <div className="hidden md:flex items-center gap-7">
+              {NAV_ITEMS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item)}
+                  className="text-sm font-medium text-[#60646c] hover:text-[#000000] tracking-[-0.01em] transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
+            </div>
           ) : (
-            <Link
-              to="/"
-              className="px-3.5 py-1.5 rounded-[6px] bg-[#171717] hover:bg-[#000000] text-white font-medium text-xs transition-colors flex items-center gap-1.5 cursor-pointer shrink-0 shadow-subtle-2"
-            >
-              <ArrowLeft className="w-3 h-3 text-[#f97316]" />
-              <span>Nova Auditoria</span>
-            </Link>
+            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-[6px] bg-[#f3f3f7] border border-[#b9bbc6] text-xs">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#ff5900]" />
+              <span className="font-medium text-[#000000]">Conferência Privada e Segura</span>
+              {platform && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-[#8b8d98]" />
+                  <div className="flex items-center gap-1.5 font-semibold text-[#000000] text-xs">
+                    {platform === "mercadolivre" ? (
+                      <>
+                        <MercadoLivreLogo className="w-3.5 h-3.5 rounded-[4px]" />
+                        <span>Mercado Livre</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShopeeLogo className="w-3.5 h-3.5 rounded-[4px]" />
+                        <span>Shopee</span>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
+            </div>
           )}
-        </div>
-      </nav>
+
+          {/* Acoes da Direita: Ghost link Ink (#000000) e Botao Ember (#ff5900) com radius 12px */}
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              to={isLoggedIn ? "/historico" : "/login"}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-[12px] text-sm font-medium text-[#000000] hover:text-[#000000] hover:bg-[#f3f3f7] tracking-[-0.01em] transition shrink-0"
+            >
+              <User className="w-4 h-4 text-[#8b8d98]" />
+              <span className="hidden sm:inline">
+                {isLoggedIn ? (isPro ? "Minha Conta Pro" : "Minhas Auditorias") : "Entrar"}
+              </span>
+            </Link>
+
+            {variant === "landing" ? (
+              <button
+                type="button"
+                onClick={onAuditClick}
+                className="px-4 py-2 rounded-[12px] bg-[#ff5900] hover:bg-[#e04f00] text-[#ffffff] font-semibold text-sm tracking-[-0.01em] transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <span>Auditar Grátis</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#ffffff]" />
+              </button>
+            ) : (
+              <Link
+                to="/"
+                className="px-4 py-2 rounded-[12px] bg-[#ff5900] hover:bg-[#e04f00] text-[#ffffff] font-semibold text-sm tracking-[-0.01em] transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+              >
+                <span>Nova Auditoria</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#ffffff]" />
+              </Link>
+            )}
+          </div>
+        </nav>
+      </div>
     </header>
   );
 }
