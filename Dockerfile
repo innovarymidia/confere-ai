@@ -17,8 +17,8 @@ COPY . .
 # Gera o bundle de producao na pasta /app/dist
 RUN npm run build
 
-# Estagio 2: Servidor web leve e de alta performance
-FROM nginx:1.30.2-alpine3.23 AS runner
+# Estagio 2: Servidor web leve e de alta performance (Versao estavel com patches de seguranca da F5)
+FROM nginx:1.30.7-alpine AS runner
 
 # Remove os arquivos padroes do nginx
 RUN rm -rf /usr/share/nginx/html/*
